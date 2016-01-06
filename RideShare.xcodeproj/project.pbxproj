@@ -7,25 +7,71 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20793E19AFB6F34BEC6107F3 /* libPods-RideShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F724DAD7BD9FE447DB1C94B2 /* libPods-RideShare.a */; };
+		9D52CAF41C3B9A2000262291 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D52CAF31C3B9A2000262291 /* MapKit.framework */; };
+		9D52CAF61C3B9A6400262291 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D52CAF51C3B9A6400262291 /* CoreLocation.framework */; };
+		9D52CAF91C3BA0BF00262291 /* RSLocationPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D52CAF81C3BA0BF00262291 /* RSLocationPickerController.m */; };
+		9D52CAFD1C3BA99B00262291 /* RLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D52CAFC1C3BA99B00262291 /* RLLoginViewController.m */; };
+		9D52CB001C3BA9B500262291 /* RLRegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D52CAFF1C3BA9B500262291 /* RLRegistrationViewController.m */; };
+		9D52CB5A1C3D3A0D00262291 /* RSConstants.h in Sources */ = {isa = PBXBuildFile; fileRef = 9D52CB591C3D3A0D00262291 /* RSConstants.h */; };
+		9D52CB5C1C3D3B4700262291 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9D52CB5B1C3D3B4700262291 /* Podfile */; };
 		9D82B2591C3A9BAA005CB5D5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B2581C3A9BAA005CB5D5 /* main.m */; };
 		9D82B25C1C3A9BAA005CB5D5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B25B1C3A9BAA005CB5D5 /* AppDelegate.m */; };
-		9D82B25F1C3A9BAA005CB5D5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B25E1C3A9BAA005CB5D5 /* ViewController.m */; };
+		9D82B25F1C3A9BAA005CB5D5 /* RLHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B25E1C3A9BAA005CB5D5 /* RLHomeViewController.m */; };
 		9D82B2621C3A9BAA005CB5D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D82B2601C3A9BAA005CB5D5 /* Main.storyboard */; };
 		9D82B2641C3A9BAA005CB5D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D82B2631C3A9BAA005CB5D5 /* Assets.xcassets */; };
 		9D82B2671C3A9BAA005CB5D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D82B2651C3A9BAA005CB5D5 /* LaunchScreen.storyboard */; };
+		9D82B2861C3AA0F4005CB5D5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B2851C3AA0F4005CB5D5 /* MainViewController.m */; };
+		9D82B2961C3AA395005CB5D5 /* AMSlideMenuContentSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B2881C3AA395005CB5D5 /* AMSlideMenuContentSegue.m */; };
+		9D82B2971C3AA395005CB5D5 /* AMSlideMenuLeftMenuSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B28A1C3AA395005CB5D5 /* AMSlideMenuLeftMenuSegue.m */; };
+		9D82B2981C3AA395005CB5D5 /* AMSlideMenuLeftTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B28C1C3AA395005CB5D5 /* AMSlideMenuLeftTableViewController.m */; };
+		9D82B2991C3AA395005CB5D5 /* AMSlideMenuMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B28E1C3AA395005CB5D5 /* AMSlideMenuMainViewController.m */; };
+		9D82B29A1C3AA395005CB5D5 /* AMSlideMenuRightMenuSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B2911C3AA395005CB5D5 /* AMSlideMenuRightMenuSegue.m */; };
+		9D82B29B1C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B2931C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.m */; };
+		9D82B29C1C3AA395005CB5D5 /* UIViewController+AMSlideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B2951C3AA395005CB5D5 /* UIViewController+AMSlideMenu.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		341DBAC7F8620BD283BB320B /* Pods-RideShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RideShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RideShare/Pods-RideShare.debug.xcconfig"; sourceTree = "<group>"; };
+		9D52CAF31C3B9A2000262291 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		9D52CAF51C3B9A6400262291 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		9D52CAF71C3BA0BF00262291 /* RSLocationPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSLocationPickerController.h; sourceTree = "<group>"; };
+		9D52CAF81C3BA0BF00262291 /* RSLocationPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSLocationPickerController.m; sourceTree = "<group>"; };
+		9D52CAFB1C3BA99B00262291 /* RLLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLLoginViewController.h; sourceTree = "<group>"; };
+		9D52CAFC1C3BA99B00262291 /* RLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLLoginViewController.m; sourceTree = "<group>"; };
+		9D52CAFE1C3BA9B500262291 /* RLRegistrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLRegistrationViewController.h; sourceTree = "<group>"; };
+		9D52CAFF1C3BA9B500262291 /* RLRegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLRegistrationViewController.m; sourceTree = "<group>"; };
+		9D52CB591C3D3A0D00262291 /* RSConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSConstants.h; sourceTree = "<group>"; };
+		9D52CB5B1C3D3B4700262291 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		9D82B2541C3A9BAA005CB5D5 /* RideShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RideShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D82B2581C3A9BAA005CB5D5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9D82B25A1C3A9BAA005CB5D5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9D82B25B1C3A9BAA005CB5D5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		9D82B25D1C3A9BAA005CB5D5 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		9D82B25E1C3A9BAA005CB5D5 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		9D82B25D1C3A9BAA005CB5D5 /* RLHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RLHomeViewController.h; sourceTree = "<group>"; };
+		9D82B25E1C3A9BAA005CB5D5 /* RLHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RLHomeViewController.m; sourceTree = "<group>"; };
 		9D82B2611C3A9BAA005CB5D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9D82B2631C3A9BAA005CB5D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D82B2661C3A9BAA005CB5D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D82B2681C3A9BAA005CB5D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D82B2841C3AA0F4005CB5D5 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		9D82B2851C3AA0F4005CB5D5 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		9D82B2871C3AA395005CB5D5 /* AMSlideMenuContentSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSlideMenuContentSegue.h; sourceTree = "<group>"; };
+		9D82B2881C3AA395005CB5D5 /* AMSlideMenuContentSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSlideMenuContentSegue.m; sourceTree = "<group>"; };
+		9D82B2891C3AA395005CB5D5 /* AMSlideMenuLeftMenuSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSlideMenuLeftMenuSegue.h; sourceTree = "<group>"; };
+		9D82B28A1C3AA395005CB5D5 /* AMSlideMenuLeftMenuSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSlideMenuLeftMenuSegue.m; sourceTree = "<group>"; };
+		9D82B28B1C3AA395005CB5D5 /* AMSlideMenuLeftTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSlideMenuLeftTableViewController.h; sourceTree = "<group>"; };
+		9D82B28C1C3AA395005CB5D5 /* AMSlideMenuLeftTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSlideMenuLeftTableViewController.m; sourceTree = "<group>"; };
+		9D82B28D1C3AA395005CB5D5 /* AMSlideMenuMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSlideMenuMainViewController.h; sourceTree = "<group>"; };
+		9D82B28E1C3AA395005CB5D5 /* AMSlideMenuMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSlideMenuMainViewController.m; sourceTree = "<group>"; };
+		9D82B28F1C3AA395005CB5D5 /* AMSlideMenuProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSlideMenuProtocols.h; sourceTree = "<group>"; };
+		9D82B2901C3AA395005CB5D5 /* AMSlideMenuRightMenuSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSlideMenuRightMenuSegue.h; sourceTree = "<group>"; };
+		9D82B2911C3AA395005CB5D5 /* AMSlideMenuRightMenuSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSlideMenuRightMenuSegue.m; sourceTree = "<group>"; };
+		9D82B2921C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSlideMenuRightTableViewController.h; sourceTree = "<group>"; };
+		9D82B2931C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSlideMenuRightTableViewController.m; sourceTree = "<group>"; };
+		9D82B2941C3AA395005CB5D5 /* UIViewController+AMSlideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+AMSlideMenu.h"; sourceTree = "<group>"; };
+		9D82B2951C3AA395005CB5D5 /* UIViewController+AMSlideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+AMSlideMenu.m"; sourceTree = "<group>"; };
+		D4D0532FB6DBFA9B2DE90E98 /* Pods-RideShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RideShare.release.xcconfig"; path = "Pods/Target Support Files/Pods-RideShare/Pods-RideShare.release.xcconfig"; sourceTree = "<group>"; };
+		F724DAD7BD9FE447DB1C94B2 /* libPods-RideShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RideShare.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +79,32 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D52CAF61C3B9A6400262291 /* CoreLocation.framework in Frameworks */,
+				9D52CAF41C3B9A2000262291 /* MapKit.framework in Frameworks */,
+				20793E19AFB6F34BEC6107F3 /* libPods-RideShare.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A8BA193E0C59A1D6D9B20CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F724DAD7BD9FE447DB1C94B2 /* libPods-RideShare.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9D82B24B1C3A9BAA005CB5D5 = {
 			isa = PBXGroup;
 			children = (
+				9D52CAF51C3B9A6400262291 /* CoreLocation.framework */,
+				9D52CAF31C3B9A2000262291 /* MapKit.framework */,
 				9D82B2561C3A9BAA005CB5D5 /* RideShare */,
 				9D82B2551C3A9BAA005CB5D5 /* Products */,
+				F019EC76CBC0B1126328E8D6 /* Pods */,
+				1A8BA193E0C59A1D6D9B20CE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,10 +119,18 @@
 		9D82B2561C3A9BAA005CB5D5 /* RideShare */ = {
 			isa = PBXGroup;
 			children = (
+				9D82B2831C3A9E4C005CB5D5 /* SlideMenu */,
+				9D52CB591C3D3A0D00262291 /* RSConstants.h */,
 				9D82B25A1C3A9BAA005CB5D5 /* AppDelegate.h */,
 				9D82B25B1C3A9BAA005CB5D5 /* AppDelegate.m */,
-				9D82B25D1C3A9BAA005CB5D5 /* ViewController.h */,
-				9D82B25E1C3A9BAA005CB5D5 /* ViewController.m */,
+				9D82B25D1C3A9BAA005CB5D5 /* RLHomeViewController.h */,
+				9D82B25E1C3A9BAA005CB5D5 /* RLHomeViewController.m */,
+				9D52CAF71C3BA0BF00262291 /* RSLocationPickerController.h */,
+				9D52CAF81C3BA0BF00262291 /* RSLocationPickerController.m */,
+				9D52CAFB1C3BA99B00262291 /* RLLoginViewController.h */,
+				9D52CAFC1C3BA99B00262291 /* RLLoginViewController.m */,
+				9D52CAFE1C3BA9B500262291 /* RLRegistrationViewController.h */,
+				9D52CAFF1C3BA9B500262291 /* RLRegistrationViewController.m */,
 				9D82B2601C3A9BAA005CB5D5 /* Main.storyboard */,
 				9D82B2631C3A9BAA005CB5D5 /* Assets.xcassets */,
 				9D82B2651C3A9BAA005CB5D5 /* LaunchScreen.storyboard */,
@@ -79,6 +148,40 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		9D82B2831C3A9E4C005CB5D5 /* SlideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				9D82B2841C3AA0F4005CB5D5 /* MainViewController.h */,
+				9D82B2851C3AA0F4005CB5D5 /* MainViewController.m */,
+				9D82B2871C3AA395005CB5D5 /* AMSlideMenuContentSegue.h */,
+				9D82B2881C3AA395005CB5D5 /* AMSlideMenuContentSegue.m */,
+				9D82B2891C3AA395005CB5D5 /* AMSlideMenuLeftMenuSegue.h */,
+				9D82B28A1C3AA395005CB5D5 /* AMSlideMenuLeftMenuSegue.m */,
+				9D82B28B1C3AA395005CB5D5 /* AMSlideMenuLeftTableViewController.h */,
+				9D82B28C1C3AA395005CB5D5 /* AMSlideMenuLeftTableViewController.m */,
+				9D82B28D1C3AA395005CB5D5 /* AMSlideMenuMainViewController.h */,
+				9D82B28E1C3AA395005CB5D5 /* AMSlideMenuMainViewController.m */,
+				9D82B28F1C3AA395005CB5D5 /* AMSlideMenuProtocols.h */,
+				9D82B2901C3AA395005CB5D5 /* AMSlideMenuRightMenuSegue.h */,
+				9D82B2911C3AA395005CB5D5 /* AMSlideMenuRightMenuSegue.m */,
+				9D82B2921C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.h */,
+				9D82B2931C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.m */,
+				9D82B2941C3AA395005CB5D5 /* UIViewController+AMSlideMenu.h */,
+				9D82B2951C3AA395005CB5D5 /* UIViewController+AMSlideMenu.m */,
+				9D52CB5B1C3D3B4700262291 /* Podfile */,
+			);
+			name = SlideMenu;
+			sourceTree = "<group>";
+		};
+		F019EC76CBC0B1126328E8D6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				341DBAC7F8620BD283BB320B /* Pods-RideShare.debug.xcconfig */,
+				D4D0532FB6DBFA9B2DE90E98 /* Pods-RideShare.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -86,9 +189,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9D82B26B1C3A9BAA005CB5D5 /* Build configuration list for PBXNativeTarget "RideShare" */;
 			buildPhases = (
+				1ED4ED63BDCB88272F75A69A /* Check Pods Manifest.lock */,
 				9D82B2501C3A9BAA005CB5D5 /* Sources */,
 				9D82B2511C3A9BAA005CB5D5 /* Frameworks */,
 				9D82B2521C3A9BAA005CB5D5 /* Resources */,
+				A1BCF5EC2D045CAFE566FAE2 /* Embed Pods Frameworks */,
+				8E1A782E1116DAC5BEF85380 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -138,20 +244,81 @@
 			files = (
 				9D82B2671C3A9BAA005CB5D5 /* LaunchScreen.storyboard in Resources */,
 				9D82B2641C3A9BAA005CB5D5 /* Assets.xcassets in Resources */,
+				9D52CB5C1C3D3B4700262291 /* Podfile in Resources */,
 				9D82B2621C3A9BAA005CB5D5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1ED4ED63BDCB88272F75A69A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8E1A782E1116DAC5BEF85380 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RideShare/Pods-RideShare-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A1BCF5EC2D045CAFE566FAE2 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RideShare/Pods-RideShare-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		9D82B2501C3A9BAA005CB5D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D82B25F1C3A9BAA005CB5D5 /* ViewController.m in Sources */,
+				9D82B29C1C3AA395005CB5D5 /* UIViewController+AMSlideMenu.m in Sources */,
+				9D82B29A1C3AA395005CB5D5 /* AMSlideMenuRightMenuSegue.m in Sources */,
+				9D82B2961C3AA395005CB5D5 /* AMSlideMenuContentSegue.m in Sources */,
+				9D52CAF91C3BA0BF00262291 /* RSLocationPickerController.m in Sources */,
+				9D82B2861C3AA0F4005CB5D5 /* MainViewController.m in Sources */,
+				9D52CB5A1C3D3A0D00262291 /* RSConstants.h in Sources */,
+				9D82B29B1C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.m in Sources */,
+				9D82B2991C3AA395005CB5D5 /* AMSlideMenuMainViewController.m in Sources */,
+				9D82B25F1C3A9BAA005CB5D5 /* RLHomeViewController.m in Sources */,
 				9D82B25C1C3A9BAA005CB5D5 /* AppDelegate.m in Sources */,
+				9D52CAFD1C3BA99B00262291 /* RLLoginViewController.m in Sources */,
+				9D82B2981C3AA395005CB5D5 /* AMSlideMenuLeftTableViewController.m in Sources */,
+				9D82B2971C3AA395005CB5D5 /* AMSlideMenuLeftMenuSegue.m in Sources */,
 				9D82B2591C3A9BAA005CB5D5 /* main.m in Sources */,
+				9D52CB001C3BA9B500262291 /* RLRegistrationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +428,7 @@
 		};
 		9D82B26C1C3A9BAA005CB5D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 341DBAC7F8620BD283BB320B /* Pods-RideShare.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = RideShare/Info.plist;
@@ -272,6 +440,7 @@
 		};
 		9D82B26D1C3A9BAA005CB5D5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4D0532FB6DBFA9B2DE90E98 /* Pods-RideShare.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = RideShare/Info.plist;
@@ -300,6 +469,7 @@
 				9D82B26D1C3A9BAA005CB5D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
