@@ -25,7 +25,7 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 
 #import "AMSlideMenuLeftMenuSegue.h"
-
+#import "AppDelegate.h"
 #import "AMSlideMenuContentSegue.h"
 #import "AMSlideMenuLeftTableViewController.h"
 #import "AMSlideMenuMainViewController.h"
@@ -65,7 +65,7 @@
         AMSlideMenuContentSegue *segue = [[AMSlideMenuContentSegue alloc] initWithIdentifier:@"ContentSugue" source:leftMenu destination:navController];
         [segue perform];
     } else {
-        NSString *segueIdentifier = [mainVC segueIdentifierForIndexPathInLeftMenu:initialIndexPath];
+        NSString *segueIdentifier = [mainVC segueIdentifierForIndexPathInLeftMenu:initialIndexPath];        
         [leftMenu performSegueWithIdentifier:segueIdentifier sender:self];
     }
 #else

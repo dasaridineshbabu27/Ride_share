@@ -18,7 +18,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    addressHolder.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:0.4];
+    self.title = @"Pick Location";    
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     [locationManager requestWhenInUseAuthorization];
@@ -50,19 +51,11 @@
 {
     [self getAddressFromCoordinate:[locations objectAtIndex:0].coordinate];
     CLLocation *location = [locations lastObject];
-    
-    [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude zoom:6];
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude zoom:10];
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude zoom:13];
     _mapViewHolder.camera = camera;
     _mapViewHolder.delegate = self;
     _mapViewHolder.myLocationEnabled = YES;
-    
-    GMSMarker *marker = [[GMSMarker alloc] init];
-    marker.position = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude);
-    marker.title = @"asdfs";
-    marker.snippet = @"adfsaf";
-    marker.map = _mapViewHolder;
-    
+    [[_mapViewHolder settings] setMyLocationButton:YES];
     [locationManager stopUpdatingLocation];
 }
 
@@ -76,75 +69,15 @@ idleAtCameraPosition:(GMSCameraPosition *)position
 - (void)getAddressFromCoordinate:(CLLocationCoordinate2D)coord
 {
     GMSGeocoder *geoCoder = [[GMSGeocoder alloc] init];
-    
     [geoCoder reverseGeocodeCoordinate:coord completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error)
      {
          if (response != nil)
          {
-            GMSAddress *address = response.firstResult;
-             NSLog(@"Selected address is : %@", address);
-             _addressDisplayer.text = [NSString stringWithFormat:@"%@, %@, %@, %@, %@", address.lines, address.locality, address.administrativeArea, address.country, address.postalCode];
+            _selectedAddress = response.firstResult;
+             NSLog(@"Selected address is : %@", _selectedAddress);
+             _addressDisplayer.text = [NSString stringWithFormat:@"%@, %@, %@, %@", _selectedAddress.locality, _selectedAddress.administrativeArea, _selectedAddress.country, _selectedAddress.postalCode];
          }
      }];
-//    {
-//        
-//        if (error == nil && [placemarks count] > 0)
-//        {
-//            CLPlacemark *placemark = [placemarks lastObject];
-//            
-//            // strAdd -> take bydefault value nil
-//            NSString *strAdd = nil;
-//            
-//            //            if ([placemark.subThoroughfare length] != 0)
-//            //                strAdd = placemark.subThoroughfare;
-//            
-//            if ([placemark.thoroughfare length] != 0)
-//            {
-//                // strAdd -> store value of current location
-//                if ([strAdd length] != 0)
-//                    strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark thoroughfare]];
-//                else
-//                {
-//                    // strAdd -> store only this value,which is not null
-//                    strAdd = placemark.thoroughfare;
-//                }
-//            }
-//            
-//            if ([placemark.locality length] != 0)
-//            {
-//                if ([strAdd length] != 0)
-//                    strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark locality]];
-//                else
-//                    strAdd = placemark.locality;
-//            }
-//            
-//            if ([placemark.administrativeArea length] != 0)
-//            {
-//                if ([strAdd length] != 0)
-//                    strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark administrativeArea]];
-//                else
-//                    strAdd = placemark.administrativeArea;
-//            }
-//            
-//            if ([placemark.country length] != 0)
-//            {
-//                if ([strAdd length] != 0)
-//                    strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark country]];
-//                else
-//                    strAdd = placemark.country;
-//            }
-//            
-//            if ([placemark.postalCode length] != 0)
-//            {
-//                if ([strAdd length] != 0)
-//                    strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark postalCode]];
-//                else
-//                    strAdd = placemark.postalCode;
-//            }
-//            _addressDisplayer.text = strAdd;
-//            NSLog(@"Address is : %@", strAdd);            
-//        }
-//    }];
 }
 
 /*

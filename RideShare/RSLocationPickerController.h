@@ -14,9 +14,12 @@
 @interface RSLocationPickerController : UIViewController <CLLocationManagerDelegate, GMSMapViewDelegate>
 {
     CLLocationManager *locationManager;
+    __weak IBOutlet UIView *addressHolder;
 }
 @property (weak, nonatomic) IBOutlet UILabel *addressDisplayer;
 
 @property (weak, nonatomic) IBOutlet GMSMapView *mapViewHolder;
+
+@property (nonatomic, retain) GMSAddress *selectedAddress;
 @end
 

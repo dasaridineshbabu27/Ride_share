@@ -32,28 +32,22 @@
             return @"HomeViewSegue";
             break;
         case 1:
-            return @"PatientsViewSegue";
+            return @"ShowHistoryViewSegue";
             break;
         case 2:
-            return @"AlertsViewSegue";
+            return @"ShowMyProfileViewSegue";
             break;
         case 3:
-            return @"FAQsViewSegue";
+            return @"ShowRateUsViewSegue";
             break;
         case 4:
-            return @"AboutUsViewSegue";
+            return @"ShowFAQsViewSegue";
             break;
         case 5:
-            return @"MyProfileViewSegue";
-            break;
-        case 6:
-            return @"ContactUsViewSegue";
-            break;
-        case 7:
-            return @"LogoutViewSegue";
+            return @"HomeViewSegue";
             break;
         default:
-            return @"AppointmentsViewSegue";
+            return @"HomeViewSegue";
             break;
     }
 }

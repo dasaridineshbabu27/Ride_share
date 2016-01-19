@@ -8,17 +8,30 @@
 
 #import "RLHomeViewController.h"
 #import "RSConstants.h"
+#import "RSLocationPickerController.h"
 #import "UIViewController+AMSlideMenu.h"
+#import "AppDelegate.h"
 
 @interface RLHomeViewController ()
 
 @end
+
 @implementation RLHomeViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[_mapViewHolder settings] setMyLocationButton:YES];    
+    self.markers = [[NSMutableArray alloc] init];
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    [locationManager requestWhenInUseAuthorization];
+    [locationManager requestAlwaysAuthorization];
     
+    pickerHolderTopConstraint.constant = self.view.frame.size.height;
+    [_timePickerHolderView updateConstraintsIfNeeded];
+    
+    self.title = @"Ride Share";
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(menuClicked)];
     leftButton.image = [UIImage imageNamed:@"Hamburger_menu"];
     self.navigationItem.leftBarButtonItem = leftButton;
@@ -29,30 +42,22 @@
     
     self.btnRequest.layer.borderColor = [UIColor blackColor].CGColor;
     self.btnRequest.layer.borderWidth = 1.0;
-    self.btnRequest.layer.cornerRadius = 4.0;    
-    
-    // Do any additional setup after loading the view.
+    self.btnRequest.layer.cornerRadius = 4.0;
     _btnPickup.selected = YES;
-    
-//    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
-//                                                            longitude:151.20
-//                                                                 zoom:6];
-//    _mapViewHolder.camera = camera;
-//    _mapViewHolder.myLocationEnabled = YES;
-//    
-//    // Creates a marker in the center of the map.
-//    GMSMarker *marker = [[GMSMarker alloc] init];
-//    marker.position = CLLocationCoordinate2DMake(-33.86, 151.20);
-//    marker.title = @"Sydney";
-//    marker.snippet = @"Australia";
-//    marker.map = _mapViewHolder;
-    
-//    NSUserDefaults *appDefaults = [NSUserDefaults standardUserDefaults];
-//    BOOL isUserLoggedIn = [appDefaults boolForKey:keyIsUserLoggedIn];    
-//    if (!isUserLoggedIn)
-//    {
-//        return;
-//    }
+}
+
+- (NSUInteger)numberOfComponentsInPickerView:(UIPickerView*)pickerView
+{
+    return 1;
+}
+
+- (NSUInteger)pickerView:(UIPickerView*)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return 10;
+}
+-(NSString*)pickerView:(UIPickerView*)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return @"sdfs";
 }
 
 - (void)menuClicked
@@ -60,11 +65,15 @@
     [[self mainSlideMenu] openLeftMenu];
 }
 
-
-
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    if (delegate.isUserLoggedIn == NO)
+    {
+        [self performSegueWithIdentifier:@"MoveToLoginSegue" sender:self];
+    }
     
 //    NSUserDefaults *appDefaults = [NSUserDefaults standardUserDefaults];
 //    BOOL isUserLoggedIn = [appDefaults boolForKey:keyIsUserLoggedIn];
@@ -73,12 +82,7 @@
 //        [self performSegueWithIdentifier:@"MoveToLoginSegue" sender:self];
 //        return;
 //    }
-    
 //    _mapView.delegate = self;
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    [locationManager requestWhenInUseAuthorization];
-    [locationManager requestAlwaysAuthorization];
     
 //    _mapView.showsUserLocation = YES;
 //    [_mapView setMapType:MKMapTypeStandard];
@@ -99,16 +103,18 @@
     [self getAddressFromCoordinate:[locations objectAtIndex:0]];
     CLLocation *location = [locations lastObject];
     
-    [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude zoom:6];
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude zoom:10];
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude zoom:13];
     _mapViewHolder.camera = camera;
     _mapViewHolder.myLocationEnabled = YES;
     
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude);
-    marker.title = @"asdfs";
-    marker.snippet = @"adfsaf";
+    marker.title = @"Source";
+//    marker.snippet = @"adfsaf";
     marker.map = _mapViewHolder;
+    
+    sourceCoordinate = marker.position;
+    destinationCoordinate = marker.position;
     
     [locationManager stopUpdatingLocation];
 }
@@ -199,8 +205,128 @@
     }
 }
 
-- (IBAction)pickTimeAction:(id)sender {
+- (IBAction)pickTimeAction:(id)sender
+{
+    pickerHolderTopConstraint.constant = self.view.frame.size.height;
+    [_timePickerHolderView layoutIfNeeded];
 }
-- (IBAction)requestAction:(id)sender {
+
+- (IBAction)showTimePicker:(id)sender
+{
+//    pickerHolderTopConstraint.constant = 0;
 }
+
+- (IBAction)requestAction:(id)sender
+{
+    if (_btnPickup.selected == YES)
+    {
+        NSString *alertMsg = nil;
+        
+        if (_sourceLocationInput.text.length == 0 )
+        {
+            alertMsg = @"Please choose your starting Location.";
+        }
+        else if (_destinationLocationInput.text.length == 0)
+        {
+            alertMsg = @"Please choose your Destination Location.";
+        }
+        if(alertMsg.length)
+        {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error" message:alertMsg preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                NSLog(@"Ok clicked");
+            }];
+            
+            [alertController addAction:okAction];
+            [self presentViewController:alertController animated:YES completion:^{
+                NSLog(@"Presented");
+            }];
+            return;
+        }
+    }
+}
+
+- (IBAction)returnedFromLocationPicker:(UIStoryboardSegue*)segue
+{
+    NSLog(@"%@", segue.sourceViewController);
+    
+    if ([segue.sourceViewController isKindOfClass: [RSLocationPickerController class]])
+    {
+        RSLocationPickerController *locationPicker = (RSLocationPickerController*)[segue sourceViewController];
+        NSLog(@"Selected Address is : %@",locationPicker.selectedAddress);
+        if (_bntPickStartLocation.selected ==  YES)
+        {
+            _sourceLocationInput.text = [NSString stringWithFormat:@"%@, %@, %@, %@", locationPicker.selectedAddress.locality, locationPicker.selectedAddress.administrativeArea, locationPicker.selectedAddress.country, locationPicker.selectedAddress.postalCode];
+            sourceCoordinate = locationPicker.selectedAddress.coordinate;
+            [self updateMapView];
+        }
+        else
+        {
+            _destinationLocationInput.text = [NSString stringWithFormat:@"%@, %@, %@, %@", locationPicker.selectedAddress.locality, locationPicker.selectedAddress.administrativeArea, locationPicker.selectedAddress.country, locationPicker.selectedAddress.postalCode];
+            destinationCoordinate = locationPicker.selectedAddress.coordinate;
+            [self updateMapView];
+        }
+        
+        _bntPickStartLocation.selected = NO;
+        _btnDestionationLocation.selected = NO;
+    }
+}
+
+- (void)updateMapView
+{
+    [self.mapViewHolder clear];
+    [self.markers removeAllObjects];
+    
+    GMSMarker *sourceMarker = [[GMSMarker alloc] init];
+    sourceMarker.position = sourceCoordinate;
+    sourceMarker.title = @"Source";
+    sourceMarker.map = self.mapViewHolder;
+    
+    GMSMarker *destMarker = [[GMSMarker alloc] init];
+    destMarker.position = destinationCoordinate;
+    destMarker.title = @"Destination";
+//    destMarker.icon = [UIImage imageNamed:@"DestPin"];
+    destMarker.map = self.mapViewHolder;
+    
+    [self.mapViewHolder animateToLocation:sourceCoordinate];
+    [self.markers addObject:sourceMarker];
+    [self.markers addObject:destMarker];
+}
+
+- (void)focusMapToShowAllMarkers
+{
+    CLLocationCoordinate2D myLocation = ((GMSMarker *)_markers.firstObject).position;
+    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:myLocation coordinate:myLocation];
+    
+    for (GMSMarker *marker in _markers)
+    {
+        bounds = [bounds includingCoordinate:marker.position];
+    }
+    
+    [_mapViewHolder animateWithCameraUpdate:[GMSCameraUpdate fitBounds:bounds withPadding:15.0f]];
+}
+
+- (IBAction)cancelTimePickAction:(id)sender
+{
+    pickerHolderTopConstraint.constant = self.view.frame.size.height;
+}
+
+- (IBAction)pickDestinationLocationAction:(id)sender
+{
+    _btnDestionationLocation.selected = YES;
+}
+
+- (IBAction)pickStartLocationAction:(id)sender
+{
+    _bntPickStartLocation.selected = YES;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [_rideCoseInput resignFirstResponder];
+    [_sourceLocationInput resignFirstResponder];
+    [_destinationLocationInput resignFirstResponder];
+}
+
 @end

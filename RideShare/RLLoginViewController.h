@@ -14,5 +14,5 @@
 - (IBAction)rememberMeAction:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *userNameImput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
-
+- (IBAction)genderToggleAction:(UIButton*)sender;
 @end

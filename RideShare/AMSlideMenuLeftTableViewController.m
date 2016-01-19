@@ -30,6 +30,8 @@
 
 #import "AMSlideMenuContentSegue.h"
 
+#import "AppDelegate.h"
+
 @interface AMSlideMenuLeftTableViewController ()
 
 @end
@@ -68,12 +70,19 @@
         [segue perform];
     } else {
         NSString *segueIdentifier = [self.mainVC segueIdentifierForIndexPathInLeftMenu:indexPath];
+        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+        
+        if (indexPath.row == 5)
+        {
+            delegate.isUserLoggedIn = NO;
+            segueIdentifier = @"HomeViewSegue";
+        }
+        
         if (segueIdentifier && segueIdentifier.length > 0)
         {
             [self performSegueWithIdentifier:segueIdentifier sender:self];
         }
     }
 }
-
 
 @end
