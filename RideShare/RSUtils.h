@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface RSUtils : NSObject
 
 +(NSString*)trimWhiteSpaces:(NSString*)inputString;
 +(BOOL)isValidEmail:(NSString *)checkString;
-
++ (void)showAlertWithTitle:(NSString*)title message:(NSString*)messge action:(NSString*)action inView:(UIViewController*)controller;
 @end

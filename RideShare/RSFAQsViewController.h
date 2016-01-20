@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RSFAQsViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIWebView *contentLoader;
 
 @end

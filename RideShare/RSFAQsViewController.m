@@ -8,6 +8,7 @@
 
 #import "RSFAQsViewController.h"
 #import "UIViewController+AMSlideMenu.h"
+#import "RSConfig.h"
 
 @interface RSFAQsViewController ()
 
@@ -21,8 +22,9 @@
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(menuClicked)];
     leftButton.image = [UIImage imageNamed:@"Hamburger_menu"];
     self.navigationItem.leftBarButtonItem = leftButton;
-    
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    [_contentLoader loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlFAQs]]];
     // Do any additional setup after loading the view.
 }
 

@@ -44,4 +44,65 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (UIView*)loadingView
+{
+    if (!_loadingView)
+    {
+        _loadingView = [[UIView alloc] initWithFrame:[appDelegate window].bounds];
+        _loadingView.translatesAutoresizingMaskIntoConstraints = NO;
+        _loadingView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
+        [_loadingView addSubview:self.titleLable];
+        [_loadingView addSubview:self.indicator];
+    }
+    return _loadingView;
+}
+
+
+- (UILabel*)titleLable
+{
+    if (!_titleLable)
+    {
+        _titleLable = [[UILabel alloc] initWithFrame:[appDelegate window].bounds];
+        _titleLable.translatesAutoresizingMaskIntoConstraints = NO;
+        _titleLable.textColor = [UIColor whiteColor];
+        _titleLable.textAlignment = NSTextAlignmentCenter;
+        _titleLable.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+    }
+    return _titleLable;
+}
+
+- (UIActivityIndicatorView*)indicator
+{
+    if (!_indicator)
+    {
+        _indicator = [[UIActivityIndicatorView alloc] init];
+        _loadingView.translatesAutoresizingMaskIntoConstraints = NO;
+        _indicator.center = _loadingView.center;
+        _indicator.hidden = NO;
+    }
+    return _indicator;
+}
+
+- (void)showLoaingWithTitle:(NSString*)title
+{
+    self.loadingView.tag = self.loadingView.tag + 1;
+    [[appDelegate window] addSubview:self.loadingView];
+    _titleLable.text = @"Loading...";
+    [_indicator startAnimating];
+    
+    NSLog(@"Showing from AppDelegate");
+}
+
+- (void)hideLoading
+{
+    self.loadingView.tag = self.loadingView.tag - 1;
+    if (self.loadingView.tag == 0)
+    {
+        [self.loadingView removeFromSuperview];
+        [_indicator stopAnimating];
+    }
+    NSLog(@"Hiding from AppDelegate");
+}
+
+
 @end

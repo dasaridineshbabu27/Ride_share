@@ -7,7 +7,6 @@
 //
 
 #import "RSUtils.h"
-
 @implementation RSUtils
 // Method to remove all whitespaces from the beginning of the string.
 + (NSString*)trimWhiteSpaces:(NSString*)inputString
@@ -23,6 +22,15 @@
     NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
     return [emailTest evaluateWithObject:checkString];
+}
+
++ (void)showAlertWithTitle:(NSString*)title message:(NSString*)messge action:(NSString*)action inView:(UIViewController*)controller
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:messge preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:action style:UIAlertActionStyleDefault handler:nil];
+    [alertController addAction:alertAction];
+    [controller presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

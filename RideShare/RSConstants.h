@@ -10,3 +10,8 @@
 
 #define GoogleMapsServerKey @"AIzaSyCpqdTrZ6n2_YyPDVFG1SSiem4Ji7tOtAw"
 
+#define appDelegate (AppDelegate*)[[UIApplication sharedApplication] delegate]
+#define kResponseCode @"response_code"
+#define kResponseMessage @"response_message"
+
+#define kRequestSuccess 100

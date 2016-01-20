@@ -13,7 +13,9 @@
     NSMutableData *webData;
 }
 
-+(void)processRegistration:(NSDictionary*)infoDict completionHandler:(void(^)(NSData* , NSError*)) callback;
++(void)processRegistration:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
-+(void)processLogin:(NSDictionary*)infoDict completionHandler:(void(^)(NSData* , NSError*)) callback;
++(void)processLogin:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processChangePassword:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 @end

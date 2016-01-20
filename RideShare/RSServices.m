@@ -8,88 +8,49 @@
 
 #import "RSServices.h"
 #import "RSConfig.h"
+#import <AFNetworking/AFNetworking.h>
 
 @implementation RSServices
 
-+(void)processRegistration:(NSDictionary*)infoDict completionHandler:(void(^)(NSData* , NSError*)) callback
++(void)processRegistration:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
 {
-    NSError *error;
-    
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:urlRegistration];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                       timeoutInterval:60.0];
-    
-    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    
-    [request setHTTPMethod:@"POST"];
-
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:infoDict options:0 error:&error];
-    [request setHTTPBody:postData];
-    
-    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:urlRegistration  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        callback(responseObject, nil);
         
-        NSError *errorOne = nil;
-        NSLog(@"Error is : %@", error);
-        NSLog(@"Data is : %@", data);
-        NSLog(@"Response is : %@",response);
-        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&errorOne];
-        if (error) {
-            NSLog(@"Error occured while parsing : %@", error);
-        }
-        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        callback(nil, error);
     }];
-    
-    [postDataTask resume];
 }
 
-
-+(void)processLogin:(NSDictionary*)infoDict completionHandler:(void(^)(NSData* , NSError*)) callback
++(void)processLogin:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
 {
-    NSError *error;
-    
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:urlLogin];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                       timeoutInterval:60.0];
-    
-    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    
-    [request setHTTPMethod:@"POST"];
-    
-    NSString *dataString = @"email=dnreddy890@gmail.com&password=Password";
-//    NSData *myData = [NSKeyedArchiver archivedDataWithRootObject:infoDict];
-    
-    [request setHTTPBody:[dataString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-//    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-//        
-//        NSError *errorOne = nil;
-//        NSLog(@"Error is : %@", error);
-//        NSLog(@"Data is : %@", data);
-//        NSLog(@"Response is : %@",response);
-//        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&errorOne];
-//        NSLog(@"JSON data is : %@", jsonDict);
-//        if (error) {
-//            NSLog(@"Error occured while parsing : %@", error);
-//        }
-//    }];
-//    [postDataTask resume];
-    
-    NSURLResponse *resp = nil;
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * _Nullable response, NSData * _Nullable data, NSError * _Nullable connectionError) {
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"%@", dict);
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:urlLogin  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        callback(responseObject, nil);
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        callback(nil, error);
     }];
-    NSLog(@"response is : %@", resp);
 }
+
++ (void)processChangePassword:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:urlChangePassword  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        callback(responseObject, nil);
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        callback(nil, error);
+    }];
+}
+
 
 #pragma mark- NSURLSessionDataDelegate methods
 

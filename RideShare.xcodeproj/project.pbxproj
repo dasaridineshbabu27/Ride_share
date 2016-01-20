@@ -7,14 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		20793E19AFB6F34BEC6107F3 /* libPods-RideShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F724DAD7BD9FE447DB1C94B2 /* libPods-RideShare.a */; };
+		95D4B7E627BEFAA4456352EB /* libPods-RideShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D47F86D14AF8DCB374FA34D /* libPods-RideShare.a */; };
 		9D52CAF41C3B9A2000262291 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D52CAF31C3B9A2000262291 /* MapKit.framework */; };
 		9D52CAF61C3B9A6400262291 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D52CAF51C3B9A6400262291 /* CoreLocation.framework */; };
 		9D52CAF91C3BA0BF00262291 /* RSLocationPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D52CAF81C3BA0BF00262291 /* RSLocationPickerController.m */; };
 		9D52CAFD1C3BA99B00262291 /* RLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D52CAFC1C3BA99B00262291 /* RLLoginViewController.m */; };
 		9D52CB001C3BA9B500262291 /* RLRegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D52CAFF1C3BA9B500262291 /* RLRegistrationViewController.m */; };
 		9D52CB5A1C3D3A0D00262291 /* RSConstants.h in Sources */ = {isa = PBXBuildFile; fileRef = 9D52CB591C3D3A0D00262291 /* RSConstants.h */; };
-		9D52CB5C1C3D3B4700262291 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9D52CB5B1C3D3B4700262291 /* Podfile */; };
 		9D77E20C1C4652B40044B81F /* IQDropDownTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D77E1F01C4652B40044B81F /* IQDropDownTextField.m */; };
 		9D77E20D1C4652B40044B81F /* IQKeyboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D77E1F11C4652B40044B81F /* IQKeyboardManager.m */; };
 		9D77E20E1C4652B40044B81F /* IQKeyboardReturnKeyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D77E1F21C4652B40044B81F /* IQKeyboardReturnKeyHandler.m */; };
@@ -44,6 +43,8 @@
 		9D82B29A1C3AA395005CB5D5 /* AMSlideMenuRightMenuSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B2911C3AA395005CB5D5 /* AMSlideMenuRightMenuSegue.m */; };
 		9D82B29B1C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B2931C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.m */; };
 		9D82B29C1C3AA395005CB5D5 /* UIViewController+AMSlideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D82B2951C3AA395005CB5D5 /* UIViewController+AMSlideMenu.m */; };
+		9D93495E1C4FA55B007E3330 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D93495D1C4FA55B007E3330 /* User.m */; };
+		9D9349611C4FAE66007E3330 /* RSChangePwdController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9349601C4FAE66007E3330 /* RSChangePwdController.m */; };
 		9DD3553A1C3E61F000868CEA /* RSHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD355391C3E61F000868CEA /* RSHistoryViewController.m */; };
 		9DD3553D1C3E78D200868CEA /* MyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD3553C1C3E78D200868CEA /* MyProfileViewController.m */; };
 		9DD355401C3E886F00868CEA /* RSRateUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD3553F1C3E886F00868CEA /* RSRateUsViewController.m */; };
@@ -51,7 +52,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		341DBAC7F8620BD283BB320B /* Pods-RideShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RideShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RideShare/Pods-RideShare.debug.xcconfig"; sourceTree = "<group>"; };
+		244B3AB444DEEEF202E0C0A3 /* Pods-RideShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RideShare.release.xcconfig"; path = "Pods/Target Support Files/Pods-RideShare/Pods-RideShare.release.xcconfig"; sourceTree = "<group>"; };
+		28DE6A1514594B817D3CD07C /* Pods-RideShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RideShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RideShare/Pods-RideShare.debug.xcconfig"; sourceTree = "<group>"; };
+		9D47F86D14AF8DCB374FA34D /* libPods-RideShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RideShare.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D52CAF31C3B9A2000262291 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		9D52CAF51C3B9A6400262291 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		9D52CAF71C3BA0BF00262291 /* RSLocationPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSLocationPickerController.h; sourceTree = "<group>"; };
@@ -61,7 +64,6 @@
 		9D52CAFE1C3BA9B500262291 /* RLRegistrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLRegistrationViewController.h; sourceTree = "<group>"; };
 		9D52CAFF1C3BA9B500262291 /* RLRegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLRegistrationViewController.m; sourceTree = "<group>"; };
 		9D52CB591C3D3A0D00262291 /* RSConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSConstants.h; sourceTree = "<group>"; };
-		9D52CB5B1C3D3B4700262291 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		9D77E1F01C4652B40044B81F /* IQDropDownTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IQDropDownTextField.m; path = KeyboardHandler/IQDropDownTextField.m; sourceTree = SOURCE_ROOT; };
 		9D77E1F11C4652B40044B81F /* IQKeyboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IQKeyboardManager.m; path = KeyboardHandler/IQKeyboardManager.m; sourceTree = SOURCE_ROOT; };
 		9D77E1F21C4652B40044B81F /* IQKeyboardReturnKeyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IQKeyboardReturnKeyHandler.m; path = KeyboardHandler/IQKeyboardReturnKeyHandler.m; sourceTree = SOURCE_ROOT; };
@@ -122,6 +124,10 @@
 		9D82B2931C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSlideMenuRightTableViewController.m; sourceTree = "<group>"; };
 		9D82B2941C3AA395005CB5D5 /* UIViewController+AMSlideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+AMSlideMenu.h"; sourceTree = "<group>"; };
 		9D82B2951C3AA395005CB5D5 /* UIViewController+AMSlideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+AMSlideMenu.m"; sourceTree = "<group>"; };
+		9D93495C1C4FA55B007E3330 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		9D93495D1C4FA55B007E3330 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		9D93495F1C4FAE66007E3330 /* RSChangePwdController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSChangePwdController.h; sourceTree = "<group>"; };
+		9D9349601C4FAE66007E3330 /* RSChangePwdController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSChangePwdController.m; sourceTree = "<group>"; };
 		9DD355381C3E61F000868CEA /* RSHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSHistoryViewController.h; sourceTree = "<group>"; };
 		9DD355391C3E61F000868CEA /* RSHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSHistoryViewController.m; sourceTree = "<group>"; };
 		9DD3553B1C3E78D200868CEA /* MyProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyProfileViewController.h; sourceTree = "<group>"; };
@@ -130,8 +136,6 @@
 		9DD3553F1C3E886F00868CEA /* RSRateUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSRateUsViewController.m; sourceTree = "<group>"; };
 		9DD355411C3E9DD700868CEA /* RSFAQsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSFAQsViewController.h; sourceTree = "<group>"; };
 		9DD355421C3E9DD700868CEA /* RSFAQsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSFAQsViewController.m; sourceTree = "<group>"; };
-		D4D0532FB6DBFA9B2DE90E98 /* Pods-RideShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RideShare.release.xcconfig"; path = "Pods/Target Support Files/Pods-RideShare/Pods-RideShare.release.xcconfig"; sourceTree = "<group>"; };
-		F724DAD7BD9FE447DB1C94B2 /* libPods-RideShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RideShare.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,7 +145,7 @@
 			files = (
 				9D52CAF61C3B9A6400262291 /* CoreLocation.framework in Frameworks */,
 				9D52CAF41C3B9A2000262291 /* MapKit.framework in Frameworks */,
-				20793E19AFB6F34BEC6107F3 /* libPods-RideShare.a in Frameworks */,
+				95D4B7E627BEFAA4456352EB /* libPods-RideShare.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,7 +155,7 @@
 		1A8BA193E0C59A1D6D9B20CE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F724DAD7BD9FE447DB1C94B2 /* libPods-RideShare.a */,
+				9D47F86D14AF8DCB374FA34D /* libPods-RideShare.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -198,8 +202,8 @@
 				9D52CAF31C3B9A2000262291 /* MapKit.framework */,
 				9D82B2561C3A9BAA005CB5D5 /* RideShare */,
 				9D82B2551C3A9BAA005CB5D5 /* Products */,
-				F019EC76CBC0B1126328E8D6 /* Pods */,
 				1A8BA193E0C59A1D6D9B20CE /* Frameworks */,
+				C2F74C1D791514B78228BA02 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -216,6 +220,7 @@
 			children = (
 				9D77E1EF1C4652730044B81F /* KeyboardManager */,
 				9D82B2831C3A9E4C005CB5D5 /* SlideMenu */,
+				9D93495B1C4FA53F007E3330 /* Modals */,
 				9D52CB591C3D3A0D00262291 /* RSConstants.h */,
 				9D82B25A1C3A9BAA005CB5D5 /* AppDelegate.h */,
 				9D82B25B1C3A9BAA005CB5D5 /* AppDelegate.m */,
@@ -235,6 +240,8 @@
 				9DD3553C1C3E78D200868CEA /* MyProfileViewController.m */,
 				9DD3553E1C3E886F00868CEA /* RSRateUsViewController.h */,
 				9DD3553F1C3E886F00868CEA /* RSRateUsViewController.m */,
+				9D93495F1C4FAE66007E3330 /* RSChangePwdController.h */,
+				9D9349601C4FAE66007E3330 /* RSChangePwdController.m */,
 				9D82B2601C3A9BAA005CB5D5 /* Main.storyboard */,
 				9D82B2631C3A9BAA005CB5D5 /* Assets.xcassets */,
 				9D82B2651C3A9BAA005CB5D5 /* LaunchScreen.storyboard */,
@@ -277,16 +284,24 @@
 				9D82B2931C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.m */,
 				9D82B2941C3AA395005CB5D5 /* UIViewController+AMSlideMenu.h */,
 				9D82B2951C3AA395005CB5D5 /* UIViewController+AMSlideMenu.m */,
-				9D52CB5B1C3D3B4700262291 /* Podfile */,
 			);
 			name = SlideMenu;
 			sourceTree = "<group>";
 		};
-		F019EC76CBC0B1126328E8D6 /* Pods */ = {
+		9D93495B1C4FA53F007E3330 /* Modals */ = {
 			isa = PBXGroup;
 			children = (
-				341DBAC7F8620BD283BB320B /* Pods-RideShare.debug.xcconfig */,
-				D4D0532FB6DBFA9B2DE90E98 /* Pods-RideShare.release.xcconfig */,
+				9D93495C1C4FA55B007E3330 /* User.h */,
+				9D93495D1C4FA55B007E3330 /* User.m */,
+			);
+			name = Modals;
+			sourceTree = "<group>";
+		};
+		C2F74C1D791514B78228BA02 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				28DE6A1514594B817D3CD07C /* Pods-RideShare.debug.xcconfig */,
+				244B3AB444DEEEF202E0C0A3 /* Pods-RideShare.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -353,7 +368,6 @@
 			files = (
 				9D82B2671C3A9BAA005CB5D5 /* LaunchScreen.storyboard in Resources */,
 				9D82B2641C3A9BAA005CB5D5 /* Assets.xcassets in Resources */,
-				9D52CB5C1C3D3B4700262291 /* Podfile in Resources */,
 				9D82B2621C3A9BAA005CB5D5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -428,6 +442,7 @@
 				9D77E20F1C4652B40044B81F /* IQUIView+Hierarchy.m in Sources */,
 				9D82B29B1C3AA395005CB5D5 /* AMSlideMenuRightTableViewController.m in Sources */,
 				9D82B2991C3AA395005CB5D5 /* AMSlideMenuMainViewController.m in Sources */,
+				9D93495E1C4FA55B007E3330 /* User.m in Sources */,
 				9D82B25F1C3A9BAA005CB5D5 /* RLHomeViewController.m in Sources */,
 				9DD355401C3E886F00868CEA /* RSRateUsViewController.m in Sources */,
 				9DD355431C3E9DD700868CEA /* RSFAQsViewController.m in Sources */,
@@ -437,6 +452,7 @@
 				9DD3553A1C3E61F000868CEA /* RSHistoryViewController.m in Sources */,
 				9D52CAFD1C3BA99B00262291 /* RLLoginViewController.m in Sources */,
 				9D77E21B1C466E0E0044B81F /* RSUtils.m in Sources */,
+				9D9349611C4FAE66007E3330 /* RSChangePwdController.m in Sources */,
 				9D77E20D1C4652B40044B81F /* IQKeyboardManager.m in Sources */,
 				9D77E2131C4652B40044B81F /* IQSegmentedNextPrevious.m in Sources */,
 				9D82B2981C3AA395005CB5D5 /* AMSlideMenuLeftTableViewController.m in Sources */,
@@ -558,7 +574,7 @@
 		};
 		9D82B26C1C3A9BAA005CB5D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 341DBAC7F8620BD283BB320B /* Pods-RideShare.debug.xcconfig */;
+			baseConfigurationReference = 28DE6A1514594B817D3CD07C /* Pods-RideShare.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = RideShare/Info.plist;
@@ -571,7 +587,7 @@
 		};
 		9D82B26D1C3A9BAA005CB5D5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D4D0532FB6DBFA9B2DE90E98 /* Pods-RideShare.release.xcconfig */;
+			baseConfigurationReference = 244B3AB444DEEEF202E0C0A3 /* Pods-RideShare.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = RideShare/Info.plist;

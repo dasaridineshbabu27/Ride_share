@@ -113,29 +113,33 @@
                                @"mobile" : _mobileNoInput.text
                                };
     
-    [RSServices processRegistration:infoDict completionHandler:^(NSData * response, NSError * error)
+    [RSServices processRegistration:infoDict completionHandler:^(NSDictionary* response, NSError * error)
     {
         NSString *alertMsg = nil;
         if (error != nil)
         {
-            alertMsg = @"Registration Failed, Please try again later.";
+            alertMsg = error.description;
         }
-        else
+        else if (response != nil)
         {
-            alertMsg = @"Registration Success, Please login.";
+            if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+            {
+                alertMsg = @"Registered successfully, please login to enjoy services.";
+            }
         }
         
-        NSLog(@"Registration success with data: %@", response);
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:alertMsg preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-                                   {
-                                       [self dismissViewControllerAnimated:YES completion:nil];
-                                   }];
-        [alertController addAction:okAction];
-        [self.navigationController popViewControllerAnimated:YES];        
+        if (alertMsg.length != 0)
+        {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:alertMsg preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }];
+            [alertController addAction:okAction];
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
     }];
-    return;
 }
 
 - (IBAction)genderToggleAction:(UIButton*)sender

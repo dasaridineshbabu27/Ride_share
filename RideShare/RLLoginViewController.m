@@ -11,6 +11,7 @@
 #import "RSConstants.h"
 #import "RSUtils.h"
 #import "RSServices.h"
+#import "User.h"
 
 @implementation RLLoginViewController
 - (void)viewDidLoad
@@ -43,11 +44,19 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)hide
+{
+    NSLog(@"Hiding from login");
+    [RSUtils showAlertWithTitle:@"Title" message:@"Message" action:@"Action" inView:self];
+}
 
 - (void)methodWithInt:(int)a completionHandler:(void(^)(int)) aBlock
 {
-    
-    
     aBlock(10);
 }
 
@@ -87,21 +96,50 @@
         [self presentViewController:alertController animated:YES completion:nil];
         return;
     }
-
     
     NSDictionary *infoDict  = @{@"email" : _userNameImput.text,
                                 @"password" : _passwordInput.text
                                 };
-    [RSServices processLogin:infoDict completionHandler:^(NSData *response, NSError *error)
+    [RSServices processLogin:infoDict completionHandler:^(NSDictionary *response, NSError *error)
      {
-         if (error)
+         NSString *alertMsg = nil;
+         if (error != nil)
          {
-             NSLog(@"Error is : %@",error);
+             alertMsg = error.description;
          }
-         else
+         else if (response != nil)
          {
-             NSLog(@"Login success");
-             [self dismissViewControllerAnimated:YES completion:nil];
+             if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+             {
+                 NSLog(@"Login success! with info: %@", response);
+                 User *currentUser = [User currentUser];
+                 [currentUser saveUserDetails:response];
+                 [self dismissViewControllerAnimated:YES completion:nil];
+             }
+             else
+             {
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:[response objectForKey:kResponseMessage] preferredStyle:UIAlertControllerStyleAlert];
+                 
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                            {
+                                                [self.navigationController popViewControllerAnimated:YES];
+                                            }];
+                 [alertController addAction:okAction];
+                 [self presentViewController:alertController animated:YES completion:nil];
+                 return;
+             }
+         }
+         
+         if (alertMsg.length != 0)
+         {
+             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:alertMsg preferredStyle:UIAlertControllerStyleAlert];
+             
+             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                        {
+                                            
+                                        }];
+             [alertController addAction:okAction];
+             [self presentViewController:alertController animated:YES completion:nil];
          }
      }];
 }
