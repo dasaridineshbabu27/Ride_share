@@ -1,0 +1,38 @@
+//
+//  Services.h
+//  RideShare
+//
+//  Created by Reddy on 19/01/16.
+//  Copyright © 2016 Reddy. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface RSServices : NSObject<NSURLSessionDataDelegate, NSURLSessionDelegate>
+{
+    NSMutableData *webData;
+}
+
++(void)processRegistration:(NSDictionary*)infoDict imageData:(NSData*)imageData completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++(void)processLogin:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processChangePassword:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processUpdateProfile:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processMyRideRequest:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processPickMeUpRequest:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processFetchHistory:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processDeleteRequest:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processForgotPassword:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processFetchDefaultRides:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processRegisterDeviceForPush:(NSDictionary*)info completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
+@end
