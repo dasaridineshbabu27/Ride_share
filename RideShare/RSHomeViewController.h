@@ -11,6 +11,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "SlideNavigationController.h"
+#import "User.h"
+
 @interface RSHomeViewController : UIViewController <CLLocationManagerDelegate, GMSMapViewDelegate, SlideNavigationControllerDelegate>
 {
     CLLocationManager *locationManager;
@@ -23,7 +25,7 @@
     UIBarButtonItem *rightButton;
     __weak IBOutlet UIView *filterContainerView;
 }
-
+@property (nonatomic, strong) User *currentUser;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *containerTrailingConstraint;

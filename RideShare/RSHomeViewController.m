@@ -22,6 +22,7 @@
 @end
 
 @implementation RSHomeViewController
+@synthesize currentUser;
 
 - (void)viewDidLoad
 {
@@ -299,13 +300,28 @@
         
         int rideType  = [[ride valueForKey:@"ride_type"] intValue];
         UIImage *markerImage = nil;
+        
         if (rideType == 1)
         {
-            markerImage = [UIImage imageNamed:@"pickup_marker"];
+            if ([currentUser.userId isEqualToString: [ride valueForKey:@"user_id"] ])
+            {
+                markerImage = [UIImage imageNamed:@"own_ride"];
+            }
+            else
+            {
+                markerImage = [UIImage imageNamed:@"others_ride"];
+            }
         }
         else
         {
-            markerImage = [UIImage imageNamed:@"pmu_marker"];
+            if ([currentUser.userId isEqualToString: [ride valueForKey:@"user_id"] ])
+            {
+                markerImage = [UIImage imageNamed:@"you_wait"];
+            }
+            else
+            {
+                markerImage = [UIImage imageNamed:@"others_wait"];
+            }
         }
         marker.userData = ride;
         marker.icon = markerImage;

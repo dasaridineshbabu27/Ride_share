@@ -6,12 +6,11 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "url.jpg",
+      "filename" : "others_wait.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "pickup_marker.png",
       "scale" : "3x"
     }
   ],
