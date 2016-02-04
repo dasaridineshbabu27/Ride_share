@@ -123,16 +123,19 @@
 
 - (void)registerDeviceForPush
 {
-    [RSServices processRegisterDeviceForPush:@{@"deviceToekn" :     (appDelegate).deviceToken} completionHandler:^(NSDictionary *response, NSError *error) {
-        if (error == nil)
-        {
-            NSLog(@" Registered device with device token : %@", (appDelegate).deviceToken);
-        }
-        else
-        {
-            NSLog(@"Failed to register the device for push: %@", error);
-        }
-    }];
+    if ((appDelegate).deviceToken.length != 0)
+    {
+        [RSServices processRegisterDeviceForPush:@{@"deviceToekn" :     (appDelegate).deviceToken} completionHandler:^(NSDictionary *response, NSError *error) {
+            if (error == nil)
+            {
+                NSLog(@" Registered device with device token : %@", (appDelegate).deviceToken);
+            }
+            else
+            {
+                NSLog(@"Failed to register the device for push: %@", error);
+            }
+        }];
+    }
 }
 
 - (IBAction)rememberMeAction:(UIButton*)sender

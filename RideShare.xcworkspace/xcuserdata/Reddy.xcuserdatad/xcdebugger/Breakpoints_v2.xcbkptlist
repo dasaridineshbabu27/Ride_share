@@ -57,29 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "RideShare/AppDelegate.m"
-            timestampString = "476184266.118838"
+            filePath = "RideShare/RSHomeViewController.m"
+            timestampString = "476200462.809094"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
-            landmarkName = "-application:didFailToRegisterForRemoteNotificationsWithError:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RideShare/AppDelegate.m"
-            timestampString = "476184271.173945"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "-application:didRegisterUserNotificationSettings:"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
+            landmarkName = "-refreshMap"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

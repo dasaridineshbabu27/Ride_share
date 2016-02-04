@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    currentUser = [User currentUser];
     self.dataSource = [[NSMutableArray alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filterOptionSelected:) name:@"FilterOptionSelectedNotification" object:nil];
@@ -414,6 +415,7 @@
     NSLog(@"Marker: %@", rideInfo);
     
     NSString *title = ([[rideInfo objectForKey:@"ride_type"] intValue] == 1)?@"My Ride" : @"Pick Me Up";
+    
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:[NSString stringWithFormat:@"Starts at: %@",[RSUtils getDisplayDate:[rideInfo objectForKey:@"start_time"]]] preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction *callAction = [UIAlertAction actionWithTitle:@"Call" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -421,22 +423,68 @@
         [self callToRider:[rideInfo valueForKey:@"mobile_no"]];
     }];
     
-    User *currentUser = [User currentUser];
-
-    if ([currentUser.userId isEqualToString:[rideInfo valueForKey:@"user_id"] ])
+    UIAlertAction *requestAction = [UIAlertAction actionWithTitle:@"Request Ride" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                    {
+                                        NSLog(@"call button tapped");
+                                    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    
+    if ([currentUser.userId isEqualToString:[rideInfo objectForKey:@"user_id"] ])
     {
         UIAlertAction *cancelRequest = [UIAlertAction actionWithTitle:@"Cancel Ride" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             NSLog(@"Cancel Ride Clicked button tapped");
             [self cancelRide:rideInfo];
         }];
-        [controller addAction:cancelRequest];
+        
+        if ([[rideInfo valueForKey:@"ride_type"] intValue] == PickUp)
+        {
+            [controller addAction:cancelAction];
+            [controller addAction:cancelRequest];
+            
+        }
+        else
+        {
+            [controller addAction:cancelAction];
+            [controller addAction:cancelRequest];
+        }
     }
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
-    
-    [controller addAction:cancelAction];
-    [controller addAction:callAction];
-    
+    else
+    {
+        if ([[rideInfo valueForKey:@"ride_type"] intValue] == PickUp)
+        {
+            UIAlertAction *raiseRequest = [UIAlertAction actionWithTitle:@"Pick Me Up" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                NSDictionary *infoDict = @{@"from_id" : currentUser.userId,
+                                           @"to_id" : [rideInfo valueForKey : @"user_id"],
+                                           @"type" : [NSString stringWithFormat:@"%i", PickMeUp]
+                                           };
+                [RSServices processRequestRideViaPush:infoDict completionHandler:^(NSDictionary *response, NSError *error)
+                 {
+                     
+                 }];
+            }];
+            
+            [controller addAction:raiseRequest];
+            [controller addAction:callAction];
+            [controller addAction:cancelAction];
+        }
+        else
+        {
+            UIAlertAction *raiseRequest = [UIAlertAction actionWithTitle:@"Pick Him Up" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+            {
+                NSDictionary *infoDict = @{@"from_id" : currentUser.userId,
+                                           @"to_id" : [rideInfo valueForKey : @"user_id"],
+                                           @"type" : [NSString stringWithFormat:@"%i", PickUp]
+                                           };
+                [RSServices processRequestRideViaPush:infoDict completionHandler:^(NSDictionary *response, NSError *error)
+                {
+                }];
+            }];
+            [controller addAction:raiseRequest];
+            [controller addAction:callAction];
+            [controller addAction:cancelAction];
+        }
+    }
     [self presentViewController:controller animated:YES completion:nil];
 }
 

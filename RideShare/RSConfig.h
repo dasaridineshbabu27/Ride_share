@@ -38,4 +38,6 @@
 
 #define urlRegisterDeviceForPush  [NSString stringWithFormat:@"%@%@",mainURL, @"update_device.php"]
 
+#define urlRequestViaPush  [NSString stringWithFormat:@"%@%@",mainURL, @"simplepush.php"]
+
 #endif /* RSConfig_h */

@@ -16,3 +16,9 @@
 #define kResponseMessage @"response_message"
 
 #define kRequestSuccess 100
+
+enum RideType
+{
+    PickUp,
+    PickMeUp
+};

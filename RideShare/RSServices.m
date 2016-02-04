@@ -226,4 +226,21 @@
     }];
 }
 
++ (void)processRequestRideViaPush:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
+{
+    NSLog(@"processFetchDefaultRides url: %@", urlRequestViaPush);
+    NSLog(@"post data is:%@", infoDict);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    [manager POST:urlRequestViaPush  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        callback(responseObject, nil);
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        callback(nil, error);
+    }];
+}
+
 @end
