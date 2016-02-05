@@ -40,4 +40,6 @@
 
 #define urlRequestViaPush  [NSString stringWithFormat:@"%@%@",mainURL, @"simplepush.php"]
 
+#define urlRequestNotifications [NSString stringWithFormat:@"%@%@",mainURL, @"mynotifications.php"]
+
 #endif /* RSConfig_h */

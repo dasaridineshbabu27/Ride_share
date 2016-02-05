@@ -36,4 +36,6 @@
 + (void)processRegisterDeviceForPush:(NSDictionary*)info completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
 + (void)processRequestRideViaPush:(NSDictionary*)info completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processFetchNotifications:(NSDictionary*)info completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 @end

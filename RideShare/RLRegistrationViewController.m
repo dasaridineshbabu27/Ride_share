@@ -90,8 +90,7 @@
         [RSUtils trimWhiteSpaces:_emailInput.text].length == 0 ||
         [RSUtils trimWhiteSpaces:_confirmEmailInput.text].length == 0 ||
         [RSUtils trimWhiteSpaces:_passwordInput.text].length == 0 ||
-        [RSUtils trimWhiteSpaces:_confirmPasswordInput.text].length == 0||
-        [RSUtils trimWhiteSpaces:_regNoInput.text].length == 0 )
+        [RSUtils trimWhiteSpaces:_confirmPasswordInput.text].length == 0)
     {
         [RSUtils showAlertWithTitle:@"Registration" message:@"Fields must not be empty." actionOne:nil actionTwo:nil inView:self];
         return;
@@ -178,4 +177,23 @@
     [_confirmPasswordInput resignFirstResponder];
 }
 
+
+- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(nonnull NSString *)string
+{
+    if (string.length == 0)
+    {
+        return YES;
+    }
+    
+    if (textField == _mobileNoInput && textField.text.length >= 10)
+    {
+        return NO;
+    }
+    if ((textField == _passwordInput || textField == _confirmPasswordInput) && textField.text.length >= 8)
+    {
+        return NO;
+    }
+    
+    return YES;
+}
 @end

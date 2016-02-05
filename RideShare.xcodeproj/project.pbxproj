@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		95D4B7E627BEFAA4456352EB /* libPods-RideShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D47F86D14AF8DCB374FA34D /* libPods-RideShare.a */; };
 		9D4F00DE1C58C4AB0022A0A4 /* RideCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F00DD1C58C4AB0022A0A4 /* RideCell.m */; };
-		9D4F00E11C58F6DC0022A0A4 /* CustomAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F00E01C58F6DC0022A0A4 /* CustomAnnotation.m */; };
-		9D4F00E51C58F8BF0022A0A4 /* CustomAnnotationview.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D4F00E41C58F8BF0022A0A4 /* CustomAnnotationview.xib */; };
 		9D4F01371C5B8A750022A0A4 /* LeftMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F01271C5B8A750022A0A4 /* LeftMenuViewController.m */; };
 		9D4F01381C5B8A750022A0A4 /* RightMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F01291C5B8A750022A0A4 /* RightMenuViewController.m */; };
 		9D4F01391C5B8A750022A0A4 /* SlideNavigationContorllerAnimatorFade.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F012C1C5B8A750022A0A4 /* SlideNavigationContorllerAnimatorFade.m */; };
@@ -60,10 +58,12 @@
 		9D9349871C510B86007E3330 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9349861C510B86007E3330 /* Reachability.m */; };
 		9D9349891C510BF2007E3330 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9349881C510BF2007E3330 /* SystemConfiguration.framework */; };
 		9D9349AF1C52450D007E3330 /* RSForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9349AE1C52450D007E3330 /* RSForgotPasswordViewController.m */; };
+		9D9B69E61C642F10009E6494 /* RSNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9B69E51C642F10009E6494 /* RSNotificationsViewController.m */; };
 		9DD3553A1C3E61F000868CEA /* RSHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD355391C3E61F000868CEA /* RSHistoryViewController.m */; };
 		9DD3553D1C3E78D200868CEA /* MyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD3553C1C3E78D200868CEA /* MyProfileViewController.m */; };
 		9DD355401C3E886F00868CEA /* RSRateUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD3553F1C3E886F00868CEA /* RSRateUsViewController.m */; };
 		9DD355431C3E9DD700868CEA /* RSFAQsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD355421C3E9DD700868CEA /* RSFAQsViewController.m */; };
+		9DED386A1C64C21E00BBD131 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DED38691C64C21E00BBD131 /* NotificationCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,9 +72,6 @@
 		9D47F86D14AF8DCB374FA34D /* libPods-RideShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RideShare.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D4F00DC1C58C4AB0022A0A4 /* RideCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideCell.h; sourceTree = "<group>"; };
 		9D4F00DD1C58C4AB0022A0A4 /* RideCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RideCell.m; sourceTree = "<group>"; };
-		9D4F00DF1C58F6DC0022A0A4 /* CustomAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAnnotation.h; sourceTree = "<group>"; };
-		9D4F00E01C58F6DC0022A0A4 /* CustomAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAnnotation.m; sourceTree = "<group>"; };
-		9D4F00E41C58F8BF0022A0A4 /* CustomAnnotationview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomAnnotationview.xib; sourceTree = "<group>"; };
 		9D4F01261C5B8A750022A0A4 /* LeftMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftMenuViewController.h; sourceTree = "<group>"; };
 		9D4F01271C5B8A750022A0A4 /* LeftMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftMenuViewController.m; sourceTree = "<group>"; };
 		9D4F01281C5B8A750022A0A4 /* RightMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightMenuViewController.h; sourceTree = "<group>"; };
@@ -172,6 +169,8 @@
 		9D9349881C510BF2007E3330 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		9D9349AD1C52450D007E3330 /* RSForgotPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSForgotPasswordViewController.h; sourceTree = "<group>"; };
 		9D9349AE1C52450D007E3330 /* RSForgotPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSForgotPasswordViewController.m; sourceTree = "<group>"; };
+		9D9B69E41C642F10009E6494 /* RSNotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSNotificationsViewController.h; sourceTree = "<group>"; };
+		9D9B69E51C642F10009E6494 /* RSNotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSNotificationsViewController.m; sourceTree = "<group>"; };
 		9DD355381C3E61F000868CEA /* RSHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSHistoryViewController.h; sourceTree = "<group>"; };
 		9DD355391C3E61F000868CEA /* RSHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSHistoryViewController.m; sourceTree = "<group>"; };
 		9DD3553B1C3E78D200868CEA /* MyProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyProfileViewController.h; sourceTree = "<group>"; };
@@ -180,6 +179,8 @@
 		9DD3553F1C3E886F00868CEA /* RSRateUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSRateUsViewController.m; sourceTree = "<group>"; };
 		9DD355411C3E9DD700868CEA /* RSFAQsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSFAQsViewController.h; sourceTree = "<group>"; };
 		9DD355421C3E9DD700868CEA /* RSFAQsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSFAQsViewController.m; sourceTree = "<group>"; };
+		9DED38681C64C21E00BBD131 /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
+		9DED38691C64C21E00BBD131 /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,9 +298,8 @@
 				9D82B25B1C3A9BAA005CB5D5 /* AppDelegate.m */,
 				9D82B25D1C3A9BAA005CB5D5 /* RSHomeViewController.h */,
 				9D82B25E1C3A9BAA005CB5D5 /* RSHomeViewController.m */,
-				9D4F00E41C58F8BF0022A0A4 /* CustomAnnotationview.xib */,
-				9D4F00DF1C58F6DC0022A0A4 /* CustomAnnotation.h */,
-				9D4F00E01C58F6DC0022A0A4 /* CustomAnnotation.m */,
+				9D9B69E41C642F10009E6494 /* RSNotificationsViewController.h */,
+				9D9B69E51C642F10009E6494 /* RSNotificationsViewController.m */,
 				9D4F01CE1C6040AD0022A0A4 /* RSFilterOptionsViewController.h */,
 				9D4F01CF1C6040AD0022A0A4 /* RSFilterOptionsViewController.m */,
 				9D52CAF71C3BA0BF00262291 /* RSLocationPickerController.h */,
@@ -312,6 +312,8 @@
 				9D52CAFF1C3BA9B500262291 /* RLRegistrationViewController.m */,
 				9DD355381C3E61F000868CEA /* RSHistoryViewController.h */,
 				9DD355391C3E61F000868CEA /* RSHistoryViewController.m */,
+				9DED38681C64C21E00BBD131 /* NotificationCell.h */,
+				9DED38691C64C21E00BBD131 /* NotificationCell.m */,
 				9D4F00DC1C58C4AB0022A0A4 /* RideCell.h */,
 				9D4F00DD1C58C4AB0022A0A4 /* RideCell.m */,
 				9DD355411C3E9DD700868CEA /* RSFAQsViewController.h */,
@@ -450,7 +452,6 @@
 			files = (
 				9D82B2671C3A9BAA005CB5D5 /* LaunchScreen.storyboard in Resources */,
 				9D82B2641C3A9BAA005CB5D5 /* Assets.xcassets in Resources */,
-				9D4F00E51C58F8BF0022A0A4 /* CustomAnnotationview.xib in Resources */,
 				9D82B2621C3A9BAA005CB5D5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -536,8 +537,10 @@
 				9D82B25F1C3A9BAA005CB5D5 /* RSHomeViewController.m in Sources */,
 				9DD355401C3E886F00868CEA /* RSRateUsViewController.m in Sources */,
 				9D4F01391C5B8A750022A0A4 /* SlideNavigationContorllerAnimatorFade.m in Sources */,
+				9DED386A1C64C21E00BBD131 /* NotificationCell.m in Sources */,
 				9DD355431C3E9DD700868CEA /* RSFAQsViewController.m in Sources */,
 				9D82B25C1C3A9BAA005CB5D5 /* AppDelegate.m in Sources */,
+				9D9B69E61C642F10009E6494 /* RSNotificationsViewController.m in Sources */,
 				9D4F013E1C5B8A750022A0A4 /* SlideNavigationController.m in Sources */,
 				9D77E20E1C4652B40044B81F /* IQKeyboardReturnKeyHandler.m in Sources */,
 				9D4F013C1C5B8A750022A0A4 /* SlideNavigationContorllerAnimatorSlide.m in Sources */,
@@ -554,7 +557,6 @@
 				9D77E2161C4652B40044B81F /* IQUITextFieldView+Additions.m in Sources */,
 				9D77E2101C4652B40044B81F /* IQUIView+IQKeyboardToolbar.m in Sources */,
 				9D82B2971C3AA395005CB5D5 /* AMSlideMenuLeftMenuSegue.m in Sources */,
-				9D4F00E11C58F6DC0022A0A4 /* CustomAnnotation.m in Sources */,
 				9D82B2591C3A9BAA005CB5D5 /* main.m in Sources */,
 				9D77E2411C4E0B070044B81F /* RSServices.m in Sources */,
 				9D52CB001C3BA9B500262291 /* RLRegistrationViewController.m in Sources */,

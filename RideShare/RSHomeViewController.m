@@ -14,7 +14,6 @@
 #import "RSUtils.h"
 #import "User.h"
 #import "RSServices.h"
-#import "CustomAnnotation.h"
 #import "RideCell.h"
 
 @interface RSHomeViewController ()
@@ -103,19 +102,47 @@
     NSLog(@"Notification Obj is : %@", notification.object);
     
     int choice = [[[notification object] valueForKey:@"item"] intValue];
+    [self filterRides:choice];
+    [self filterClicked:nil];
+    
+    return;
+    
     switch (choice) {
         case 0:
             NSLog(@"All Option Selected");
+            [_dataSource removeAllObjects];
+            
+            [_dataSource addObjectsFromArray:_currentRides];
             break;
         case 1:
             NSLog(@"Pick Ups Option Selected");
+            
+            for (id ride in _currentRides)
+            {
+                [_dataSource removeAllObjects];
+                if ([[ride valueForKey:@"ride_type"] isEqualToString:@"1"])
+                {
+                    [_dataSource addObject:ride];
+                }
+            }
             break;
         case 2:
             NSLog(@"Pick Me Ups Option Selected");
+            for (id ride in _currentRides)
+            {
+                [_dataSource removeAllObjects];
+                if ([[ride valueForKey:@"ride_type"] isEqualToString:@"2"])
+                {
+                    [_dataSource addObject:ride];
+                }
+            }
             break;
         default:
             break;
     }
+    
+    [self refreshMap];
+    [self.ridesListView reloadData];
     [self filterClicked:nil];
 }
 
@@ -306,7 +333,7 @@
         {
             if ([currentUser.userId isEqualToString: [ride valueForKey:@"user_id"] ])
             {
-                markerImage = [UIImage imageNamed:@"own_ride"];
+                markerImage = [UIImage imageNamed:@"Own_ride"];
             }
             else
             {
@@ -393,9 +420,7 @@
 
 - (void)callToRider:(NSString*)phoneNumber
 {
-    NSString *phNo = @"+919642335080";
-    
-    NSURL *phoneUrl = [NSURL URLWithString:[@"tel://" stringByAppendingString:phNo]];
+    NSURL *phoneUrl = [NSURL URLWithString:[@"tel://" stringByAppendingString:phoneNumber]];
                        
     if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
         [[UIApplication sharedApplication] openURL:phoneUrl];
@@ -423,11 +448,6 @@
         [self callToRider:[rideInfo valueForKey:@"mobile_no"]];
     }];
     
-    UIAlertAction *requestAction = [UIAlertAction actionWithTitle:@"Request Ride" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-                                    {
-                                        NSLog(@"call button tapped");
-                                    }];
-    
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
     if ([currentUser.userId isEqualToString:[rideInfo objectForKey:@"user_id"] ])
@@ -441,7 +461,6 @@
         {
             [controller addAction:cancelAction];
             [controller addAction:cancelRequest];
-            
         }
         else
         {
@@ -456,11 +475,41 @@
             UIAlertAction *raiseRequest = [UIAlertAction actionWithTitle:@"Pick Me Up" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 NSDictionary *infoDict = @{@"from_id" : currentUser.userId,
                                            @"to_id" : [rideInfo valueForKey : @"user_id"],
-                                           @"type" : [NSString stringWithFormat:@"%i", PickMeUp]
+                                           @"type" : [NSString stringWithFormat:@"%i", PickMeUp],
+                                           @"ride_id" : [rideInfo objectForKey:@"ride_id"]
                                            };
                 [RSServices processRequestRideViaPush:infoDict completionHandler:^(NSDictionary *response, NSError *error)
                  {
-                     
+                     [appDelegate hideLoading];
+                     NSString *alertMsg = nil;
+                     if (error != nil)
+                     {
+                         alertMsg = error.description;
+                     }
+                     else if (response != nil)
+                     {
+                         if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+                         {
+                             NSLog(@"Response success! with info: %@", response);
+                             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your request for Picking you up has been intimated to the other end." preferredStyle:UIAlertControllerStyleAlert];
+                             
+                             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                             [alertController addAction:okAction];
+                             [self presentViewController:alertController animated:YES completion:nil];
+                             
+                             [self refreshClicked:nil];
+                         }
+                         else
+                         {
+                             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                             [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
+                             return;
+                         }
+                     }
+                     if (alertMsg.length != 0)
+                     {
+                         [RSUtils showAlertWithTitle:@"Alert" message:alertMsg actionOne:nil actionTwo:nil inView:self];
+                     }
                  }];
             }];
             
@@ -474,11 +523,42 @@
             {
                 NSDictionary *infoDict = @{@"from_id" : currentUser.userId,
                                            @"to_id" : [rideInfo valueForKey : @"user_id"],
-                                           @"type" : [NSString stringWithFormat:@"%i", PickUp]
+                                           @"type" : [NSString stringWithFormat:@"%i", PickUp],
+                                           @"ride_id" : [rideInfo objectForKey:@"ride_id"]
                                            };
                 [RSServices processRequestRideViaPush:infoDict completionHandler:^(NSDictionary *response, NSError *error)
-                {
-                }];
+                 {
+                     [appDelegate hideLoading];
+                     NSString *alertMsg = nil;
+                     if (error != nil)
+                     {
+                         alertMsg = error.description;
+                     }
+                     else if (response != nil)
+                     {
+                         if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+                         {
+                             NSLog(@"Response success! with info: %@", response);
+                             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your request for Pick up has been intimated to the other end." preferredStyle:UIAlertControllerStyleAlert];
+                             
+                             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                             [alertController addAction:okAction];
+                             [self presentViewController:alertController animated:YES completion:nil];
+                             
+                             [self refreshClicked:nil];
+                         }
+                         else
+                         {
+                             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                             [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
+                             return;
+                         }
+                     }
+                     if (alertMsg.length != 0)
+                     {
+                         [RSUtils showAlertWithTitle:@"Alert" message:alertMsg actionOne:nil actionTwo:nil inView:self];
+                     }
+                 }];
             }];
             [controller addAction:raiseRequest];
             [controller addAction:callAction];
@@ -490,9 +570,8 @@
 
 - (void)cancelRide:(NSDictionary*)rideInfo
 {
-    User *currentUser = [User currentUser];
     [appDelegate showLoaingWithTitle:@"Loading..."];
-    NSDictionary *infoDict = @{@"user_id" : currentUser.userId, @"ride_id" : [rideInfo valueForKey:@"myride_id"]};
+    NSDictionary *infoDict = @{@"user_id" : currentUser.userId, @"ride_id" : [rideInfo valueForKey:@"ride_id"]};
     
     [RSServices processDeleteRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
      {
@@ -507,6 +586,12 @@
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
                  NSLog(@"Delete Request success! with info: %@", response);
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride request has been cancelled successfully." preferredStyle:UIAlertControllerStyleAlert];
+                 
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                 [alertController addAction:okAction];
+                 [self presentViewController:alertController animated:YES completion:nil];
+                 
                  [self refreshClicked:nil];
              }
              else
@@ -519,14 +604,12 @@
                  return;
              }
          }
-         
          if (alertMsg.length != 0)
          {
              [RSUtils showAlertWithTitle:@"Cencel Ride" message:alertMsg actionOne:nil actionTwo:nil inView:self];
          }
      }];    
 }
-
 
 - (void)showCallInfo:(NSDictionary*)rideInfo
 {
@@ -740,8 +823,6 @@
             return;
         }
         
-        User *currentUser = [User currentUser];
-        
         NSString *rideType = (_btnPickup.selected) ? @"1" : @"2";
         
         NSDictionary *infoDict = @{@"ride_type" : rideType,
@@ -770,12 +851,22 @@
              {
                  if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
                  {
-                     NSLog(@"Login success! with info: %@", response);
+                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride request has been submitted successfully." preferredStyle:UIAlertControllerStyleAlert];
+                     
+                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                     [alertController addAction:okAction];
+                     [self presentViewController:alertController animated:YES completion:nil];
+                     _rideCoseInput.text = @"0";
+                     _sourceLocationInput.text = @"";
+                     _destinationLocationInput.text = @"";
+                     sourceCoordinate = CLLocationCoordinate2DMake(0, 0);
+                     destinationCoordinate = CLLocationCoordinate2DMake(0, 0);
                      NSLog(@"Received response for my ride is : %@", response);
                      [_currentRides removeAllObjects];
                      [_currentRides addObjectsFromArray:[response objectForKey:@"response_content"]];
                      NSLog(@"Current rides are: %@", _currentRides);
-                     [self filterRides:0];
+//                     [self filterRides:0];
+                     [self refreshClicked:nil];
                      //TODO: Refresh maps.
                  }
                  else

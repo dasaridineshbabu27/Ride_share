@@ -24,9 +24,9 @@
 {
     [super viewDidLoad];
     self.title = @"Account";
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(menuClicked)];
-    leftButton.image = [UIImage imageNamed:@"Hamburger_menu"];
-    self.navigationItem.leftBarButtonItem = leftButton;
+//    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(menuClicked)];
+//    leftButton.image = [UIImage imageNamed:@"Hamburger_menu"];
+//    self.navigationItem.leftBarButtonItem = leftButton;
     // Do any additional setup after loading the view.
     [self populateUI];
 }

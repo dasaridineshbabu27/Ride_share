@@ -19,6 +19,6 @@
 
 enum RideType
 {
-    PickUp,
-    PickMeUp
+    PickUp = 1,
+    PickMeUp = 2
 };

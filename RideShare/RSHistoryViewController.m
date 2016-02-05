@@ -146,7 +146,7 @@
     [tableView reloadData];
     User *currentUser = [User currentUser];
     [appDelegate showLoaingWithTitle:@"Loading..."];
-    NSDictionary *infoDict = @{@"user_id" : currentUser.userId, @"ride_id" : [[_myRides objectAtIndex:indexPath.row] valueForKey:@"myride_id"]};
+    NSDictionary *infoDict = @{@"user_id" : currentUser.userId, @"ride_id" : [[_myRides objectAtIndex:indexPath.row] valueForKey:@"ride_id"]};
     
     [RSServices processDeleteRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
      {

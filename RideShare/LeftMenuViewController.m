@@ -43,7 +43,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return 5;
+	return 6;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -74,13 +74,15 @@
             
 		case 2:
 			cell.textLabel.text = @"History";
-			break;
-			
-		case 3:
+            break;
+        case 3:
+            cell.textLabel.text = @"Notifications";
+            break;
+		case 4:
 			cell.textLabel.text = @"FAQs";
 			break;
             
-		case 4:
+		case 5:
 			cell.textLabel.text = @"Logout";
 			break;
 	}
@@ -109,12 +111,16 @@
 		case 2:
 			vc = [mainStoryboard instantiateViewControllerWithIdentifier: @"RSHistoryViewController"];
 			break;
-			
+            
         case 3:
+            vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"NotificationsView"];
+            break;
+            
+        case 4:
             vc = [mainStoryboard instantiateViewControllerWithIdentifier: @"RSFAQsViewController"];
             break;
             
-		case 4:
+		case 5:
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 			[[SlideNavigationController sharedInstance] popToRootViewControllerAnimated:YES];
 			return;
