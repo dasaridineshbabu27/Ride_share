@@ -493,7 +493,10 @@
                 NSDictionary *infoDict = @{@"from_id" : currentUser.userId,
                                            @"to_id" : [rideInfo valueForKey : @"user_id"],
                                            @"type" : [NSString stringWithFormat:@"%i", PickUp],
-                                           @"ride_id" : [rideInfo objectForKey:@"ride_id"]
+                                           @"ride_id" : [rideInfo objectForKey:@"ride_id"],
+                                           @"pick_lat" : [NSString stringWithFormat:@"%@",[rideInfo valueForKey:@"olat"]],
+                                           @"pick_lang" : [NSString stringWithFormat:@"%@",[rideInfo valueForKey:@"olang"]],
+                                           @"pick_addr" : [NSString stringWithFormat:@"%@",[rideInfo valueForKey:@"oaddr"]]
                                            };
                 [RSServices processRequestRideViaPush:infoDict completionHandler:^(NSDictionary *response, NSError *error)
                  {

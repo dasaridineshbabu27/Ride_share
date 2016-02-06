@@ -38,4 +38,6 @@
 + (void)processRequestRideViaPush:(NSDictionary*)info completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
 + (void)processFetchNotifications:(NSDictionary*)info completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processAcceptRide:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 @end

@@ -11,7 +11,7 @@
 
 @interface RSNotificationsViewController : UIViewController <SlideNavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 {
-    
+    NSArray *rideInfo;
 }
 @property (nonatomic, weak) IBOutlet UITableView *msgListview;
 @property (nonatomic, strong) NSMutableArray *notifications;

@@ -7,6 +7,8 @@
 //
 
 #import "RSNotificationsViewController.h"
+#import "RSRideInProgressViewController.h"
+
 #import "RSServices.h"
 #import "RSUtils.h"
 #import "RSConfig.h"
@@ -21,8 +23,13 @@
 @implementation RSNotificationsViewController
 @synthesize notifications;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
+    
+    rideInfo = [[NSArray alloc] init];
+    
+    _msgListview.allowsMultipleSelectionDuringEditing = NO;
     self.navigationItem.title = @"Notifications";
     
     [self.navigationController.navigationItem setHidesBackButton:YES animated:YES];
@@ -52,6 +59,7 @@
                  NSLog(@"Received response for my ride is : %@", response);
                  [notifications removeAllObjects];
                  [notifications addObjectsFromArray:[response objectForKey:@"response_content"]];
+                 rideInfo = [response objectForKey:@"ride_info"];                 
                  if (notifications.count)
                  {
                      [_msgListview reloadData];
@@ -94,16 +102,62 @@
     
     notificationCell.nameLabel.text = [message objectForKey:@"name"];
     notificationCell.messageLabel.text = [message objectForKey:@"message"];
-    [notificationCell.acceptButton addTarget:self action:@selector(acceptButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [notificationCell.acceptButton addTarget:self action:@selector(acceptButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
+    notificationCell.acceptButton.tag = indexPath.row;
+    notificationCell.stratRideButton.tag = indexPath.row;
     [notificationCell.acceptButton addTarget:self action:@selector(startButtonAction) forControlEvents:UIControlEventTouchUpInside];
-    [notificationCell.stratRideButton setHidden:YES];
+    
+    if ([[message valueForKey:@"is_accepted"] intValue] == 1)
+    {
+        notificationCell.acceptButton.hidden = YES;
+        notificationCell.stratRideButton.hidden = NO;
+    }
+    else
+    {
+        notificationCell.acceptButton.hidden = NO;
+        notificationCell.stratRideButton.hidden = YES;
+    }
     return notificationCell;
 }
 
-- (void)acceptButtonAction
+- (void)acceptButtonAction:(UIButton*)acceptButton
 {
-    NSLog(@"Accept button tapped.");
+    NSLog(@"Accept button tapped.: %@", acceptButton);
+    
+    NSDictionary *infoDict = @{@"track_id" : [[notifications objectAtIndex:acceptButton.tag] valueForKey:@"track_id"], @"ride_id" : [[notifications objectAtIndex:acceptButton.tag] valueForKey:@"ride_id"]};
+    [RSServices processAcceptRide:infoDict completionHandler:^(NSDictionary * response, NSError *error)
+     {
+         [appDelegate hideLoading];
+         if (error != nil)
+         {
+             [RSUtils showAlertForError:error inView:self];
+         }
+         else if (response != nil)
+         {
+             if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+             {
+                 NSLog(@"Login success! with info: %@", response);
+                 NSLog(@"Received response for my ride is : %@", response);
+                 [notifications removeAllObjects];
+                 [notifications addObjectsFromArray:[response objectForKey:@"response_content"]];
+                 rideInfo = [response objectForKey:@"ride_info"];
+                 if (notifications.count)
+                 {
+                     [_msgListview reloadData];
+                 }
+             }
+             else
+             {
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                            {
+                                                [self.navigationController popViewControllerAnimated:YES];
+                                            }];
+                 [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
+                 return;
+             }
+         }
+     }];
 }
 
 - (void)startButtonAction
@@ -125,6 +179,24 @@
 {
     return YES;
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.destinationViewController isKindOfClass:[RSRideInProgressViewController class]])
+    {
+        RSRideInProgressViewController *rideViewController = segue.destinationViewController;
+        
+        NSLog(@"ride info is : %@", rideInfo);
+        NSLog(@"Notifications: %@", notifications);
+        
+        rideViewController.pickUpLocation = CLLocationCoordinate2DMake([[[notifications objectAtIndex:0] valueForKey:@"pick_lat"] floatValue], [[[notifications objectAtIndex:0] valueForKey:@"pick_lang"] floatValue]);
+        
+        rideViewController.startCoordinate = CLLocationCoordinate2DMake([[[rideInfo objectAtIndex:0] valueForKey:@"olat"] floatValue], [[[rideInfo objectAtIndex:0] valueForKey:@"olang"] floatValue]);
+        
+        rideViewController.destinationCoordinate = CLLocationCoordinate2DMake([[[rideInfo objectAtIndex:0]valueForKey:@"dlat"] floatValue], [[[rideInfo objectAtIndex:0] valueForKey:@"dlang"] floatValue]);
+    }
+}
+
 /*
 #pragma mark - Navigation
 

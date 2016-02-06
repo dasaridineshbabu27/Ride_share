@@ -42,4 +42,6 @@
 
 #define urlRequestNotifications [NSString stringWithFormat:@"%@%@",mainURL, @"mynotifications.php"]
 
+#define urlRequestAcceptRide [NSString stringWithFormat:@"%@%@",mainURL, @"accept_ride.php"]
+
 #endif /* RSConfig_h */

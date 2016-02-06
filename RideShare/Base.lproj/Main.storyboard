@@ -3077,11 +3077,22 @@
                                                 </label>
                                                 <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMn-8Y-ag7">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                     <state key="normal" title="Accept"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="345" y="29" width="49" height="30"/>
+                                                    </variation>
                                                 </button>
                                                 <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bxz-Jn-s4y">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                     <state key="normal" title="Start"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="349" y="29" width="41" height="30"/>
+                                                    </variation>
+                                                    <connections>
+                                                        <segue destination="kTJ-P2-ina" kind="show" id="vIT-D3-zGT"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -3193,6 +3204,60 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n1e-Ns-utF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="183" y="-1372.5"/>
+        </scene>
+        <!--Ride In Progress View Controller-->
+        <scene sceneID="oxi-vY-xTr">
+            <objects>
+                <viewController id="kTJ-P2-ina" customClass="RSRideInProgressViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="3z6-5p-3tb"/>
+                        <viewControllerLayoutGuide type="bottom" id="cFo-80-uPN"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ddF-vK-3Fe">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38F-hz-Sli" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" red="0.88240131580000003" green="0.96198979009999996" blue="0.85874492660000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="38F-hz-Sli" firstAttribute="top" secondItem="ddF-vK-3Fe" secondAttribute="top" id="74l-w8-294"/>
+                            <constraint firstItem="38F-hz-Sli" firstAttribute="bottom" secondItem="cFo-80-uPN" secondAttribute="top" id="Hav-ee-jXw"/>
+                            <constraint firstAttribute="trailing" secondItem="38F-hz-Sli" secondAttribute="trailing" id="VBC-Ew-v12"/>
+                            <constraint firstItem="38F-hz-Sli" firstAttribute="leading" secondItem="ddF-vK-3Fe" secondAttribute="leading" id="xS6-YX-b8L"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="38F-hz-Sli"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="74l-w8-294"/>
+                                <exclude reference="Hav-ee-jXw"/>
+                                <exclude reference="VBC-Ew-v12"/>
+                                <exclude reference="xS6-YX-b8L"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="38F-hz-Sli"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="74l-w8-294"/>
+                                <include reference="Hav-ee-jXw"/>
+                                <include reference="VBC-Ew-v12"/>
+                                <include reference="xS6-YX-b8L"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="rideMapView" destination="38F-hz-Sli" id="mct-z3-b0x"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LE2-qx-XBC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="978" y="-1372.5"/>
         </scene>
         <!--Filter Options View Controller-->
         <scene sceneID="HGi-RJ-GpL">

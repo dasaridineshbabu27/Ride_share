@@ -65,6 +65,7 @@
 		9DD355431C3E9DD700868CEA /* RSFAQsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD355421C3E9DD700868CEA /* RSFAQsViewController.m */; };
 		9DED386A1C64C21E00BBD131 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DED38691C64C21E00BBD131 /* NotificationCell.m */; };
 		9DED386D1C64DC7D00BBD131 /* RSPickupLocationPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DED386C1C64DC7D00BBD131 /* RSPickupLocationPickerViewController.m */; };
+		9DED38931C65D76200BBD131 /* RSRideInProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DED38921C65D76200BBD131 /* RSRideInProgressViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -184,6 +185,8 @@
 		9DED38691C64C21E00BBD131 /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 		9DED386B1C64DC7D00BBD131 /* RSPickupLocationPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSPickupLocationPickerViewController.h; sourceTree = "<group>"; };
 		9DED386C1C64DC7D00BBD131 /* RSPickupLocationPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSPickupLocationPickerViewController.m; sourceTree = "<group>"; };
+		9DED38911C65D76200BBD131 /* RSRideInProgressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSRideInProgressViewController.h; sourceTree = "<group>"; };
+		9DED38921C65D76200BBD131 /* RSRideInProgressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSRideInProgressViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -303,6 +306,8 @@
 				9D82B25E1C3A9BAA005CB5D5 /* RSHomeViewController.m */,
 				9D9B69E41C642F10009E6494 /* RSNotificationsViewController.h */,
 				9D9B69E51C642F10009E6494 /* RSNotificationsViewController.m */,
+				9DED38911C65D76200BBD131 /* RSRideInProgressViewController.h */,
+				9DED38921C65D76200BBD131 /* RSRideInProgressViewController.m */,
 				9D4F01CE1C6040AD0022A0A4 /* RSFilterOptionsViewController.h */,
 				9D4F01CF1C6040AD0022A0A4 /* RSFilterOptionsViewController.m */,
 				9D52CAF71C3BA0BF00262291 /* RSLocationPickerController.h */,
@@ -550,6 +555,7 @@
 				9D4F013E1C5B8A750022A0A4 /* SlideNavigationController.m in Sources */,
 				9D77E20E1C4652B40044B81F /* IQKeyboardReturnKeyHandler.m in Sources */,
 				9D4F013C1C5B8A750022A0A4 /* SlideNavigationContorllerAnimatorSlide.m in Sources */,
+				9DED38931C65D76200BBD131 /* RSRideInProgressViewController.m in Sources */,
 				9D77E2121C4652B40044B81F /* IQNSArray+Sort.m in Sources */,
 				9D4F013D1C5B8A750022A0A4 /* SlideNavigationContorllerAnimatorSlideAndFade.m in Sources */,
 				9DD3553A1C3E61F000868CEA /* RSHistoryViewController.m in Sources */,

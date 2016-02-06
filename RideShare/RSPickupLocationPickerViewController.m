@@ -34,6 +34,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     if (status ==  kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse)
@@ -82,9 +83,9 @@ idleAtCameraPosition:(GMSCameraPosition *)position
                                @"to_id" : [_rideData valueForKey : @"user_id"],
                                @"type" : [NSString stringWithFormat:@"%i", PickMeUp],
                                @"ride_id" : [_rideData objectForKey:@"ride_id"],
-                               @"pickup_lat" : [NSString stringWithFormat:@"%f", pickUpLocation.latitude],
-                               @"pickup_long" : [NSString stringWithFormat:@"%f", pickUpLocation.longitude],
-                               @"pickup_address" : _addressDisplayer.text
+                               @"pick_lat" : [NSString stringWithFormat:@"%f", pickUpLocation.latitude],
+                               @"pick_lang" : [NSString stringWithFormat:@"%f", pickUpLocation.longitude],
+                               @"pick_addr" : _addressDisplayer.text
                                };
     [RSServices processRequestRideViaPush:infoDict completionHandler:^(NSDictionary *response, NSError *error)
      {
@@ -101,7 +102,9 @@ idleAtCameraPosition:(GMSCameraPosition *)position
                  NSLog(@"Response success! with info: %@", response);
                  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your request for Picking you up has been intimated to the other end." preferredStyle:UIAlertControllerStyleAlert];
                  
-                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                     [self.navigationController popToRootViewControllerAnimated:YES];
+                 }];
                  [alertController addAction:okAction];
                  [self presentViewController:alertController animated:YES completion:nil];
              }
