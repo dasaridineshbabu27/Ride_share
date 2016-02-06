@@ -15,6 +15,7 @@
 #import "User.h"
 #import "RSServices.h"
 #import "RideCell.h"
+#import "RSPickupLocationPickerViewController.h"
 
 @interface RSHomeViewController ()
 
@@ -26,6 +27,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tempRideInfo = [[NSMutableDictionary alloc] init];
+    
     currentUser = [User currentUser];
     self.dataSource = [[NSMutableArray alloc] init];
     
@@ -472,45 +476,10 @@
     {
         if ([[rideInfo valueForKey:@"ride_type"] intValue] == PickUp)
         {
-            UIAlertAction *raiseRequest = [UIAlertAction actionWithTitle:@"Pick Me Up" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                NSDictionary *infoDict = @{@"from_id" : currentUser.userId,
-                                           @"to_id" : [rideInfo valueForKey : @"user_id"],
-                                           @"type" : [NSString stringWithFormat:@"%i", PickMeUp],
-                                           @"ride_id" : [rideInfo objectForKey:@"ride_id"]
-                                           };
-                [RSServices processRequestRideViaPush:infoDict completionHandler:^(NSDictionary *response, NSError *error)
-                 {
-                     [appDelegate hideLoading];
-                     NSString *alertMsg = nil;
-                     if (error != nil)
-                     {
-                         alertMsg = error.description;
-                     }
-                     else if (response != nil)
-                     {
-                         if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
-                         {
-                             NSLog(@"Response success! with info: %@", response);
-                             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your request for Picking you up has been intimated to the other end." preferredStyle:UIAlertControllerStyleAlert];
-                             
-                             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                             [alertController addAction:okAction];
-                             [self presentViewController:alertController animated:YES completion:nil];
-                             
-                             [self refreshClicked:nil];
-                         }
-                         else
-                         {
-                             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                             [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
-                             return;
-                         }
-                     }
-                     if (alertMsg.length != 0)
-                     {
-                         [RSUtils showAlertWithTitle:@"Alert" message:alertMsg actionOne:nil actionTwo:nil inView:self];
-                     }
-                 }];
+            UIAlertAction *raiseRequest = [UIAlertAction actionWithTitle:@"Pick Me Up" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+            {
+                self.tempRideInfo = [rideInfo mutableCopy];
+                [self performSegueWithIdentifier:@"PickUpLocationView" sender:self];
             }];
             
             [controller addAction:raiseRequest];
@@ -974,6 +943,15 @@
     [_rideCoseInput resignFirstResponder];
     [_sourceLocationInput resignFirstResponder];
     [_destinationLocationInput resignFirstResponder];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    id destViewController = segue.destinationViewController;
+    if ([destViewController isKindOfClass:[RSPickupLocationPickerViewController class]])
+    {
+        ((RSPickupLocationPickerViewController*)destViewController).rideData = self.tempRideInfo;
+    }
 }
 
 @end

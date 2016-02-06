@@ -745,13 +745,14 @@
                         <outlet property="sourceLocationInput" destination="Yto-6C-S66" id="AjL-ab-knq"/>
                         <outlet property="timePicker" destination="rwB-b6-Zik" id="bOH-RU-rnP"/>
                         <outlet property="timePickerHolderView" destination="TYX-NA-HS0" id="FTs-bo-i7I"/>
+                        <segue destination="GdR-tY-ity" kind="show" identifier="PickUpLocationView" id="fqH-j8-ZD5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-660" y="-426"/>
         </scene>
-        <!--Title-->
+        <!--Location Picker Controller-->
         <scene sceneID="IQ4-0D-HsW">
             <objects>
                 <viewController id="WvM-Ki-TI5" customClass="RSLocationPickerController" sceneMemberID="viewController">
@@ -883,7 +884,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="mHM-yb-whK">
+                    <navigationItem key="navigationItem" id="mHM-yb-whK">
                         <barButtonItem key="rightBarButtonItem" title="Pick" id="p8Y-09-pbx">
                             <connections>
                                 <segue destination="yvt-yT-UZv" kind="unwind" unwindAction="returnedFromLocationPicker:" id="7ZX-Zo-ysE"/>
@@ -899,7 +900,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mgb-Kw-V4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="yvt-yT-UZv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="169.5" y="-426"/>
+            <point key="canvasLocation" x="259.5" y="-414.75"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dJ7-Gy-3uj">
@@ -3259,6 +3260,155 @@
             </objects>
             <point key="canvasLocation" x="-327.75" y="-947.25"/>
         </scene>
+        <!--Title-->
+        <scene sceneID="vlZ-T7-Hzd">
+            <objects>
+                <viewController id="GdR-tY-ity" customClass="RSPickupLocationPickerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PNi-RZ-8Ui"/>
+                        <viewControllerLayoutGuide type="bottom" id="95e-aP-Vz3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="OMy-nB-FeC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xSd-c7-FQo" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map_icon" translatesAutoresizingMaskIntoConstraints="NO" id="XCd-kh-JbI">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="XCd-kh-JbI" firstAttribute="centerY" secondItem="xSd-c7-FQo" secondAttribute="centerY" id="Bqg-Nf-IEO">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="-11.5"/>
+                                    </constraint>
+                                    <constraint firstItem="XCd-kh-JbI" firstAttribute="centerX" secondItem="xSd-c7-FQo" secondAttribute="centerX" id="ps5-1b-aOn"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="XCd-kh-JbI"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="ps5-1b-aOn"/>
+                                        <exclude reference="Bqg-Nf-IEO"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="XCd-kh-JbI"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="ps5-1b-aOn"/>
+                                        <include reference="Bqg-Nf-IEO"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4f4-FR-Tcr">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sxon Global Ind Pvt Ltd, Madhapur, Hitech city, Hyderabad" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndO-NP-57i">
+                                        <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="62" id="5Wx-VP-MIx">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="82"/>
+                                    </constraint>
+                                    <constraint firstItem="ndO-NP-57i" firstAttribute="top" secondItem="4f4-FR-Tcr" secondAttribute="top" id="aIO-Ml-IWy"/>
+                                    <constraint firstItem="ndO-NP-57i" firstAttribute="trailing" secondItem="4f4-FR-Tcr" secondAttribute="trailingMargin" id="dtp-yK-1gc"/>
+                                    <constraint firstItem="ndO-NP-57i" firstAttribute="leading" secondItem="4f4-FR-Tcr" secondAttribute="leadingMargin" id="tDM-mo-79w"/>
+                                    <constraint firstAttribute="bottom" secondItem="ndO-NP-57i" secondAttribute="bottom" id="tvd-58-qav"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="ndO-NP-57i"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="5Wx-VP-MIx"/>
+                                        <exclude reference="tvd-58-qav"/>
+                                        <exclude reference="tDM-mo-79w"/>
+                                        <exclude reference="dtp-yK-1gc"/>
+                                        <exclude reference="aIO-Ml-IWy"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="ndO-NP-57i"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="5Wx-VP-MIx"/>
+                                        <include reference="tvd-58-qav"/>
+                                        <include reference="tDM-mo-79w"/>
+                                        <include reference="dtp-yK-1gc"/>
+                                        <include reference="aIO-Ml-IWy"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xSd-c7-FQo" firstAttribute="top" secondItem="PNi-RZ-8Ui" secondAttribute="bottom" id="Gv8-iu-q44"/>
+                            <constraint firstItem="xSd-c7-FQo" firstAttribute="bottom" secondItem="95e-aP-Vz3" secondAttribute="top" id="Jtu-ec-zBE"/>
+                            <constraint firstAttribute="trailing" secondItem="4f4-FR-Tcr" secondAttribute="trailing" id="QOE-40-l5F"/>
+                            <constraint firstItem="4f4-FR-Tcr" firstAttribute="leading" secondItem="OMy-nB-FeC" secondAttribute="leading" id="VHq-Vc-9hs"/>
+                            <constraint firstItem="xSd-c7-FQo" firstAttribute="leading" secondItem="4f4-FR-Tcr" secondAttribute="leading" id="aCX-6K-vDQ"/>
+                            <constraint firstItem="4f4-FR-Tcr" firstAttribute="trailing" secondItem="xSd-c7-FQo" secondAttribute="trailing" id="iwv-TQ-D8o"/>
+                            <constraint firstItem="4f4-FR-Tcr" firstAttribute="bottom" secondItem="95e-aP-Vz3" secondAttribute="top" id="qey-4d-bBh"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="xSd-c7-FQo"/>
+                                <exclude reference="4f4-FR-Tcr"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="iwv-TQ-D8o"/>
+                                <exclude reference="VHq-Vc-9hs"/>
+                                <exclude reference="qey-4d-bBh"/>
+                                <exclude reference="QOE-40-l5F"/>
+                                <exclude reference="Gv8-iu-q44"/>
+                                <exclude reference="Jtu-ec-zBE"/>
+                                <exclude reference="aCX-6K-vDQ"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="xSd-c7-FQo"/>
+                                <include reference="4f4-FR-Tcr"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="iwv-TQ-D8o"/>
+                                <include reference="VHq-Vc-9hs"/>
+                                <include reference="qey-4d-bBh"/>
+                                <include reference="QOE-40-l5F"/>
+                                <include reference="Gv8-iu-q44"/>
+                                <include reference="Jtu-ec-zBE"/>
+                                <include reference="aCX-6K-vDQ"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="kFs-WC-zv9">
+                        <barButtonItem key="rightBarButtonItem" title="Send" id="QvZ-Fy-Bop">
+                            <connections>
+                                <action selector="sendPickupRequest:" destination="GdR-tY-ity" id="KO8-u9-5cl"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addressDisplayer" destination="ndO-NP-57i" id="DKj-Em-FSH"/>
+                        <outlet property="addressHolder" destination="4f4-FR-Tcr" id="YLM-yc-iwQ"/>
+                        <outlet property="mapViewHolder" destination="xSd-c7-FQo" id="9nF-5g-lnb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9P7-hR-gYG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="970.5" y="-414.75"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Hamburger_menu" width="24" height="18"/>
@@ -3271,6 +3421,6 @@
         <image name="time-icon" width="15" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="iPI-Ll-bYL"/>
+        <segue reference="0uj-gR-K3Y"/>
     </inferredMetricsTieBreakers>
 </document>

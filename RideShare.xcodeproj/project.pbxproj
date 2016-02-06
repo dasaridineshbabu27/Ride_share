@@ -64,6 +64,7 @@
 		9DD355401C3E886F00868CEA /* RSRateUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD3553F1C3E886F00868CEA /* RSRateUsViewController.m */; };
 		9DD355431C3E9DD700868CEA /* RSFAQsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD355421C3E9DD700868CEA /* RSFAQsViewController.m */; };
 		9DED386A1C64C21E00BBD131 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DED38691C64C21E00BBD131 /* NotificationCell.m */; };
+		9DED386D1C64DC7D00BBD131 /* RSPickupLocationPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DED386C1C64DC7D00BBD131 /* RSPickupLocationPickerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,6 +182,8 @@
 		9DD355421C3E9DD700868CEA /* RSFAQsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSFAQsViewController.m; sourceTree = "<group>"; };
 		9DED38681C64C21E00BBD131 /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
 		9DED38691C64C21E00BBD131 /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
+		9DED386B1C64DC7D00BBD131 /* RSPickupLocationPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSPickupLocationPickerViewController.h; sourceTree = "<group>"; };
+		9DED386C1C64DC7D00BBD131 /* RSPickupLocationPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSPickupLocationPickerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -303,9 +306,11 @@
 				9D4F01CE1C6040AD0022A0A4 /* RSFilterOptionsViewController.h */,
 				9D4F01CF1C6040AD0022A0A4 /* RSFilterOptionsViewController.m */,
 				9D52CAF71C3BA0BF00262291 /* RSLocationPickerController.h */,
+				9D52CAF81C3BA0BF00262291 /* RSLocationPickerController.m */,
+				9DED386B1C64DC7D00BBD131 /* RSPickupLocationPickerViewController.h */,
+				9DED386C1C64DC7D00BBD131 /* RSPickupLocationPickerViewController.m */,
 				9D9349AD1C52450D007E3330 /* RSForgotPasswordViewController.h */,
 				9D9349AE1C52450D007E3330 /* RSForgotPasswordViewController.m */,
-				9D52CAF81C3BA0BF00262291 /* RSLocationPickerController.m */,
 				9D52CAFB1C3BA99B00262291 /* RLLoginViewController.h */,
 				9D52CAFC1C3BA99B00262291 /* RLLoginViewController.m */,
 				9D52CAFE1C3BA9B500262291 /* RLRegistrationViewController.h */,
@@ -533,6 +538,7 @@
 				9D82B2991C3AA395005CB5D5 /* AMSlideMenuMainViewController.m in Sources */,
 				9D93495E1C4FA55B007E3330 /* User.m in Sources */,
 				9D4F013A1C5B8A750022A0A4 /* SlideNavigationContorllerAnimatorScale.m in Sources */,
+				9DED386D1C64DC7D00BBD131 /* RSPickupLocationPickerViewController.m in Sources */,
 				9D4F01371C5B8A750022A0A4 /* LeftMenuViewController.m in Sources */,
 				9D82B25F1C3A9BAA005CB5D5 /* RSHomeViewController.m in Sources */,
 				9DD355401C3E886F00868CEA /* RSRateUsViewController.m in Sources */,

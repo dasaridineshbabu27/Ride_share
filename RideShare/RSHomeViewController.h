@@ -25,6 +25,7 @@
     UIBarButtonItem *rightButton;
     __weak IBOutlet UIView *filterContainerView;
 }
+@property (nonatomic, strong) NSMutableDictionary *tempRideInfo;
 @property (nonatomic, strong) User *currentUser;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 

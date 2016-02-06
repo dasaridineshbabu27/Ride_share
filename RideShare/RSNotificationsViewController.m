@@ -97,6 +97,7 @@
     [notificationCell.acceptButton addTarget:self action:@selector(acceptButtonAction) forControlEvents:UIControlEventTouchUpInside];
 
     [notificationCell.acceptButton addTarget:self action:@selector(startButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [notificationCell.stratRideButton setHidden:YES];
     return notificationCell;
 }
 
