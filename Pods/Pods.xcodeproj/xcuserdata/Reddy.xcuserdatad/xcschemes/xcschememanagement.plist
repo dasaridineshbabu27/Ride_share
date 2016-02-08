@@ -14,15 +14,25 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SIOSocket.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>2FFA100E1B9F3CF284505E6DC762F092</key>
+		<key>928353533005A4198EBDA5B700D37B64</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>928353533005A4198EBDA5B700D37B64</key>
+		<key>92FF9097CFDD9A5DBA0E1CB462D54D77</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D8774FC879D3351D92E5F23A2FB93F98</key>
 		<dict>
 			<key>primary</key>
 			<true/>

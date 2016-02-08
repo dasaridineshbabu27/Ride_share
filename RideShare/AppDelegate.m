@@ -195,6 +195,11 @@
 
 - (void)showLoaingWithTitle:(NSString*)title
 {
+    [self performSelectorOnMainThread:@selector(showIndicator) withObject:nil waitUntilDone:YES];
+}
+
+- (void)showIndicator
+{
     self.loadingView.tag = self.loadingView.tag + 1;
     _loadingView.hidden = NO;
     [_window bringSubviewToFront:_loadingView];
@@ -204,8 +209,13 @@
 
 - (void)hideLoading
 {
+    [self performSelectorOnMainThread:@selector(hideIndicator) withObject:nil waitUntilDone:YES];
+}
+
+- (void)hideIndicator
+{
     self.loadingView.tag = self.loadingView.tag - 1;
-    if (self.loadingView.tag == 0)
+    if (self.loadingView.tag <= 0)
     {
         [_loadingView setHidden:YES];
         [_indicator stopAnimating];

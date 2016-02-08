@@ -38,7 +38,7 @@
     _containerTrailingConstraint.constant = -200;
     [filterContainerView setNeedsLayout];
     [self.navigationController.navigationItem setHidesBackButton:YES animated:YES];
-    _rideCoseInput.text = @"0";
+//    _rideCoseInput.text = @"0";
     canExecuteWillAppear = YES;
     _timePicker.minimumDate = [NSDate date];
     _currentRides = [[NSMutableArray alloc] init];
@@ -458,7 +458,15 @@
     {
         UIAlertAction *cancelRequest = [UIAlertAction actionWithTitle:@"Cancel Ride" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             NSLog(@"Cancel Ride Clicked button tapped");
-            [self cancelRide:rideInfo];
+            
+            if ([[rideInfo valueForKey:@"ride_type"] intValue] == 1)
+            {
+                [self cancelMyRide:rideInfo];
+            }
+            else
+            {
+                [self cancelPickMeUp:rideInfo];
+            }
         }];
         
         if ([[rideInfo valueForKey:@"ride_type"] intValue] == PickUp)
@@ -540,12 +548,12 @@
     [self presentViewController:controller animated:YES completion:nil];
 }
 
-- (void)cancelRide:(NSDictionary*)rideInfo
+- (void)cancelMyRide:(NSDictionary*)rideInfo
 {
     [appDelegate showLoaingWithTitle:@"Loading..."];
     NSDictionary *infoDict = @{@"user_id" : currentUser.userId, @"ride_id" : [rideInfo valueForKey:@"ride_id"]};
     
-    [RSServices processDeleteRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
+    [RSServices processDeleteMyRideRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
      {
          [appDelegate hideLoading];
          NSString *alertMsg = nil;
@@ -581,6 +589,49 @@
              [RSUtils showAlertWithTitle:@"Cencel Ride" message:alertMsg actionOne:nil actionTwo:nil inView:self];
          }
      }];    
+}
+
+- (void)cancelPickMeUp:(NSDictionary*)rideInfo
+{
+    [appDelegate showLoaingWithTitle:@"Loading..."];
+    NSDictionary *infoDict = @{@"user_id" : currentUser.userId, @"ride_id" : [rideInfo valueForKey:@"ride_id"]};
+    
+    [RSServices processDeleteMyRideRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
+     {
+         [appDelegate hideLoading];
+         NSString *alertMsg = nil;
+         if (error != nil)
+         {
+             alertMsg = error.description;
+         }
+         else if (response != nil)
+         {
+             if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+             {
+                 NSLog(@"Delete Request success! with info: %@", response);
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride request has been cancelled successfully." preferredStyle:UIAlertControllerStyleAlert];
+                 
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                 [alertController addAction:okAction];
+                 [self presentViewController:alertController animated:YES completion:nil];
+                 
+                 [self refreshClicked:nil];
+             }
+             else
+             {
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                            {
+                                                [self.navigationController popViewControllerAnimated:YES];
+                                            }];
+                 [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
+                 return;
+             }
+         }
+         if (alertMsg.length != 0)
+         {
+             [RSUtils showAlertWithTitle:@"Cencel Ride" message:alertMsg actionOne:nil actionTwo:nil inView:self];
+         }
+     }];
 }
 
 - (void)showCallInfo:(NSDictionary*)rideInfo
@@ -735,14 +786,14 @@
 {
     if (sender == _btnPickup)
     {
-        _rideCoseInput.text = @"0";
+        _rideCoseInput.text = @"";
         _btnPickup.selected = YES;
         _btnPickMeUp.selected = NO;
         _rideCoseInput.hidden = NO;
     }
     else
     {
-        _rideCoseInput.text = @"0";
+        _rideCoseInput.text = @"";
         _btnPickup.selected = NO;
         _btnPickMeUp.selected = YES;
         _rideCoseInput.hidden = YES;
@@ -777,86 +828,87 @@
 
 - (IBAction)requestAction:(id)sender
 {
-        NSString *alertMsg = nil;
-   
-        NSString *startTime = [_pickTimeButton titleForState:UIControlStateNormal];
+    [_rideCoseInput resignFirstResponder];
+    NSString *alertMsg = nil;
     
-        if (_sourceLocationInput.text.length == 0 )
-        {
-            alertMsg = @"Please choose your starting Location.";
-        }
-        else if (_destinationLocationInput.text.length == 0)
-        {
-            alertMsg = @"Please choose your Destination Location.";
-        }
-        if(alertMsg.length)
-        {
-            [RSUtils showAlertWithTitle:@"Error" message:alertMsg actionOne:nil actionTwo:nil inView:self];
-            return;
-        }
-        
-        NSString *rideType = (_btnPickup.selected) ? @"1" : @"2";
-        
-        NSDictionary *infoDict = @{@"ride_type" : rideType,
-                                   @"user_id" : currentUser.userId,
-                                   @"ride_cost" : _rideCoseInput.text,
-                                   @"start_time" : startTime,
-                                   @"oaddr" : _sourceLocationInput.text,
-                                   @"olat" : [NSString stringWithFormat:@"%f", sourceCoordinate.latitude],
-                                   @"olang" : [NSString stringWithFormat:@"%f", sourceCoordinate.longitude],
-                                   @"daddr" : _destinationLocationInput.text,
-                                   @"dlat" : [NSString stringWithFormat:@"%f", destinationCoordinate.latitude],
-                                   @"dlang" : [NSString stringWithFormat:@"%f", destinationCoordinate.longitude]
-                                   };
-        
-        NSLog(@"Post data is : %@", infoDict);
-        [appDelegate showLoaingWithTitle:@"Loading..."];
-        [RSServices processMyRideRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
+    NSString *startTime = [_pickTimeButton titleForState:UIControlStateNormal];
+    
+    if (_sourceLocationInput.text.length == 0 )
+    {
+        alertMsg = @"Please choose your starting Location.";
+    }
+    else if (_destinationLocationInput.text.length == 0)
+    {
+        alertMsg = @"Please choose your Destination Location.";
+    }
+    if(alertMsg.length)
+    {
+        [RSUtils showAlertWithTitle:@"Error" message:alertMsg actionOne:nil actionTwo:nil inView:self];
+        return;
+    }
+    
+    NSString *rideType = (_btnPickup.selected) ? @"1" : @"2";
+    
+    NSDictionary *infoDict = @{@"ride_type" : rideType,
+                               @"user_id" : currentUser.userId,
+                               @"ride_cost" : _rideCoseInput.text,
+                               @"start_time" : startTime,
+                               @"oaddr" : _sourceLocationInput.text,
+                               @"olat" : [NSString stringWithFormat:@"%f", sourceCoordinate.latitude],
+                               @"olang" : [NSString stringWithFormat:@"%f", sourceCoordinate.longitude],
+                               @"daddr" : _destinationLocationInput.text,
+                               @"dlat" : [NSString stringWithFormat:@"%f", destinationCoordinate.latitude],
+                               @"dlang" : [NSString stringWithFormat:@"%f", destinationCoordinate.longitude]
+                               };
+    
+    NSLog(@"Post data is : %@", infoDict);
+    [appDelegate showLoaingWithTitle:@"Loading..."];
+    [RSServices processMyRideRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
+     {
+         [appDelegate hideLoading];
+         NSString *alertMsg = nil;
+         if (error != nil)
          {
-             [appDelegate hideLoading];
-             NSString *alertMsg = nil;
-             if (error != nil)
+             alertMsg = error.description;
+         }
+         else if (response != nil)
+         {
+             if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 alertMsg = error.description;
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride request has been submitted successfully." preferredStyle:UIAlertControllerStyleAlert];
+                 _rideCoseInput.text = @"";
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                 [alertController addAction:okAction];
+                 [self presentViewController:alertController animated:YES completion:nil];
+                 //                     _rideCoseInput.text = @"0";
+                 _sourceLocationInput.text = @"";
+                 _destinationLocationInput.text = @"";
+                 sourceCoordinate = CLLocationCoordinate2DMake(0, 0);
+                 destinationCoordinate = CLLocationCoordinate2DMake(0, 0);
+                 NSLog(@"Received response for my ride is : %@", response);
+                 [_currentRides removeAllObjects];
+                 [_currentRides addObjectsFromArray:[response objectForKey:@"response_content"]];
+                 NSLog(@"Current rides are: %@", _currentRides);
+                 //                     [self filterRides:0];
+                 [self refreshClicked:nil];
+                 //TODO: Refresh maps.
              }
-             else if (response != nil)
+             else
              {
-                 if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
-                 {
-                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride request has been submitted successfully." preferredStyle:UIAlertControllerStyleAlert];
-                     
-                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                     [alertController addAction:okAction];
-                     [self presentViewController:alertController animated:YES completion:nil];
-                     _rideCoseInput.text = @"0";
-                     _sourceLocationInput.text = @"";
-                     _destinationLocationInput.text = @"";
-                     sourceCoordinate = CLLocationCoordinate2DMake(0, 0);
-                     destinationCoordinate = CLLocationCoordinate2DMake(0, 0);
-                     NSLog(@"Received response for my ride is : %@", response);
-                     [_currentRides removeAllObjects];
-                     [_currentRides addObjectsFromArray:[response objectForKey:@"response_content"]];
-                     NSLog(@"Current rides are: %@", _currentRides);
-//                     [self filterRides:0];
-                     [self refreshClicked:nil];
-                     //TODO: Refresh maps.
-                 }
-                 else
-                 {
-                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-                                                {
-                                                    [self.navigationController popViewControllerAnimated:YES];
-                                                }];
-                     [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
-                     return;
-                 }
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                            {
+                                                //                                                    [self.navigationController popViewControllerAnimated:YES];
+                                            }];
+                 [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
+                 return;
              }
-             
-             if (alertMsg.length != 0)
-             {
-                 [RSUtils showAlertWithTitle:@"Regisrtation" message:alertMsg actionOne:nil actionTwo:nil inView:self];
-             }
-         }];
+         }
+         
+         if (alertMsg.length != 0)
+         {
+             [RSUtils showAlertWithTitle:@"Regisrtation" message:alertMsg actionOne:nil actionTwo:nil inView:self];
+         }
+     }];
 }
 
 - (IBAction)returnedFromLocationPicker:(UIStoryboardSegue*)segue

@@ -161,13 +161,29 @@
     }];
 }
 
-+ (void)processDeleteRequest:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
++ (void)processDeleteMyRideRequest:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
 {
-    NSLog(@"processDeleteRequest url: %@", urlDeleteRequest);
+    NSLog(@"processDeleteRequest url: %@", urlDeleteMyRideRequest);
     NSLog(@"post data is:%@", infoDict);
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:urlDeleteRequest  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager GET:urlDeleteMyRideRequest  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        callback(responseObject, nil);
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        callback(nil, error);
+    }];
+}
+
++ (void)processPickMeUpDeleteRequest:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
+{
+    NSLog(@"processDeleteRequest url: %@", urlDeletePickMeUpRequest);
+    NSLog(@"post data is:%@", infoDict);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:urlDeletePickMeUpRequest  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         callback(responseObject, nil);
         
@@ -269,6 +285,24 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     //    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     [manager POST:urlRequestAcceptRide  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        callback(responseObject, nil);
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error)
+     {
+         NSLog(@"Error: %@", error);
+         callback(nil, error);
+     }];
+}
+
++ (void)processStartRide:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
+{
+    NSLog(@"processFetchDefaultRides url: %@", urlRequestRideStart);
+    NSLog(@"post data is:%@", infoDict);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager POST:urlRequestRideStart  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject)
+    {
         NSLog(@"JSON: %@", responseObject);
         callback(responseObject, nil);
         

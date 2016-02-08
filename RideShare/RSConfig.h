@@ -32,7 +32,9 @@
 
 #define  urlFetchHistory [NSString stringWithFormat:@"%@%@",mainURL, @"myridelist.php"]
 
-#define  urlDeleteRequest [NSString stringWithFormat:@"%@%@",mainURL, @"deletemyride.php"]
+#define  urlDeleteMyRideRequest [NSString stringWithFormat:@"%@%@",mainURL, @"deletemyride.php"]
+
+#define  urlDeletePickMeUpRequest [NSString stringWithFormat:@"%@%@",mainURL, @"deletepickup.php"]
 
 #define urlFetchDefaultRides [NSString stringWithFormat:@"%@%@",mainURL, @"allrides.php"]
 
@@ -43,5 +45,8 @@
 #define urlRequestNotifications [NSString stringWithFormat:@"%@%@",mainURL, @"mynotifications.php"]
 
 #define urlRequestAcceptRide [NSString stringWithFormat:@"%@%@",mainURL, @"accept_ride.php"]
+
+#define urlRequestRideStart [NSString stringWithFormat:@"%@%@",mainURL, @"ridestart.php"]
+
 
 #endif /* RSConfig_h */
