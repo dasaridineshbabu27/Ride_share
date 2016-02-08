@@ -48,5 +48,7 @@
 
 #define urlRequestRideStart [NSString stringWithFormat:@"%@%@",mainURL, @"ridestart.php"]
 
+#define urlRequestFinishRide [NSString stringWithFormat:@"%@%@",mainURL, @"finishRide.php"]
+
 
 #endif /* RSConfig_h */
