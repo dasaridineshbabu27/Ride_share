@@ -8,6 +8,9 @@
 
 #import "RSRideInProgressViewController.h"
 #define CLCOORDINATES_EQUAL( coord1, coord2 ) (coord1.latitude == coord2.latitude && coord1.longitude == coord2.longitude)
+#define degreesToRadians(x) (M_PI * x / 180.0)
+#define radiandsToDegrees(x) (x * 180.0 / M_PI)
+#define POSITIONKEY @"positionAnimation"
 
 @interface RSRideInProgressViewController ()
 
@@ -24,6 +27,8 @@
 
 //////////
 @property SocketIO *socketIO;
+
+
 
 @end
 
@@ -89,6 +94,7 @@
     {
         markerImage = [UIImage imageNamed:@"Car_Black"];
         marker.snippet = @"Vehicle Location";
+        vehicleMarker=marker;
     }
     marker.icon = markerImage;
     marker.map = _rideMapView;
@@ -109,12 +115,14 @@
     
     CLLocation *location = [locations lastObject];
     
-//    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude zoom:13];
-//    _rideMapView.camera = camera;
-//    _rideMapView.delegate = self;
-//    _rideMapView.myLocationEnabled = YES;
-//    [[_rideMapView settings] setMyLocationButton:YES];
-//    [self.locationManager stopUpdatingLocation];
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude zoom:13];
+    
+    _rideMapView.camera = camera;
+    _rideMapView.delegate = self;
+    _rideMapView.myLocationEnabled = YES;
+    [[_rideMapView settings] setMyLocationButton:YES];
+    
+    //    [self.locationManager stopUpdatingLocation];
     
     ///////Updating Location////////
     
@@ -308,15 +316,11 @@
 
 
 
-
 -(void)updateVehicleLocationCoordinates:(CLLocationCoordinate2D)locationCoordinates
 {
     
     NSLog(@"\n \n updatedLocation===%f, %f",locationCoordinates.latitude,locationCoordinates.longitude);
 
-    
-   
-    
     
     if (self.vehicleMarker == nil)
     {
@@ -369,6 +373,72 @@
 //        polyline.map = _rideMapView;
 //        self.view = _rideMapView;
 //    }}
+
+
+- (void) setPosition : (CLLocationCoordinate2D)coordinates
+{
+    NSLog(@"set position");
+    
+    CGPoint mapPoint=[_rideMapView.projection pointForCoordinate: coordinates];
+    
+    CGPoint toPos;
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7)
+    {
+        
+        toPos = [_rideMapView.projection pointForCoordinate: coordinates];
+    }
+    
+    CLLocationCoordinate2D currentCoordinate = [_rideMapView.projection coordinateForPoint:mapPoint];
+    CLLocationCoordinate2D previousCoordinate = [_rideMapView.projection coordinateForPoint:previousPoint];
+    
+    
+//    [self setTransform:CGAffineTransformMakeRotation([self getHeadingForDirectionFromCoordinate:previousCoordinate toCoordinate: currentCoordinate])];
+    
+    
+     CGPoint vehicleMarkerPoint=[_rideMapView.projection pointForCoordinate: vehicleMarker.position];
+    
+    if ([_rideMapView.projection containsCoordinate:currentCoordinate])
+    {
+        
+        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+        
+        animation.fromValue = [NSValue valueWithCGPoint:vehicleMarkerPoint];
+        animation.toValue = [NSValue valueWithCGPoint:toPos];
+        animation.duration = 1.0;
+        animation.delegate = self;
+        animation.fillMode = kCAFillModeForwards;
+        //[self.layer removeAllAnimations];
+        [vehicleMarker.layer addAnimation:animation forKey:POSITIONKEY];
+        
+        //NSLog(@"setPosition ANIMATED %x from (%f, %f) to (%f, %f)", self, self.center.x, self.center.y, toPos.x, toPos.y);
+    }
+    
+    vehicleMarkerPoint = toPos;
+    CLLocationCoordinate2D vehicleMarkerCoordinate = [_rideMapView.projection coordinateForPoint:vehicleMarkerPoint];
+    [vehicleMarker setPosition:vehicleMarkerCoordinate];
+    
+    previousPoint = mapPoint;
+}
+
+- (float)getHeadingForDirectionFromCoordinate:(CLLocationCoordinate2D)fromLoc toCoordinate:(CLLocationCoordinate2D)toLoc
+{
+    float fLat = degreesToRadians(fromLoc.latitude);
+    float fLng = degreesToRadians(fromLoc.longitude);
+    float tLat = degreesToRadians(toLoc.latitude);
+    float tLng = degreesToRadians(toLoc.longitude);
+    
+    float degree = atan2(sin(tLng-fLng)*cos(tLat), cos(fLat)*sin(tLat)-sin(fLat)*cos(tLat)*cos(tLng-fLng));
+    
+    float deg  = radiandsToDegrees(degree);
+    
+    
+    NSLog(@"%f",deg);
+    
+    
+    return degreesToRadians(deg);
+    
+}
 @end
 
 

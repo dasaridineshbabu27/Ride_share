@@ -15,7 +15,8 @@
 
 @interface RSRideInProgressViewController : UIViewController<CLLocationManagerDelegate, GMSMapViewDelegate,SocketIODelegate>
 {
-    
+    CGPoint previousPoint;
+    GMSMarker *vehicleMarker;
 }
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, assign) CLLocationCoordinate2D pickUpLocation;
