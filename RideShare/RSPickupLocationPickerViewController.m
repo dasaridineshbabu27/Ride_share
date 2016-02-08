@@ -87,6 +87,7 @@ idleAtCameraPosition:(GMSCameraPosition *)position
                                @"pick_lang" : [NSString stringWithFormat:@"%f", pickUpLocation.longitude],
                                @"pick_addr" : _addressDisplayer.text
                                };
+    [appDelegate showLoaingWithTitle:@"Loading..."];
     [RSServices processRequestRideViaPush:infoDict completionHandler:^(NSDictionary *response, NSError *error)
      {
          [appDelegate hideLoading];
@@ -103,7 +104,7 @@ idleAtCameraPosition:(GMSCameraPosition *)position
                  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your request for Picking you up has been intimated to the other end." preferredStyle:UIAlertControllerStyleAlert];
                  
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                     [self.navigationController popToRootViewControllerAnimated:YES];
+                     [self.navigationController popViewControllerAnimated:YES];
                  }];
                  [alertController addAction:okAction];
                  [self presentViewController:alertController animated:YES completion:nil];

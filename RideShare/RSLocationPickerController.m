@@ -75,7 +75,7 @@ idleAtCameraPosition:(GMSCameraPosition *)position
          {
             _selectedAddress = response.firstResult;
              NSLog(@"Selected address is : %@", _selectedAddress);
-             _addressDisplayer.text = [NSString stringWithFormat:@"%@, %@, %@, %@", _selectedAddress.locality, _selectedAddress.administrativeArea, _selectedAddress.country, _selectedAddress.postalCode];
+             _addressDisplayer.text = [NSString stringWithFormat:@"%@, %@, %@", _selectedAddress.thoroughfare, _selectedAddress.locality, _selectedAddress.administrativeArea];
          }
      }];
 }

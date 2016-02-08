@@ -15,6 +15,7 @@
 #import "AppDelegate.h"
 #import "User.h"
 #import "NotificationCell.h"
+#import "User.h"
 
 @interface RSNotificationsViewController ()
 
@@ -26,7 +27,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+    self.automaticallyAdjustsScrollViewInsets = NO;
     rideInfo = [[NSArray alloc] init];
     
     _msgListview.allowsMultipleSelectionDuringEditing = NO;
@@ -151,7 +153,7 @@
              {
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                                             {
-                                                [self.navigationController popViewControllerAnimated:YES];
+//                                                [self.navigationController popViewControllerAnimated:YES];
                                             }];
                  [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
                  return;
@@ -162,7 +164,31 @@
 
 - (void)startButtonAction
 {
-    NSLog(@"Start ride button tapped.");
+    NSLog(@"Start ride button tapped: %@", rideInfo);
+    
+    int trackId = [[[notifications objectAtIndex:0]valueForKey:@"track_id"] intValue];
+    
+    [RSServices processStartRide:@{@"track_id" : [NSString stringWithFormat:@"%i", trackId], @"user_id": [User currentUser].userId}  completionHandler:^(NSDictionary *response, NSError *error) {
+                   [appDelegate hideLoading];
+                   if (error != nil)
+                   {
+                       [RSUtils showAlertForError:error inView:self];
+                   }
+                   else if (response != nil)
+                   {
+                       if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+                       {
+                           NSLog(@"Received response for my ride is : %@", response);
+                       }
+                       else
+                       {
+                           UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                           
+                           [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
+                           return;
+                       }
+                   }
+               }];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

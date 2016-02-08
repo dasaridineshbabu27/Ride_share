@@ -27,7 +27,7 @@
 
 + (void)processFetchHistory:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
-+ (void)processDeleteRequest:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
++ (void)processDeleteMyRideRequest:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
 + (void)processForgotPassword:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
@@ -40,4 +40,8 @@
 + (void)processFetchNotifications:(NSDictionary*)info completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
 + (void)processAcceptRide:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++ (void)processStartRide:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
+
 @end

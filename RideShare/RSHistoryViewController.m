@@ -144,11 +144,59 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView reloadData];
-    User *currentUser = [User currentUser];
-    [appDelegate showLoaingWithTitle:@"Loading..."];
-    NSDictionary *infoDict = @{@"user_id" : currentUser.userId, @"ride_id" : [[_myRides objectAtIndex:indexPath.row] valueForKey:@"ride_id"]};
     
-    [RSServices processDeleteRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
+//    NSDictionary *infoDict = @{@"user_id" : currentUser.userId, @"ride_id" : [[_myRides objectAtIndex:indexPath.row] valueForKey:@"ride_id"]};
+    
+    if ([[[_myRides objectAtIndex:indexPath.row] valueForKey:@"ride_type"] intValue] == 1)
+    {
+        [self cancelMyRide:[_myRides objectAtIndex:indexPath.row] forIndexPath:indexPath];
+    }
+    else
+    {
+        [self cancelPickMeUp:[_myRides objectAtIndex:indexPath.row] forIndexPath:indexPath];
+    }
+    
+//    [RSServices processDeleteRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
+//     {
+//         [appDelegate hideLoading];
+//         NSString *alertMsg = nil;
+//         if (error != nil)
+//         {
+//             alertMsg = error.description;
+//         }
+//         else if (response != nil)
+//         {
+//             if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+//             {
+//                 NSLog(@"Delete Request success! with info: %@", response);
+//                 [_myRides removeObjectAtIndex:indexPath.row];
+//                 [_historyListview reloadData];
+//             }
+//             else
+//             {
+//                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+//                                            {
+//                                                [self.navigationController popViewControllerAnimated:YES];
+//                                            }];
+//                 [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
+//                 return;
+//             }
+//         }
+//         
+//         if (alertMsg.length != 0)
+//         {
+//             [RSUtils showAlertWithTitle:@"History" message:alertMsg actionOne:nil actionTwo:nil inView:self];
+//         }
+//     }];
+//    NSLog(@"Comit editing style");
+}
+
+- (void)cancelMyRide:(NSDictionary*)rideInfo forIndexPath:(NSIndexPath*)indexPath
+{
+    [appDelegate showLoaingWithTitle:@"Loading..."];
+    NSDictionary *infoDict = @{@"user_id" : [User currentUser].userId, @"ride_id" : [rideInfo valueForKey:@"ride_id"]};
+    
+    [RSServices processDeleteMyRideRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
      {
          [appDelegate hideLoading];
          NSString *alertMsg = nil;
@@ -180,7 +228,45 @@
              [RSUtils showAlertWithTitle:@"History" message:alertMsg actionOne:nil actionTwo:nil inView:self];
          }
      }];
-    NSLog(@"Comit editing style");
+}
+
+- (void)cancelPickMeUp:(NSDictionary*)rideInfo forIndexPath:(NSIndexPath*)indexPath
+{
+    [appDelegate showLoaingWithTitle:@"Loading..."];
+    NSDictionary *infoDict = @{@"user_id" : [User currentUser].userId, @"ride_id" : [rideInfo valueForKey:@"ride_id"]};
+    
+    [RSServices processDeleteMyRideRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
+     {
+         [appDelegate hideLoading];
+         NSString *alertMsg = nil;
+         if (error != nil)
+         {
+             alertMsg = error.description;
+         }
+         else if (response != nil)
+         {
+             if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+             {
+                 NSLog(@"Delete Request success! with info: %@", response);
+                 [_myRides removeObjectAtIndex:indexPath.row];
+                 [_historyListview reloadData];
+             }
+             else
+             {
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                            {
+                                                [self.navigationController popViewControllerAnimated:YES];
+                                            }];
+                 [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
+                 return;
+             }
+         }
+         
+         if (alertMsg.length != 0)
+         {
+             [RSUtils showAlertWithTitle:@"History" message:alertMsg actionOne:nil actionTwo:nil inView:self];
+         }
+     }];
 }
 
 /*
