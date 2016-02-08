@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import <GoogleMaps/GoogleMaps.h>
+#import <SIOSocket/SIOSocket.h>
+#import "WPAnnotation.h"
 
-@interface RSRideInProgressViewController : UIViewController<CLLocationManagerDelegate, GMSMapViewDelegate>
+#import "SocketIO.h"
+
+@interface RSRideInProgressViewController : UIViewController<CLLocationManagerDelegate, GMSMapViewDelegate,SocketIODelegate>
 {
-    CLLocationManager *locationManager;
+    
 }
-
+@property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, assign) CLLocationCoordinate2D pickUpLocation;
 @property (nonatomic, assign) CLLocationCoordinate2D startCoordinate;
 @property (nonatomic, assign) CLLocationCoordinate2D destinationCoordinate;

@@ -15,13 +15,16 @@ PODS:
   - AFNetworking/UIKit (3.0.4):
     - AFNetworking/NSURLSession
   - Google-Maps-iOS-SDK (1.9.2)
+  - SIOSocket (0.2.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
   - Google-Maps-iOS-SDK (~> 1.9.2)
+  - SIOSocket
 
 SPEC CHECKSUMS:
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
   Google-Maps-iOS-SDK: 7f89cc1edb3ca239a410e5bc83cd1e060db3a289
+  SIOSocket: 2facc0bd02ae72d98c223634a46dd8ebdf9be321
 
 COCOAPODS: 0.39.0

@@ -8,6 +8,6 @@ target 'RideShare' do
 #pod 'GoogleMaps', '~> 1.11'
 pod 'Google-Maps-iOS-SDK', '~> 1.9.2'
 pod 'AFNetworking', '~> 3.0'
-
+pod 'SIOSocket'
 end
 
