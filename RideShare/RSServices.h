@@ -43,5 +43,7 @@
 
 + (void)processStartRide:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
++ (void)processFinishride:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
 
 @end

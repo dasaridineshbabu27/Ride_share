@@ -38,7 +38,6 @@
 {
     [super viewDidLoad];
     
-    
     NSLog(@"\n \n pickUpLocation===%f, %f",_pickUpLocation.latitude,_pickUpLocation.longitude);
     NSLog(@"\n \n startCoordinate===%f, %f",_startCoordinate.latitude,_startCoordinate.longitude);
     NSLog(@"\n \n destinationCoordinate===%f, %f",_destinationCoordinate.latitude,_destinationCoordinate.longitude);
@@ -58,6 +57,15 @@
     
     ////////
     [self scoketIOImplememtation];
+    
+    
+    UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Finish" style:UIBarButtonItemStylePlain target:self action:@selector(finishRideClicked)];
+    sendButton.image = [UIImage imageNamed:@"Hamburger_menu"];
+    self.navigationItem.rightBarButtonItem = sendButton;
+}
+
+- (void)finishRideClicked
+{
     
 }
 

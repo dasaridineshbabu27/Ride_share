@@ -313,4 +313,22 @@
      }];
 }
 
++ (void)processFinishride:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
+{
+    NSLog(@"processFetchDefaultRides url: %@", urlRequestFinishRide);
+    NSLog(@"post data is:%@", infoDict);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager POST:urlRequestFinishRide  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject)
+     {
+         NSLog(@"JSON: %@", responseObject);
+         callback(responseObject, nil);
+         
+     } failure:^(NSURLSessionTask *operation, NSError *error)
+     {
+         NSLog(@"Error: %@", error);
+         callback(nil, error);
+     }];
+}
+
 @end
