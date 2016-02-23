@@ -13,7 +13,9 @@
     NSMutableData *webData;
 }
 
-+(void)processRegistration:(NSDictionary*)infoDict imageData:(NSData*)imageData completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
++(void)processRegistration:(NSDictionary*)infoDict  completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++(void)uploadProfileImageWithUserID:(NSDictionary*)parameters imageData:(NSData*)imageData  completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
 +(void)processLogin:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 

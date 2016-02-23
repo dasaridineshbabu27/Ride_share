@@ -61,7 +61,8 @@
                  NSLog(@"Received response for my ride is : %@", response);
                  [notifications removeAllObjects];
                  [notifications addObjectsFromArray:[response objectForKey:@"response_content"]];
-                 rideInfo = [response objectForKey:@"ride_info"];                 
+                 rideInfo = [response objectForKey:@"ride_info"];
+                 
                  if (notifications.count)
                  {
                      [_msgListview reloadData];
@@ -168,8 +169,10 @@
     
     int trackId = [[[notifications objectAtIndex:0]valueForKey:@"track_id"] intValue];
     
-    [RSServices processStartRide:@{@"track_id" : [NSString stringWithFormat:@"%i", trackId], @"user_id": [User currentUser].userId}  completionHandler:^(NSDictionary *response, NSError *error) {
+    [RSServices processStartRide:@{@"track_id" : [NSString stringWithFormat:@"%i", trackId], @"user_id": [User currentUser].userId}  completionHandler:^(NSDictionary *response, NSError *error)
+    {
                    [appDelegate hideLoading];
+        
                    if (error != nil)
                    {
                        [RSUtils showAlertForError:error inView:self];
@@ -216,6 +219,8 @@
         NSLog(@"Notifications: %@", notifications);
         
         rideViewController.pickUpLocation = CLLocationCoordinate2DMake([[[notifications objectAtIndex:0] valueForKey:@"pick_lat"] floatValue], [[[notifications objectAtIndex:0] valueForKey:@"pick_lang"] floatValue]);
+        
+        rideViewController.otherUser_id= [[notifications objectAtIndex:0] valueForKey:@"from_id"];
         
         rideViewController.startCoordinate = CLLocationCoordinate2DMake([[[rideInfo objectAtIndex:0] valueForKey:@"olat"] floatValue], [[[rideInfo objectAtIndex:0] valueForKey:@"olang"] floatValue]);
         

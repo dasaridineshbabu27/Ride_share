@@ -11,10 +11,11 @@
 
 // External
 #define mainURL  @"http://202.153.46.238:8082/rides/controller/"
-
 //#define mainURL  @"http://192.168.0.100:8082/rides/controller/"
 
 #define urlRegistration [NSString stringWithFormat:@"%@%@",mainURL, @"registeration.php"]
+
+#define urlProfileImage [NSString stringWithFormat:@"%@%@",mainURL, @"add_logo.php"]
 
 #define urlLogin [NSString stringWithFormat:@"%@%@",mainURL, @"login.php"]
 

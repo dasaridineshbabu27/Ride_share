@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06E69D1A662D5B5BF95F95FA /* Pods_RideShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57921139F7B3B1DADA80FB45 /* Pods_RideShare.framework */; };
 		1B0767091C6734FA00952D8F /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0767081C6734FA00952D8F /* SRWebSocket.m */; };
 		1B0767161C67352100952D8F /* SocketIO.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B07670C1C67352100952D8F /* SocketIO.m */; };
 		1B0767171C67352100952D8F /* SocketIOPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B07670E1C67352100952D8F /* SocketIOPacket.m */; };
@@ -14,7 +15,6 @@
 		1B0767191C67352100952D8F /* SocketIOTransportWebsocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0767131C67352100952D8F /* SocketIOTransportWebsocket.m */; };
 		1B07671A1C67352100952D8F /* SocketIOTransportXHR.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0767151C67352100952D8F /* SocketIOTransportXHR.m */; };
 		1B07671E1C67353C00952D8F /* WPAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B07671D1C67353C00952D8F /* WPAnnotation.m */; };
-		95D4B7E627BEFAA4456352EB /* libPods-RideShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D47F86D14AF8DCB374FA34D /* libPods-RideShare.a */; };
 		9D4F00DE1C58C4AB0022A0A4 /* RideCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F00DD1C58C4AB0022A0A4 /* RideCell.m */; };
 		9D4F01371C5B8A750022A0A4 /* LeftMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F01271C5B8A750022A0A4 /* LeftMenuViewController.m */; };
 		9D4F01381C5B8A750022A0A4 /* RightMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F01291C5B8A750022A0A4 /* RightMenuViewController.m */; };
@@ -91,9 +91,10 @@
 		1B0767151C67352100952D8F /* SocketIOTransportXHR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIOTransportXHR.m; sourceTree = "<group>"; };
 		1B07671C1C67353C00952D8F /* WPAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAnnotation.h; sourceTree = "<group>"; };
 		1B07671D1C67353C00952D8F /* WPAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnnotation.m; sourceTree = "<group>"; };
+		1BB573871C69C7D700B17A31 /* RideShare-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RideShare-Bridging-Header.h"; sourceTree = "<group>"; };
 		244B3AB444DEEEF202E0C0A3 /* Pods-RideShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RideShare.release.xcconfig"; path = "Pods/Target Support Files/Pods-RideShare/Pods-RideShare.release.xcconfig"; sourceTree = "<group>"; };
 		28DE6A1514594B817D3CD07C /* Pods-RideShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RideShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RideShare/Pods-RideShare.debug.xcconfig"; sourceTree = "<group>"; };
-		9D47F86D14AF8DCB374FA34D /* libPods-RideShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RideShare.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		57921139F7B3B1DADA80FB45 /* Pods_RideShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RideShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D4F00DC1C58C4AB0022A0A4 /* RideCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideCell.h; sourceTree = "<group>"; };
 		9D4F00DD1C58C4AB0022A0A4 /* RideCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RideCell.m; sourceTree = "<group>"; };
 		9D4F01261C5B8A750022A0A4 /* LeftMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftMenuViewController.h; sourceTree = "<group>"; };
@@ -219,7 +220,7 @@
 				9D9349891C510BF2007E3330 /* SystemConfiguration.framework in Frameworks */,
 				9D52CAF61C3B9A6400262291 /* CoreLocation.framework in Frameworks */,
 				9D52CAF41C3B9A2000262291 /* MapKit.framework in Frameworks */,
-				95D4B7E627BEFAA4456352EB /* libPods-RideShare.a in Frameworks */,
+				06E69D1A662D5B5BF95F95FA /* Pods_RideShare.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,7 +233,7 @@
 				9D52CAF51C3B9A6400262291 /* CoreLocation.framework */,
 				9D52CAF31C3B9A2000262291 /* MapKit.framework */,
 				9D9349881C510BF2007E3330 /* SystemConfiguration.framework */,
-				9D47F86D14AF8DCB374FA34D /* libPods-RideShare.a */,
+				57921139F7B3B1DADA80FB45 /* Pods_RideShare.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -353,6 +354,7 @@
 		9D82B2561C3A9BAA005CB5D5 /* RideShare */ = {
 			isa = PBXGroup;
 			children = (
+				1BB573871C69C7D700B17A31 /* RideShare-Bridging-Header.h */,
 				9D77E1EF1C4652730044B81F /* KeyboardManager */,
 				9D4F01251C5B8A590022A0A4 /* LeftSlideManu */,
 				9D82B2831C3A9E4C005CB5D5 /* SlideMenu */,
@@ -758,7 +760,10 @@
 			baseConfigurationReference = 28DE6A1514594B817D3CD07C /* Pods-RideShare.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Srinivas Pulluri (5RUQX35JU5)";
+				DEFINES_MODULE = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = RideShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -766,6 +771,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.saxonglobal.rideshare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "389278c6-d81d-4ffd-b32b-4fc099bf13df";
+				SWIFT_OBJC_BRIDGING_HEADER = "RideShare/RideShare-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -775,7 +782,10 @@
 			baseConfigurationReference = 244B3AB444DEEEF202E0C0A3 /* Pods-RideShare.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Srinivas Pulluri (5RUQX35JU5)";
+				DEFINES_MODULE = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = RideShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -783,6 +793,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.saxonglobal.rideshare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "389278c6-d81d-4ffd-b32b-4fc099bf13df";
+				SWIFT_OBJC_BRIDGING_HEADER = "RideShare/RideShare-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

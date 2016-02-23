@@ -85,6 +85,15 @@
 
 - (IBAction)registerAction:(id)sender
 {
+    
+    ////// testing
+   
+//    NSData *imageData = UIImagePNGRepresentation([_btnPickImage backgroundImageForState:UIControlStateNormal]);
+//    // NSDictionary *parameters = @{@"user_id": @"36",@"pfimg":imageData};
+//    NSDictionary *parameters = @{@"user_id": @"36"};
+//    [self updateProfileImageWith:parameters imageData:imageData];
+    
+    
     if ([RSUtils trimWhiteSpaces:_firstNameInput.text].length == 0 ||
         [RSUtils trimWhiteSpaces:_lastNameInput.text].length == 0 ||
         [RSUtils trimWhiteSpaces:_emailInput.text].length == 0 ||
@@ -109,7 +118,8 @@
                                @"mobile" : _mobileNoInput.text
                                };
     [appDelegate showLoaingWithTitle:nil];
-    [RSServices processRegistration:infoDict imageData:imageData completionHandler:^(NSDictionary* response, NSError * error)
+    
+    [RSServices processRegistration:infoDict completionHandler:^(NSDictionary* response, NSError * error)
     {
         [appDelegate hideLoading];
         NSString *alertMsg = nil;
@@ -122,14 +132,19 @@
             if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
             {
                 
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:@"Registered successfully, verification mail has been sent to your email, please verify to confinue services." preferredStyle:UIAlertControllerStyleAlert];
+               NSDictionary *parameters = @{@"user_id": [response objectForKey:@"user_id"]};
+                [self updateProfileImageWith:parameters imageData:imageData];
                 
-                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }];
-                [alertController addAction:okAction];
-                [self presentViewController:alertController animated:YES completion:nil];
-                return ;
+//                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:@"Registered successfully, verification mail has been sent to your email, please verify to confinue services." preferredStyle:UIAlertControllerStyleAlert];
+//                
+//                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+//                {
+//                    [self.navigationController popViewControllerAnimated:YES];
+//                }];
+//                
+//                [alertController addAction:okAction];
+//                [self presentViewController:alertController animated:YES completion:nil];
+//                return ;
             }
             else
             {
@@ -148,6 +163,60 @@
     }];
 }
 
+
+-(void)updateProfileImageWith:(NSDictionary*)info imageData:(NSData*)imgData
+{
+    ///////////////////////////////////////////////////////////////////////////////////
+    /////Upload Profile image/////////////////////////////////////////////////////////
+     [appDelegate showLoaingWithTitle:nil];
+    [RSServices uploadProfileImageWithUserID:info imageData:imgData completionHandler:^(NSDictionary* responseImage, NSError * errorImage)
+     {
+         [appDelegate hideLoading];
+         NSString *alertMsgImage = nil;
+         if (errorImage != nil)
+         {
+             alertMsgImage = errorImage.description;
+         }
+         else if (responseImage != nil)
+         {
+             if ([[responseImage objectForKey:kResponseCode] intValue] == kRequestSuccess)
+             {
+                 
+//                 UIAlertController *alertControllerImage = [UIAlertController alertControllerWithTitle:@"Profile Image" message:@"Profile Image updated successfully" preferredStyle:UIAlertControllerStyleAlert];
+//                 [self presentViewController:alertControllerImage animated:YES completion:nil];
+                 
+                 
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:@"Registered successfully, verification mail has been sent to your email, please verify to confinue services." preferredStyle:UIAlertControllerStyleAlert];
+                 
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                            {
+                                                [self.navigationController popViewControllerAnimated:YES];
+                                            }];
+                 
+                 [alertController addAction:okAction];
+                 [self presentViewController:alertController animated:YES completion:nil];
+                 return ;
+
+             }
+             else
+             {
+                 [RSUtils showAlertWithTitle:@"Profile Image" message:[responseImage objectForKey:kResponseMessage] actionOne:nil actionTwo:nil inView:self];
+                 //return;
+             }
+             
+         }
+         if (alertMsgImage.length != 0)
+         {
+             UIAlertController *alertControllerImage = [UIAlertController alertControllerWithTitle:@"Profile Image" message:alertMsgImage preferredStyle:UIAlertControllerStyleAlert];
+             [self presentViewController:alertControllerImage animated:YES completion:nil];
+         }
+         
+     }];
+    
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////
+
+}
 - (IBAction)genderToggleAction:(UIButton*)sender
 {
     if (sender == _btnMale)

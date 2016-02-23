@@ -18,6 +18,9 @@
 {
     [super viewDidLoad];
     
+    [_passwordInput setText:@"password"];
+    [_userNameImput setText:@"dinesh.b@saxonglobal.com"];
+    
     if ([RSUtils isNetworkReachable])
     {
         NSLog(@"Reachable");

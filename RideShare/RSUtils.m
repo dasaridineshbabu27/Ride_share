@@ -144,3 +144,199 @@
 }
 
 @end
+
+
+
+/////////
+//@property SIOSocket *socket;
+//@property BOOL socketIsConnected;
+//
+//
+////////////
+//@property SocketIO *socketIO;
+///////////
+//[self socketImplementation];
+
+////////
+//[self scoketIOImplememtation];
+
+//-(void)socketImplementation
+//{
+//    NSLog(@"\n\nSocket Implementation");
+//
+//    [SIOSocket socketWithHost: @"http://192.168.0.104:3000/" response: ^(SIOSocket *socket)
+//
+//     {
+//         self.socket = socket;
+//         __block typeof(self) weakSelf = self;
+//
+//         //////On Connect
+//         self.socket.onConnect = ^()
+//         {
+//             weakSelf.socketIsConnected = YES;
+//             NSLog(@"\n\nSocket CONNECT");
+//         };
+//
+//
+//         /////On Join
+//         [self.socket on: @"join" callback: ^(SIOParameterArray *args)
+//          {
+//              NSLog(@"\n\nSocket JOIN");
+//          }];
+//
+//
+//
+//         /////On Update
+//         [self.socket on: @"update" callback: ^(SIOParameterArray *args)
+//          {
+//              NSLog(@"\n\nSocket UPDATE");
+//
+//          }];
+//
+//
+//         /////On Disappear
+//         [self.socket on: @"disappear" callback: ^(SIOParameterArray *args)
+//          {
+//              NSLog(@"\n\nSocket DISAPPEAR");
+//          }];
+//     }];
+//
+//}
+
+//-(void)scoketIOImplememtation
+//{
+//    _socketIO = [[SocketIO alloc] initWithDelegate:self];
+//    
+//    // you can update the resource name of the handshake URL
+//    // see https://github.com/pkyeck/socket.IO-objc/pull/80
+//    // [socketIO setResourceName:@"whatever"];
+//    
+//    // if you want to use https instead of http
+//    // socketIO.useSecure = YES;
+//    
+//    // pass cookie(s) to handshake endpoint (e.g. for auth)
+//    
+//    //    NSDictionary *properties = [NSDictionary dictionaryWithObjectsAndKeys:
+//    //                                @"localhost", NSHTTPCookieDomain,
+//    //                                @"/", NSHTTPCookiePath,
+//    //                                @"auth", NSHTTPCookieName,
+//    //                                @"56cdea636acdf132", NSHTTPCookieValue,
+//    //                                nil];
+//    //    NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
+//    //    NSArray *cookies = [NSArray arrayWithObjects:cookie, nil];
+//    //    _socketIO.cookies = cookies;
+//    
+//    // connect to the socket.io server that is running locally at port 3000
+//    [self.socketIO connectToHost:@"192.168.0.104" onPort:3000];
+//    //dhttp://192.168.0.104:3000/
+//    
+//    
+//}
+//# pragma mark -
+//# pragma mark socket.IO-objc delegate methods
+//
+//- (void) socketIODidConnect:(SocketIO *)socket
+//{
+//    NSLog(@"\n \n socket.io connected.");
+//}
+//
+//- (void) socketIO:(SocketIO *)socket didReceiveEvent:(SocketIOPacket *)packet
+//{
+//    NSLog(@"\n \n socket.io didReceiveEvent.");
+//    
+//    
+//    //    // test acknowledge
+//    //    SocketIOCallback cb = ^(id argsData)
+//    //    {
+//    //        NSDictionary *response = argsData;
+//    //        // do something with response
+//    //        NSLog(@"ack arrived: %@", response);
+//    //
+//    //        // test forced disconnect
+//    //        [self.socketIO disconnectForced];
+//    //    };
+//    //
+//    //    ////////////
+//    //    [self.socketIO sendMessage:@"hello back!" withAcknowledge:cb];
+//    //
+//    //    // test different event data types
+//    //    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+//    //    [dict setObject:@"test1" forKey:@"key1"];
+//    //    [dict setObject:@"test2" forKey:@"key2"];
+//    //    [self.socketIO sendEvent:@"welcome" withData:dict];
+//    //
+//    //    ///////////
+//    //    [self.socketIO sendEvent:@"welcome" withData:@"testWithString"];
+//    //
+//    //    ///////////
+//    //    NSArray *arr = [NSArray arrayWithObjects:@"test1", @"test2", nil];
+//    //    [self.socketIO sendEvent:@"welcome" withData:arr];
+//    
+//    
+//    //////////////
+//    self.updatedLocation=CLLocationCoordinate2DMake(14.88888, 134.768586967);
+//    
+//    [self updateVehicleLocationCoordinates:self.updatedLocation];
+//    
+//}
+//
+//
+//- (void) socketIO:(SocketIO *)socket didSendMessage:(SocketIOPacket *)packet
+//{
+//    NSLog(@"\n \n socket.io didSendMessage.");
+//}
+//- (void) socketIO:(SocketIO *)socket didReceiveMessage:(SocketIOPacket *)packet
+//{
+//    NSLog(@"\n \n socket.io didReceiveMessage.");
+//}
+//- (void) socketIO:(SocketIO *)socket didReceiveJSON:(SocketIOPacket *)packet
+//{
+//    NSLog(@"\n \n socket.io didReceiveJSON.");
+//}
+//
+//
+//
+//- (void) socketIO:(SocketIO *)socket onError:(NSError *)error
+//{
+//    
+//    NSLog(@"\n \n socket.io onError.");
+//    
+//    if ([error code] == SocketIOUnauthorized)
+//    {
+//        NSLog(@"not authorized");
+//    }
+//    else
+//    {
+//        NSLog(@"onError() %@", error);
+//    }
+//}
+//
+//
+//- (void) socketIODidDisconnect:(SocketIO *)socket disconnectedWithError:(NSError *)error
+//{
+//    
+//    NSLog(@"\n \n socket.io disconnectedWithError.");
+//    NSLog(@"socket.io disconnected. did error occur? %@", error);
+//}
+
+//    if (self.socketIsConnected)
+//    {
+//        [self.socket emit: @"location" args: @[
+//                                               [NSString stringWithFormat: @"%f,%f", location.coordinate.latitude, location.coordinate.longitude]
+//                                               ]];
+//    }
+
+
+//if (self.socketIO.isConnected)
+//{
+//    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+//    [dict setObject:[NSString stringWithFormat: @"%f", location.coordinate.latitude] forKey:@"latitude"];
+//    [dict setObject:[NSString stringWithFormat: @"%f", location.coordinate.longitude] forKey:@"longitude"];
+//    [self.socketIO sendEvent:@"location" withData:dict];
+//    
+//}
+//else
+//{
+//    NSLog(@"\n \n socket.io NOT Connected to update location.");
+//}
+//
