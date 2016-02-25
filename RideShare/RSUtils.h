@@ -38,4 +38,6 @@
 
 +(NSString*)getDisplayDate:(NSString*)dateString;
 
++(void)addCornerRadius:(UIView*)view;
+
 @end

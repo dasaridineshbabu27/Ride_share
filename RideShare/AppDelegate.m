@@ -12,9 +12,13 @@
 #import "RightMenuViewController.h"
 #import "SlideNavigationController.h"
 #import "RSServices.h"
+#import "User.h"
+#import "RSUtils.h"
 
 @interface AppDelegate ()
 
+@property BOOL registered;
+@property NSString *scoketID;
 @end
 
 @implementation AppDelegate
@@ -222,5 +226,126 @@
     }
     NSLog(@"Hiding from AppDelegate");
 }
+
+- (UIViewController *)topViewController
+{
+    return [self topViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
+}
+
+- (UIViewController *)topViewController:(UIViewController *)rootViewController
+{
+    if (rootViewController.presentedViewController == nil) {
+        return rootViewController;
+    }
+    
+    if ([rootViewController.presentedViewController isMemberOfClass:[UINavigationController class]]) {
+        UINavigationController *navigationController = (UINavigationController *)rootViewController.presentedViewController;
+        UIViewController *lastViewController = [[navigationController viewControllers] lastObject];
+        return [self topViewController:lastViewController];
+    }
+    
+    UIViewController *presentedViewController = (UIViewController *)rootViewController.presentedViewController;
+    return [self topViewController:presentedViewController];
+}
+
+-(void)initiateClientSocket
+{
+    //////// Real code
+    NSURL* scoketURL = [[NSURL alloc] initWithString:@"http://192.168.0.104:3000"];
+    self.socketClient = [[SocketIOClient alloc] initWithSocketURL:scoketURL options:@{@"log": @NO, @"forcePolling": @NO}];
+    [self.socketClient connect];
+    self.socketClient.reconnects = YES;
+    [self addHandlers];
+}
+
+-(void)addHandlers
+{
+    
+    ////Getting Event
+    [self.socketClient onAny:^(SocketAnyEvent *event)
+     {
+         NSLog(@"\n \n socket event:::%@ /n count:::%lu",event,event.items.count);
+         
+         if(event.items.count)
+         {
+             NSLog(@"\n \n socket event first Object :::%@",[event.items objectAtIndex:0]);
+             
+             if (!_registered)
+             {
+                 ////////Register UserID
+                 _scoketID=[[event.items objectAtIndex:0] valueForKey:@"id"];
+                 if (_scoketID !=nil)
+                 {
+                     
+                     NSLog(@"\n \n _scoketID:::%@",_scoketID);
+                     
+                     if ([User currentUser]!= nil )
+                     {
+                         ///////////Register users scoket
+                         NSArray *userArrr=[NSArray arrayWithObjects: [User currentUser].userId,_scoketID,@"1",nil];
+                         [self.socketClient emit:@"register" withItems:userArrr];
+                     }
+                     _registered = YES;
+                 }
+                 else
+                 {
+                     NSLog(@"\n \n Failed to register chat");
+                 }
+                 
+             }
+             else
+             {
+                 //////update map with received data
+                 NSLog(@"\n \n Update Map with Received data");
+                 
+             }
+             
+         }
+         else
+         {
+             NSLog(@"\n \n No Event ");
+         }
+         
+     }
+     ];
+    
+    //////Scoket Connected
+    [ self.socketClient on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack)
+     {
+         NSLog(@"\n \n socket connected:::data====%@ \n SocketAckEmitter====%@ ",data,ack.description);
+         
+         
+     }];
+    
+    /////Scoket disconnected
+    [self.socketClient on:@"disconnect" callback:^(NSArray* data, SocketAckEmitter* ack)
+     {
+         
+         NSLog(@"\n \n socket disconnect:::data====%@ \n SocketAckEmitter====%@ ",data,ack);
+         
+         
+         if( [User currentUser]!= nil)
+         {
+             if (self.socketClient.status == SocketIOClientStatusClosed && [RSUtils isNetworkReachable])
+             {
+                 [self initiateClientSocket];
+             }
+         }
+         
+     }];
+}
+
+- (void)disconnectClientSocket
+{
+    NSLog(@"\n Finish button tapped");
+    if (self.socketClient != nil && self.socketClient.status == SocketIOClientStatusConnected)
+    {
+        [self.socketClient disconnect];
+        [self.socketClient removeAllHandlers];
+        [self.socketClient close];
+    }
+    
+}
+
 
 @end

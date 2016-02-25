@@ -10,7 +10,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import "User.h"
 #import "RSUtils.h"
-#import <SIOSocket/SIOSocket.h>
+//#import <SIOSocket/SIOSocket.h>
 #import "WPAnnotation.h"
 
 #import "SocketIO.h"

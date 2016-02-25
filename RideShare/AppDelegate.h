@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RSConstants.h"
 #import <GoogleMaps/GoogleMaps.h>
-
+#import <SocketIOClientSwift/SocketIOClientSwift-Swift.h>
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
     
@@ -24,5 +24,12 @@
 @property (nonatomic) BOOL isUserLoggedIn;
 - (void)showLoaingWithTitle:(NSString*)title;
 - (void)hideLoading;
+- (UIViewController *)topViewController;
+
+
+@property (nonatomic, strong) SocketIOClient *socketClient;
+-(void)initiateClientSocket;
+-(void)disconnectClientSocket;
+
 @end
 

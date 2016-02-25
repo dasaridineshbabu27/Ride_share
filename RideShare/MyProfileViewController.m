@@ -28,17 +28,8 @@
 //    leftButton.image = [UIImage imageNamed:@"Hamburger_menu"];
 //    self.navigationItem.leftBarButtonItem = leftButton;
     // Do any additional setup after loading the view.
+    [RSUtils addCornerRadius:self.btnPickImage];
     [self populateUI];
-}
-
-- (BOOL)slideNavigationControllerShouldDisplayLeftMenu
-{
-    return YES;
-}
-
-- (BOOL)slideNavigationControllerShouldDisplayRightMenu
-{
-    return NO;
 }
 
 -(void)populateUI
@@ -49,9 +40,32 @@
     self.lastNameInput.text = currentUser.lastName;
     self.emailInput.text = currentUser.emailId;
     self.mobileNoInput.text = currentUser.mobileNo;
+     self.regNoInput.text = currentUser.regNumber;
+    self.passwordInput.text= currentUser.password;
     self.vehicleTypeInput.text = currentUser.vehicleType;
-    self.regNoInput.text = currentUser.regNumber;
+   
+    [self.btnPickImage setBackgroundImage:currentUser.profilePic forState:UIControlStateNormal];
 }
+- (void)setUserInteraction:(BOOL)enable
+{
+    _firstNameInput.userInteractionEnabled = enable;
+    _lastNameInput.userInteractionEnabled = enable;
+    _emailInput.userInteractionEnabled = enable;
+    _vehicleTypeInput.userInteractionEnabled = enable;
+    _regNoInput.userInteractionEnabled = enable;
+    _mobileNoInput.userInteractionEnabled = enable;
+    _btnPickImage.userInteractionEnabled = enable;
+}
+- (BOOL)slideNavigationControllerShouldDisplayLeftMenu
+{
+    return YES;
+}
+
+- (BOOL)slideNavigationControllerShouldDisplayRightMenu
+{
+    return NO;
+}
+
 
 -(BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(nonnull NSString *)string
 {
@@ -127,37 +141,67 @@
 }
 */
 
+////Resize image
+- (UIImage*)imageWithImage:(UIImage*)image
+              scaledToSize:(CGSize)newSize;
+{
+    UIGraphicsBeginImageContext( newSize );
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
 - (IBAction)editButtonAction:(id)sender
 {
+    /////////////
     if ([_editBtn.title isEqualToString:@"EDIT"])
     {
         _editBtn.title = @"SAVE";
         [self setUserInteraction:YES];
     }
+    ////////////
     else if ([_editBtn.title isEqualToString:@"SAVE"])
     {
             if ([RSUtils trimWhiteSpaces:_firstNameInput.text].length == 0 ||
                 [RSUtils trimWhiteSpaces:_lastNameInput.text].length == 0 ||
                 [RSUtils trimWhiteSpaces:_emailInput.text].length == 0 ||
-                [RSUtils trimWhiteSpaces:_vehicleTypeInput.text].length == 0 ||
+                [RSUtils trimWhiteSpaces:_mobileNoInput.text].length == 0 ||
                 [RSUtils trimWhiteSpaces:_regNoInput.text].length == 0 )
             {
                 [RSUtils showAlertWithTitle:@"My Profile" message:@"Fields must not be empty." actionOne:nil actionTwo:nil inView:self];
                 return;
             }
+        
+        //////Old Code
+        //NSData *imageData = UIImagePNGRepresentation([_btnPickImage backgroundImageForState:UIControlStateNormal]);
+        
+        //////New Code
+        UIImage * beforeImg=[_btnPickImage backgroundImageForState:UIControlStateNormal];
+        UIImage * afterImg =[self imageWithImage:beforeImg scaledToSize:CGSizeMake(100, 100)];
+        
+        NSData *beforeImgData = UIImagePNGRepresentation(beforeImg);
+        NSData *afterImgData = UIImagePNGRepresentation(afterImg);
+        
+        long beforeimageSize   = beforeImgData.length;
+        long afterimageSize   = afterImgData.length;
+        NSLog(@"\n \n beforeImgSize===%f KB afterImgsize===%f KB",beforeimageSize/1024.0,afterimageSize/1024.0);
+        
         [self setUserInteraction:NO];
         [_editBtn setTitle:@"EDIT"];
         User *currentUser = [User currentUser];
-            NSDictionary *infoDict = @{@"fname" : _firstNameInput.text,
+            NSDictionary *infoDict = @{ @"user_id" : currentUser.userId,
+                                        @"fname" : _firstNameInput.text,
                                        @"lname" : _lastNameInput.text,
                                        @"gender" : currentUser.gender,
                                        @"email" : _emailInput.text,
-                                       @"vehicle_type" : _vehicleTypeInput.text,
+                                       @"vehicle_type" : @"",
                                        @"reg_num" : _regNoInput.text,
                                        @"mobile" : _mobileNoInput.text,
-                                       @"user_id" : currentUser.userId
+                
+                                      
                                        };
-        
+        ////////////////
         [appDelegate showLoaingWithTitle:@"Loading..."];
         [RSServices processUpdateProfile:infoDict completionHandler:^(NSDictionary* response, NSError * error)
              {
@@ -171,8 +215,14 @@
                  {
                      if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
                      {
-                         [self.navigationController popViewControllerAnimated:YES];
-                         [RSUtils showAlertWithTitle:@"My Profile" message:@"Your profile has been updated." actionOne:nil actionTwo:nil inView:self];
+                         NSDictionary *parameters = @{@"user_id": currentUser.userId};
+                         [self updateProfileImageWith:parameters imageData:afterImgData];
+                         
+                         User *currentUser = [User currentUser];
+                         [currentUser saveUserDetails:response];
+                         
+//                         [self.navigationController popViewControllerAnimated:YES];
+//                         [RSUtils showAlertWithTitle:@"My Profile" message:@"Your profile has been updated." actionOne:nil actionTwo:nil inView:self];
                          [_editBtn setTitle:@"EDIT"];
                          return ;
                      }
@@ -190,14 +240,47 @@
     }
 }
 
-- (void)setUserInteraction:(BOOL)enable
+-(void)updateProfileImageWith:(NSDictionary*)info imageData:(NSData*)imgData
 {
-    _firstNameInput.userInteractionEnabled = enable;
-    _lastNameInput.userInteractionEnabled = enable;
-    _emailInput.userInteractionEnabled = enable;
-    _vehicleTypeInput.userInteractionEnabled = enable;
-    _regNoInput.userInteractionEnabled = enable;
-    _mobileNoInput.userInteractionEnabled = enable;
+    ///////////////////////////////////////////////////////////////////////////////////
+    /////Upload Profile image/////////////////////////////////////////////////////////
+    [appDelegate showLoaingWithTitle:nil];
+    [RSServices uploadProfileImageWithUserID:info imageData:imgData completionHandler:^(NSDictionary* responseImage, NSError * errorImage)
+     {
+         [appDelegate hideLoading];
+         NSString *alertMsgImage = nil;
+         if (errorImage != nil)
+         {
+             alertMsgImage = errorImage.description;
+         }
+         else if (responseImage != nil)
+         {
+             if ([[responseImage objectForKey:kResponseCode] intValue] == kRequestSuccess)
+             {
+                  User *currentUser = [User currentUser];
+                   currentUser.profilePic= [_btnPickImage backgroundImageForState:UIControlStateNormal];;
+                 [RSUtils showAlertWithTitle:@"My Profile" message:@"Your profile has been updated." actionOne:nil actionTwo:nil inView:self];
+                 return;
+             }
+             else
+             {
+                 [RSUtils showAlertWithTitle:@"My Profile" message:[responseImage objectForKey:kResponseMessage] actionOne:nil actionTwo:nil inView:self];
+                 return;
+
+             }
+             
+         }
+         if (alertMsgImage.length != 0)
+         {
+             [RSUtils showAlertWithTitle:@"My Profile" message:alertMsgImage actionOne:nil actionTwo:nil inView:self];
+         }
+         
+     }];
+    
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////
+    
 }
+
 
 @end

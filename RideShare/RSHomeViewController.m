@@ -62,16 +62,23 @@
     leftButton.image = [UIImage imageNamed:@"Hamburger_menu"];
     self.navigationItem.leftBarButtonItem = leftButton;
 
-    rightButton = [[UIBarButtonItem alloc] initWithTitle:@"List" style:UIBarButtonItemStylePlain target:self action:@selector(listClicked:)];
-    leftButton.image = [UIImage imageNamed:@"Hamburger_menu"];
+//    rightButton = [[UIBarButtonItem alloc] initWithTitle:@"List" style:UIBarButtonItemStylePlain target:self action:@selector(listClicked:)];
+//    leftButton.image = [UIImage imageNamed:@"Hamburger_menu"];
+//    
+//    
+//    
+//    UIBarButtonItem *filter = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(filterClicked:)];
+//    filter.image = [UIImage imageNamed:@"Funnel.png"];
+//    //[filter setBackgroundVerticalPositionAdjustment:-20.0f forBarMetrics:UIBarMetricsDefault];
+//    
+//    
+//    
+//    UIBarButtonItem *refreshBtn = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(refreshClicked:)];
+//    refreshBtn.image = [UIImage imageNamed:@"refresh.png"];
+//    
+//    self.navigationItem.rightBarButtonItems = @[rightButton, filter, refreshBtn];
     
-    UIBarButtonItem *filter = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(filterClicked:)];
-    filter.image = [UIImage imageNamed:@"Funnel.png"];
     
-    UIBarButtonItem *refreshBtn = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(refreshClicked:)];
-    refreshBtn.image = [UIImage imageNamed:@"refresh.png"];
-    
-    self.navigationItem.rightBarButtonItems = @[rightButton, filter, refreshBtn];
     
     self.pickTimeButton.layer.borderColor = [UIColor blackColor].CGColor;
     self.pickTimeButton.layer.borderWidth = 1.0;
@@ -83,12 +90,12 @@
     _btnPickup.selected = YES;
 }
 
-- (void)refreshClicked:(id)sender
+- (IBAction)refreshClicked:(id)sender
 {
     [self fetchRidesAroundMe];
 }
 
--(void)filterClicked:(id)sender
+-(IBAction)filterClicked:(id)sender
 {
     if (_containerTrailingConstraint.constant == -208)
     {
@@ -207,7 +214,7 @@
     [[self mainSlideMenu] openLeftMenu];
 }
 
-- (void)listClicked:(UIBarButtonItem*)button
+- (IBAction)listClicked:(UIBarButtonItem*)button
 {
     if ([button.title isEqualToString:@"List"])
     {
@@ -234,6 +241,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
 //    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
 //    
 //    User *currentUser = [User currentUser];
@@ -829,6 +837,7 @@
 - (IBAction)requestAction:(id)sender
 {
     [_rideCoseInput resignFirstResponder];
+    
     NSString *alertMsg = nil;
     
     NSString *startTime = [_pickTimeButton titleForState:UIControlStateNormal];

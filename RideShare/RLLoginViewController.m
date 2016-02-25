@@ -18,8 +18,7 @@
 {
     [super viewDidLoad];
     
-    [_passwordInput setText:@"password"];
-    [_userNameImput setText:@"dinesh.b@saxonglobal.com"];
+   
     
     if ([RSUtils isNetworkReachable])
     {
@@ -30,8 +29,12 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-//    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.navigationBarHidden = YES;
 
+    
+    [_passwordInput setText:@"password"];
+    [_userNameImput setText:@"dasaridineshbabu27@gmail.com"];
+    
     if ([RSUtils isNetworkReachable]) {
         NSLog(@"Reachable");
     }
@@ -97,10 +100,18 @@
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
                  NSLog(@"Login success! with info: %@", response);
+                 [self getProfileImageWith:[response valueForKey:@"user_id"]];
+                 
                  User *currentUser = [User currentUser];
                  [currentUser saveUserDetails:response];
+                 currentUser.password = _passwordInput.text;
                  _userNameImput.text = @"";
                  _passwordInput.text = @"";
+                 
+                ////Socket
+                [appDelegate initiateClientSocket];
+                 
+                
                  [self performSegueWithIdentifier:@"ShowHomeViewSegue" sender:self];
              }
              else
@@ -123,7 +134,49 @@
          }
      }];
 }
+-(void)getProfileImageWith:(NSString*)userID
+{
+    NSDictionary *infoDict  = @{@"user_id" : userID};
+    //[appDelegate showLoaingWithTitle:@"Loading..."];
+    
+    [RSServices getProfileImageWithUserID:infoDict completionHandler:^(NSDictionary *response, NSError *error)
+     {
+         //[appDelegate hideLoading];
+         NSString *alertMsg = nil;
+         if (error != nil)
+         {
+             [RSUtils showAlertForError:error inView:self];
+         }
+         else if (response != nil)
+         {
+             if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+             {
+                 NSLog(@"\n profile image success! with info: %@", response);
+                
+                 User *currentUser = [User currentUser];
+//                 NSData* data = [[response valueForKey:@"profile_pic"] dataUsingEncoding:NSUTF8StringEncoding];
+//                  NSLog(@"\n profile image success! with data: %@", data);
+//                 currentUser.profilePic= [UIImage imageWithData: data];
+                 
+                 NSURL *url = [NSURL URLWithString:[response valueForKey:@"profile_pic"]];
+                 NSData *imgData = [NSData dataWithContentsOfURL:url];
+                 UIImage *img = [[UIImage alloc] initWithData:imgData];
+                  currentUser.profilePic= img;
+                
+             }
+             else
+             {
+                NSLog(@"\n profile image success! with info: %@", [response objectForKey:kResponseMessage] );
+             }
+         }
+         
+         if (alertMsg.length != 0)
+         {
+              NSLog(@"\n profile image Failure! with info: %@", alertMsg);
+         }
+     }];
 
+}
 - (void)registerDeviceForPush
 {
     if ((appDelegate).deviceToken.length != 0)

@@ -16,10 +16,17 @@
 {
     [super viewDidLoad];
     _btnMale.selected = YES;
-    _btnPickImage.layer.cornerRadius = self.btnPickImage.frame.size.height;
-    _btnPickImage.layer.borderColor = [UIColor blackColor].CGColor;
-    _btnPickImage.layer.borderWidth = 1.0;
-    _btnPickImage.layer.masksToBounds = YES;
+    
+    /////////Old Code
+//    _btnPickImage.layer.cornerRadius = self.btnPickImage.frame.size.height;
+//    _btnPickImage.layer.borderColor = [UIColor blackColor].CGColor;
+//    _btnPickImage.layer.borderWidth = 1.0;
+//    _btnPickImage.layer.masksToBounds = YES;
+    
+    //////New
+    [RSUtils addCornerRadius:self.btnPickImage];
+  
+    
     NSLog(@"%@", [RSUtils trimWhiteSpaces:@"  abc   123  "]);
     self.navigationController.navigationBarHidden = NO;
     // Do any additional setup after loading the view.
@@ -83,16 +90,22 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+////Resize image
+- (UIImage*)imageWithImage:(UIImage*)image
+              scaledToSize:(CGSize)newSize;
+{
+    UIGraphicsBeginImageContext( newSize );
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
 - (IBAction)registerAction:(id)sender
 {
-    
-    ////// testing
-   
-//    NSData *imageData = UIImagePNGRepresentation([_btnPickImage backgroundImageForState:UIControlStateNormal]);
-//    // NSDictionary *parameters = @{@"user_id": @"36",@"pfimg":imageData};
-//    NSDictionary *parameters = @{@"user_id": @"36"};
-//    [self updateProfileImageWith:parameters imageData:imageData];
-    
+
+
+    /////////////
     
     if ([RSUtils trimWhiteSpaces:_firstNameInput.text].length == 0 ||
         [RSUtils trimWhiteSpaces:_lastNameInput.text].length == 0 ||
@@ -105,7 +118,22 @@
         return;
     }
     
-    NSData *imageData = UIImagePNGRepresentation([_btnPickImage backgroundImageForState:UIControlStateNormal]);
+    
+    //////Old Code
+    //NSData *imageData = UIImagePNGRepresentation([_btnPickImage backgroundImageForState:UIControlStateNormal]);
+    
+    //////New Code
+    UIImage * beforeImg=[_btnPickImage backgroundImageForState:UIControlStateNormal];
+    UIImage * afterImg =[self imageWithImage:beforeImg scaledToSize:CGSizeMake(100, 100)];
+    
+    NSData *beforeImgData = UIImagePNGRepresentation(beforeImg);
+    NSData *afterImgData = UIImagePNGRepresentation(afterImg);
+    
+    long beforeimageSize   = beforeImgData.length;
+    long afterimageSize   = afterImgData.length;
+    NSLog(@"\n \n beforeImgSize===%f KB afterImgsize===%f KB",beforeimageSize/1024.0,afterimageSize/1024.0);
+
+    
     
     NSString *gender = (_btnMale.selected)?@"1" : @"2";
     NSDictionary *infoDict = @{@"fname" : _firstNameInput.text,
@@ -133,7 +161,7 @@
             {
                 
                NSDictionary *parameters = @{@"user_id": [response objectForKey:@"user_id"]};
-                [self updateProfileImageWith:parameters imageData:imageData];
+                [self updateProfileImageWith:parameters imageData:afterImgData];
                 
 //                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:@"Registered successfully, verification mail has been sent to your email, please verify to confinue services." preferredStyle:UIAlertControllerStyleAlert];
 //                
@@ -185,7 +213,6 @@
 //                 UIAlertController *alertControllerImage = [UIAlertController alertControllerWithTitle:@"Profile Image" message:@"Profile Image updated successfully" preferredStyle:UIAlertControllerStyleAlert];
 //                 [self presentViewController:alertControllerImage animated:YES completion:nil];
                  
-                 
                  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:@"Registered successfully, verification mail has been sent to your email, please verify to confinue services." preferredStyle:UIAlertControllerStyleAlert];
                  
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
@@ -197,6 +224,7 @@
                  [self presentViewController:alertController animated:YES completion:nil];
                  return ;
 
+                
              }
              else
              {

@@ -19,6 +19,8 @@
 
 +(void)processLogin:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
++(void)getProfileImageWithUserID:(NSDictionary*)parameters completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
 + (void)processChangePassword:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
 + (void)processUpdateProfile:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;

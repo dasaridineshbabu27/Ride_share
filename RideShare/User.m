@@ -31,6 +31,7 @@
     self.regNumber = [infoDict valueForKey:@"Registration Number"];
     self.userId = [infoDict valueForKey:@"user_id"];
     
+    
     NSLog(@"USer details to save is : %@", infoDict);
 }
 

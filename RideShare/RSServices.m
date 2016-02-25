@@ -60,7 +60,7 @@
     
     [manager POST:urlProfileImage parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
      {
-         [formData appendPartWithFileData:imageData name:@"pfimg" fileName:@"ProfilePic" mimeType:@"image/*"];
+         [formData appendPartWithFileData:imageData name:@"pfimg" fileName:@"ProfilePic" mimeType:@"image/png"];
         //[formData appendPartWithFormData:myData name:@"file"];
          
        
@@ -126,7 +126,18 @@
         callback(nil, error);
     }];
 }
++(void)getProfileImageWithUserID:(NSDictionary*)parameters completionHandler:(void(^)(NSDictionary* , NSError*)) callback{
+     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:urlGetProfileImage  parameters:parameters progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        callback(responseObject, nil);
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        callback(nil, error);
+    }];
 
+}
 + (void)processChangePassword:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
 {
     NSLog(@"processChangePassword url: %@", urlChangePassword);
@@ -145,11 +156,11 @@
 
 + (void)processUpdateProfile:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
 {
-    NSLog(@"processUpdateProfile url: %@", urlChangePassword);
+    NSLog(@"processUpdateProfile url: %@", urlUpdateProfile);
     NSLog(@"post data is:%@", infoDict);
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager POST:urlChangePassword  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [manager POST:urlUpdateProfile  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         callback(responseObject, nil);
         

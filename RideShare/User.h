@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface User : NSObject
 {
@@ -23,6 +24,7 @@
 @property (nonatomic, strong) NSString *regNumber;
 @property (nonatomic, strong) NSString *mobileNo;
 @property (nonatomic, strong) NSString *userId;
+@property (nonatomic, strong) UIImage *profilePic;
 
 // Method that gives you the current user object;
 +(User*)currentUser;

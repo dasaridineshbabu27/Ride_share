@@ -19,6 +19,8 @@
 
 #define urlLogin [NSString stringWithFormat:@"%@%@",mainURL, @"login.php"]
 
+#define urlGetProfileImage [NSString stringWithFormat:@"%@%@",mainURL, @"get_profileimg.php"]
+
 #define urlFAQs  [NSString stringWithFormat:@"%@%@",mainURL, @"faq.php"]
 
 #define urlChangePassword [NSString stringWithFormat:@"%@%@",mainURL, @"changePassword.php"]

@@ -11,7 +11,7 @@
 #define degreesToRadians(x) (M_PI * x / 180.0)
 #define radiandsToDegrees(x) (x * 180.0 / M_PI)
 #define POSITIONKEY @"positionAnimation"
-
+#import "AppDelegate.h"
 #import <SocketIOClientSwift/SocketIOClientSwift-Swift.h>
 
 
@@ -22,15 +22,16 @@
 @property GMSCoordinateBounds *bounds;
 @property CLLocationCoordinate2D updatedLocation;
 @property GMSMarker *vehicleMarker;
-@property NSString *scoketID;
+
 
 @property NSString *latitude;
 @property NSString *longitude;
 @property NSDictionary *locationInfo;
 @property NSArray *locationArr;
-@property BOOL registered;
 
-@property SocketIOClient *socketClient;
+//@property BOOL registered;
+//@property SocketIOClient *socketClient;
+//@property NSString *scoketID;
 
 
 
@@ -43,16 +44,19 @@
     [super viewDidLoad];
     //_scoketID=@"";
     self.currentUser = [User currentUser];
+    
+     self.navigationItem.title = @"Ride";
     UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Finish" style:UIBarButtonItemStylePlain target:self action:@selector(finishRideClicked)];
     //sendButton.image = [UIImage imageNamed:@"Hamburger_menu"];
     self.navigationItem.rightBarButtonItem = sendButton;
     
-    [self.navigationController.navigationItem setHidesBackButton:YES animated:YES];
+    //[self.navigationController.navigationItem setHidesBackButton:NO animated:YES];
+    self.navigationItem.hidesBackButton = YES;
     
-    NSLog(@"\n \n otherUser_id=== %@",_otherUser_id);
-    NSLog(@"\n \n pickUpLocation===%f, %f",_pickUpLocation.latitude,_pickUpLocation.longitude);
-    NSLog(@"\n \n startCoordinate===%f, %f",_startCoordinate.latitude,_startCoordinate.longitude);
-    NSLog(@"\n \n destinationCoordinate===%f, %f",_destinationCoordinate.latitude,_destinationCoordinate.longitude);
+//    NSLog(@"\n \n otherUser_id=== %@",_otherUser_id);
+//    NSLog(@"\n \n pickUpLocation===%f, %f",_pickUpLocation.latitude,_pickUpLocation.longitude);
+//    NSLog(@"\n \n startCoordinate===%f, %f",_startCoordinate.latitude,_startCoordinate.longitude);
+//    NSLog(@"\n \n destinationCoordinate===%f, %f",_destinationCoordinate.latitude,_destinationCoordinate.longitude);
     self.points=[[NSMutableArray alloc]init];
     
     self.locationManager = [[CLLocationManager alloc] init];
@@ -64,35 +68,36 @@
     //self.vehicleMarker = [[GMSMarker alloc] init];
     [self updateVehicleLocationCoordinates:self.startCoordinate];
     
-    if ([RSUtils isNetworkReachable])
-    {
-        //////
-        [self initiateClientSocket];
-    }
-    else
-    {
-        NSLog(@"\n Network problem");
-    }
+    //Testing Scoket
+//    double your_latitiude_value = 8.391916;
+//    double your_longitude_value = 77.094315;
+//    CLLocation *myLocation = [[CLLocation alloc] initWithLatitude:your_latitiude_value longitude:your_longitude_value];
+    //[self updateLocationDate:myLocation];
+    
+    
+//    if ([RSUtils isNetworkReachable])
+//    {
+//        [self initiateClientSocket];
+//    }
+//    else
+//    {
+//        NSLog(@"\n Network problem");
+//    }
     
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-    
+      //self.navigationController.navigationBarHidden = NO;
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [self finishRideClicked];
+  
+    //[self finishRideClicked];
 }
 - (void)finishRideClicked
 {
     NSLog(@"\n Finish button tapped");
-    if (self.socketClient != nil && self.socketClient.status == SocketIOClientStatusConnected)
-    {
-        [self.socketClient disconnect];
-        [self.socketClient removeAllHandlers];
-        [self.socketClient close];
-    }
-    
+    [appDelegate disconnectClientSocket];
     //    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
     //                                                             bundle: nil];
     //    UIViewController *vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"RSHomeViewController"];
@@ -109,7 +114,7 @@
     [self addPinOnMapAt:_pickUpLocation];
     [self addPinOnMapAt:_destinationCoordinate];
     
-    [_rideMapView animateWithCameraUpdate:[GMSCameraUpdate fitBounds:self.bounds withPadding:0.0f]];
+    [_rideMapView animateWithCameraUpdate:[GMSCameraUpdate fitBounds:self.bounds withPadding:20.0f]];
     
 }
 - (void)addPinOnMapAt:(CLLocationCoordinate2D)coordinate
@@ -153,11 +158,11 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
 {
     
-    CLLocation *location = [locations lastObject];
+    CLLocation *currentLocation = [locations lastObject];
     
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude zoom:13];
+//    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:currentLocation.coordinate.latitude longitude:currentLocation.coordinate.longitude zoom:13];
+//    _rideMapView.camera = camera;
     
-    _rideMapView.camera = camera;
     _rideMapView.delegate = self;
     _rideMapView.myLocationEnabled = YES;
     [[_rideMapView settings] setMyLocationButton:YES];
@@ -165,24 +170,7 @@
     //    [self.locationManager stopUpdatingLocation];
     
     ///////Updating Location////////
-    
-    
-    if (self.socketClient != nil && self.socketClient.status == SocketIOClientStatusConnected)
-    {
-        _latitude=[NSString stringWithFormat: @"%f", location.coordinate.latitude];
-        _longitude =[NSString stringWithFormat: @"%f", location.coordinate.longitude];
-        
-        ////////////////
-        _locationInfo = @{@"latitude":_latitude,@"longitude":_longitude};
-        _locationArr=[NSArray arrayWithObjects:_locationInfo, nil];
-        [self.socketClient emit:@"chatMessage" withItems:_locationArr];
-        
-    }
-    else
-    {
-        NSLog(@"\n \n Socket NOT Connected to update location.");
-        //[self initiateClientSocket];
-    }
+    [self updateLocationDate:currentLocation];
     
 }
 
@@ -196,200 +184,122 @@
 
 
 
--(void)initiateClientSocket
+//-(void)initiateClientSocket
+//{
+//    //////// Real code
+//    NSURL* scoketURL = [[NSURL alloc] initWithString:@"http://192.168.0.104:3000"];
+//    self.socketClient = [[SocketIOClient alloc] initWithSocketURL:scoketURL options:@{@"log": @NO, @"forcePolling": @NO}];
+//    [self.socketClient connect];
+//    self.socketClient.reconnects = NO;
+//    [self addHandlers];
+//}
+//
+//-(void)addHandlers
+//{
+//
+//    ////Getting Event
+//    [self.socketClient onAny:^(SocketAnyEvent *event)
+//     {
+//         NSLog(@"\n \n socket event:::%@",event);
+//         NSLog(@"\n \n socket event count:::%lu",event.items.count);
+//         
+//         if(event.items.count)
+//         {
+//             NSLog(@"\n \n socket event first Object :::%@",[event.items objectAtIndex:0]);
+//             
+//             if (!_registered)////Need to update code
+//             {
+//                 ////////Register UserID
+//                 _scoketID=[[event.items objectAtIndex:0] valueForKey:@"id"];
+//                 if (_scoketID !=nil)
+//                 {
+//                     
+//                     NSLog(@"\n \n _scoketID:::%@",_scoketID);
+//                     
+//                     if (self.currentUser!= nil )
+//                     {
+//                        
+//                         ///////////Register users scoket
+//                         NSArray *userArrr=[NSArray arrayWithObjects: self.currentUser.userId,_scoketID,@"1",nil];
+//                         [self.socketClient emit:@"register" withItems:userArrr];
+//                     }
+//                     _registered = YES;
+//                 }
+//                 else
+//                 {
+//                     NSLog(@"\n \n Failed to register chat");
+//                 }
+//
+//             }
+//             else
+//             {
+//                 //////update map with received data
+//                  NSLog(@"\n \n Update Map with Received data");
+//                 
+//                 double your_latitiude_value = 8.391916;
+//                 double your_longitude_value = 77.094315;
+//                 CLLocation *myLocation = [[CLLocation alloc] initWithLatitude:your_latitiude_value longitude:your_longitude_value];
+//                 
+//                 //[self updateLocationDate:myLocation];
+//             }
+//             
+//         }
+//         else
+//         {
+//             NSLog(@"\n \n No Event ");
+//         }
+//         
+//     }
+//     ];
+//    
+//    //////Scoket Connected
+//    [ self.socketClient on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack)
+//     {
+//         NSLog(@"\n \n socket connected:::data====%@ \n SocketAckEmitter====%@ ",data,ack.description);
+//         
+//        
+//     }];
+//    
+//    /////Scoket disconnected
+//    [self.socketClient on:@"disconnect" callback:^(NSArray* data, SocketAckEmitter* ack)
+//     {
+//         
+//         NSLog(@"\n \n socket disconnect:::data====%@ \n SocketAckEmitter====%@ ",data,ack);
+//         
+//         
+//         if( self.currentUser!= nil)
+//         {
+//             if (self.socketClient.status == SocketIOClientStatusClosed && [RSUtils isNetworkReachable])
+//             {
+//                 [self initiateClientSocket];
+//             }
+//         }
+//         
+//     }];
+//}
+
+-(void)updateLocationDate:(CLLocation*)currentLocation
 {
-    /////////////
-    ///////////// Testing Sample
-    //    NSURL* url = [[NSURL alloc] initWithString:@"http://192.168.0.104:3000"];
-    //     self.scoketClient = [[SocketIOClient alloc] initWithSocketURL:url options:@{@"log": @YES, @"forcePolling": @YES}];
-    //
-    //    [ self.scoketClient on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack)
-    //    {
-    //        NSLog(@"socket connected");
-    //    }];
-    //
-    //    [ self.scoketClient on:@"currentAmount" callback:^(NSArray* data, SocketAckEmitter* ack)
-    //    {
-    //        double cur = [[data objectAtIndex:0] floatValue];
-    //
-    //        [ self.scoketClient emitWithAck:@"canUpdate" withItems:@[@(cur)]](0, ^(NSArray* data)
-    //        {
-    //            [ self.scoketClient emit:@"update" withItems:@[@{@"amount": @(cur + 2.50)}]];
-    //        });
-    //
-    //        [ack with:@[@"Got your currentAmount, ", @"dude"]];
-    //    }];
-    //
-    //    [ self.scoketClient connect];
+    ///////Updating Location////////
+    if ((appDelegate).socketClient != nil && (appDelegate).socketClient.status == SocketIOClientStatusConnected)
+    {
+        
+        _latitude=[NSString stringWithFormat: @"%f", currentLocation.coordinate.latitude];
+        _longitude =[NSString stringWithFormat: @"%f", currentLocation.coordinate.longitude];
     
-    
-    ////////
-    //////// Real code
-    NSURL* scoketURL = [[NSURL alloc] initWithString:@"http://192.168.0.104:3000"];
-    self.socketClient = [[SocketIOClient alloc] initWithSocketURL:scoketURL options:@{@"log": @NO, @"forcePolling": @NO}];
-    [self.socketClient connect];
-    self.socketClient.reconnects = NO;
-    [self addHandlers];
+        _locationInfo = @{@"latitude":_latitude,@"longitude":_longitude};
+        _locationArr=[NSArray arrayWithObjects: self.currentUser.userId,self.otherUser_id ,_locationInfo, nil];
+        [(appDelegate).socketClient emit:@"updatedata" withItems:_locationArr];
+        
+    }
+    else
+    {
+        NSLog(@"\n \n Socket NOT Connected to update location.");
+        //[self initiateClientSocket];
+    }
+
 }
 
--(void)addHandlers
-{
-    
-    //    ////Getting Event
-    //    [self.socketClient onAny:^(SocketAnyEvent *event)
-    //    {
-    //         NSLog(@"\n \n socket onAny event:::%@",event);
-    //         NSLog(@"\n \n socket onAny event count:::%lu",event.items.count);
-    //
-    //        if(event.items.count)
-    //        {
-    //         NSLog(@"\n \n socket onAny event Dictonary:::%@",[event.items objectAtIndex:0]);
-    //
-    //            ///////////////////
-    //            NSString *sID=[[event.items objectAtIndex:0] valueForKey:@"id"];
-    //            if (sID !=nil)
-    //            {
-    //                _scoketID=sID;
-    //                NSLog(@"\n \n _scoketID:::%@",_scoketID);
-    //            }
-    //
-    //        }
-    //
-    //
-    //        //////Scoket Connected
-    //        [ self.socketClient on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack)
-    //         {
-    //             NSLog(@"\n \n socket connected:::data====%@ \n SocketAckEmitter====%@ ",data,ack.description);
-    //
-    //             if( self.currentUser!= nil && _scoketID !=nil)
-    //             {
-    //
-    //                 ///////////Register users scoket
-    //                 NSDictionary *userInfo = @{@"SocketId":_scoketID, @"currentUser":self.currentUser.userId, @"otherUser":self.otherUser_id};
-    //                 NSArray *userArr=[NSArray arrayWithObjects:userInfo, nil];
-    //                 [self.socketClient emit:@"chatMessage" withItems:userArr];
-    //
-    //                 ////////// testing
-    ////                 NSDictionary *sample = @{@"message":@"srinivas",@"id":@"123"};
-    ////                 NSArray *items=[NSArray arrayWithObjects:sample, nil];
-    ////                 [self.socketClient emit:@"send" withItems:items];
-    //
-    //             }
-    //             else
-    //             {
-    //
-    //                 NSLog(@"\n \n Failed to register chat since current user is nil");
-    //             }
-    //
-    //
-    //             /////Scoket disconnected
-    //             [self.socketClient on:@"disconnect" callback:^(NSArray* data, SocketAckEmitter* ack)
-    //              {
-    //
-    //                  NSLog(@"\n \n socket disconnect:::data====%@ \n SocketAckEmitter====%@ ",data,ack);
-    //
-    //
-    //                  if( self.currentUser!= nil)
-    //                  {
-    //                      if (self.socketClient.status == SocketIOClientStatusClosed && [RSUtils isNetworkReachable])
-    //                      {
-    //                          [self initiateClientSocket];
-    //                      }
-    //                  }
-    //
-    //              }];
-    //
-    //
-    //         }];
-    //
-    //
-    //
-    //    }];
-    
-    
-    
-    ////Getting Event
-    [self.socketClient onAny:^(SocketAnyEvent *event)
-     {
-         NSLog(@"\n \n socket onAny event:::%@",event);
-         NSLog(@"\n \n socket onAny event:::%lu",event.items.count);
-         
-         if(event.items.count)
-         {
-             NSLog(@"\n \n socket onAny event Dictonary:::%@",[event.items objectAtIndex:0]);
-             
-             if (!_registered)////Need to update code
-             {
-                 ////////Register UserID
-                 _scoketID=[[event.items objectAtIndex:0] valueForKey:@"id"];
-                 if (_scoketID !=nil)
-                 {
-                     
-                     NSLog(@"\n \n _scoketID:::%@",_scoketID);
-                     
-                     if (self.currentUser!= nil )
-                     {
-                         ///////////Register users scoket
-                         NSDictionary *userInfo = @{@"SocketId":_scoketID, @"currentUser":self.currentUser.userId, @"otherUser":self.otherUser_id};
-                         NSArray *userArr=[NSArray arrayWithObjects:userInfo, nil];
-                         [self.socketClient emit:@"chatMessage" withItems:userArr];
-                     }
-                     _registered = YES;
-                 }
-                 else
-                 {
-                     NSLog(@"\n \n Failed to register chat");
-                 }
-
-             }
-             else
-             {
-                 //////update map with received data
-                  NSLog(@"\n \n Update Map with Received data");
-                 
-                 ///////////Sample users scoket
-                 NSDictionary *userInfo = @{@"user":_scoketID};
-                 NSArray *userArr=[NSArray arrayWithObjects:userInfo, nil];
-                 [self.socketClient emit:@"test" withItems:userArr];
-
-             }
-             
-         }
-         else
-         {
-             NSLog(@"\n \n No Event ");
-         }
-         
-     }
-     ];
-    
-    //////Scoket Connected
-    [ self.socketClient on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack)
-     {
-         NSLog(@"\n \n socket connected:::data====%@ \n SocketAckEmitter====%@ ",data,ack.description);
-         
-         
-
-         
-     }];
-    
-    /////Scoket disconnected
-    [self.socketClient on:@"disconnect" callback:^(NSArray* data, SocketAckEmitter* ack)
-     {
-         
-         NSLog(@"\n \n socket disconnect:::data====%@ \n SocketAckEmitter====%@ ",data,ack);
-         
-         
-         if( self.currentUser!= nil)
-         {
-             if (self.socketClient.status == SocketIOClientStatusClosed && [RSUtils isNetworkReachable])
-             {
-                 [self initiateClientSocket];
-             }
-         }
-         
-     }];
-}
 
 -(void)updateVehicleLocationCoordinates:(CLLocationCoordinate2D)locationCoordinates
 {
@@ -514,6 +424,104 @@
     return degreesToRadians(deg);
     
 }
+
+/////////////
+///////////// Testing Sample
+//    NSURL* url = [[NSURL alloc] initWithString:@"http://192.168.0.104:3000"];
+//     self.scoketClient = [[SocketIOClient alloc] initWithSocketURL:url options:@{@"log": @YES, @"forcePolling": @YES}];
+//
+//    [ self.scoketClient on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack)
+//    {
+//        NSLog(@"socket connected");
+//    }];
+//
+//    [ self.scoketClient on:@"currentAmount" callback:^(NSArray* data, SocketAckEmitter* ack)
+//    {
+//        double cur = [[data objectAtIndex:0] floatValue];
+//
+//        [ self.scoketClient emitWithAck:@"canUpdate" withItems:@[@(cur)]](0, ^(NSArray* data)
+//        {
+//            [ self.scoketClient emit:@"update" withItems:@[@{@"amount": @(cur + 2.50)}]];
+//        });
+//
+//        [ack with:@[@"Got your currentAmount, ", @"dude"]];
+//    }];
+//
+//    [ self.scoketClient connect];
+
+
+
+//    ////Getting Event
+//    [self.socketClient onAny:^(SocketAnyEvent *event)
+//    {
+//         NSLog(@"\n \n socket onAny event:::%@",event);
+//         NSLog(@"\n \n socket onAny event count:::%lu",event.items.count);
+//
+//        if(event.items.count)
+//        {
+//         NSLog(@"\n \n socket onAny event Dictonary:::%@",[event.items objectAtIndex:0]);
+//
+//            ///////////////////
+//            NSString *sID=[[event.items objectAtIndex:0] valueForKey:@"id"];
+//            if (sID !=nil)
+//            {
+//                _scoketID=sID;
+//                NSLog(@"\n \n _scoketID:::%@",_scoketID);
+//            }
+//
+//        }
+//
+//
+//        //////Scoket Connected
+//        [ self.socketClient on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack)
+//         {
+//             NSLog(@"\n \n socket connected:::data====%@ \n SocketAckEmitter====%@ ",data,ack.description);
+//
+//             if( self.currentUser!= nil && _scoketID !=nil)
+//             {
+//
+//                 ///////////Register users scoket
+//                 NSDictionary *userInfo = @{@"SocketId":_scoketID, @"currentUser":self.currentUser.userId, @"otherUser":self.otherUser_id};
+//                 NSArray *userArr=[NSArray arrayWithObjects:userInfo, nil];
+//                 [self.socketClient emit:@"chatMessage" withItems:userArr];
+//
+//                 ////////// testing
+////                 NSDictionary *sample = @{@"message":@"srinivas",@"id":@"123"};
+////                 NSArray *items=[NSArray arrayWithObjects:sample, nil];
+////                 [self.socketClient emit:@"send" withItems:items];
+//
+//             }
+//             else
+//             {
+//
+//                 NSLog(@"\n \n Failed to register chat since current user is nil");
+//             }
+//
+//
+//             /////Scoket disconnected
+//             [self.socketClient on:@"disconnect" callback:^(NSArray* data, SocketAckEmitter* ack)
+//              {
+//
+//                  NSLog(@"\n \n socket disconnect:::data====%@ \n SocketAckEmitter====%@ ",data,ack);
+//
+//
+//                  if( self.currentUser!= nil)
+//                  {
+//                      if (self.socketClient.status == SocketIOClientStatusClosed && [RSUtils isNetworkReachable])
+//                      {
+//                          [self initiateClientSocket];
+//                      }
+//                  }
+//
+//              }];
+//
+//
+//         }];
+//
+//
+//
+//    }];
+
 @end
 
 

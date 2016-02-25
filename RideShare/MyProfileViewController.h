@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *firstNameInput;
 @property (weak, nonatomic) IBOutlet UITextField *lastNameInput;
 @property (weak, nonatomic) IBOutlet UITextField *emailInput;
+@property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 
 - (IBAction)pickProfileImageAction:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnPickImage;

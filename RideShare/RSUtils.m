@@ -35,7 +35,8 @@
         [alertController addAction:actionOne];
     }
     
-    if (actionTwo) {
+    if (actionTwo)
+    {
         [alertController addAction:actionTwo];
     }
     else if (actionOne == nil && actionTwo == nil)
@@ -62,6 +63,16 @@
     }
     
     [self showAlertWithTitle:@"Error" message:alertMsg actionOne:nil actionTwo:nil inView:controller];
+}
++(void)addCornerRadius:(UIView*)view
+{
+    view.layer.cornerRadius = view.frame.size.height;
+    view.layer.borderColor = [UIColor orangeColor].CGColor;
+    view.layer.borderWidth = 1.0;
+    view.layer.masksToBounds = YES;
+    
+//    view.layer.cornerRadius = 0.0;
+//    view.layer.masksToBounds = YES;
 }
 
 + (BOOL)isNetworkReachable
