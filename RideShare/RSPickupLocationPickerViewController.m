@@ -21,7 +21,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"Ride info is : %@", _rideData);
+   // NSLog(@"Ride info is : %@", _rideData);
     addressHolder.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:0.4];
     self.title = @"Pick Location";
     locationManager = [[CLLocationManager alloc] init];
@@ -55,8 +55,7 @@
     [locationManager stopUpdatingLocation];
 }
 
-- (void)mapView:(GMSMapView *)mapView
-idleAtCameraPosition:(GMSCameraPosition *)position
+- (void)mapView:(GMSMapView *)mapView idleAtCameraPosition:(GMSCameraPosition *)position
 {
     CLLocationCoordinate2D coord = position.target;
     [self getAddressFromCoordinate:coord];
@@ -71,7 +70,7 @@ idleAtCameraPosition:(GMSCameraPosition *)position
          {
              _selectedAddress = response.firstResult;
              pickUpLocation = _selectedAddress.coordinate;
-             NSLog(@"Selected address is : %@", _selectedAddress);
+             //NSLog(@"Selected address is : %@", _selectedAddress);
              _addressDisplayer.text = [NSString stringWithFormat:@"%@, %@, %@, %@", _selectedAddress.thoroughfare, _selectedAddress.administrativeArea, _selectedAddress.country, _selectedAddress.postalCode];
          }
      }];
@@ -79,9 +78,29 @@ idleAtCameraPosition:(GMSCameraPosition *)position
 
 - (IBAction)sendPickupRequest:(id)sender
 {
+    
+//    NSString *isRider, *rideType;
+//    
+//    if ([[self.rideData valueForKey:@"ride_type"]   isEqual: @"1"])
+//    {
+//       
+//        isRider=[NSString stringWithFormat:@"%i",PickMeUp];
+//        rideType=[NSString stringWithFormat:@"%i",PickUp];
+//        
+//    }
+//    else
+//    {
+//        isRider=[NSString stringWithFormat:@"%i",PickUp];
+//        rideType=[NSString stringWithFormat:@"%i",PickUp];
+//        
+//        //[NSString stringWithFormat:@"%i", PickMeUp],[NSString stringWithFormat:@"%i", PickUp]
+//    }
+
+    
     NSDictionary *infoDict = @{@"from_id" : [User currentUser].userId,
                                @"to_id" : [_rideData valueForKey : @"user_id"],
-                               @"type" : [NSString stringWithFormat:@"%i", PickMeUp],
+                               @"type" : [NSString stringWithFormat:@"%i",PickUp],
+                                @"is_rider":[NSString stringWithFormat:@"%i",PickUp],
                                @"ride_id" : [_rideData objectForKey:@"ride_id"],
                                @"pick_lat" : [NSString stringWithFormat:@"%f", pickUpLocation.latitude],
                                @"pick_lang" : [NSString stringWithFormat:@"%f", pickUpLocation.longitude],
@@ -100,8 +119,19 @@ idleAtCameraPosition:(GMSCameraPosition *)position
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 NSLog(@"Response success! with info: %@", response);
-                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your request for Picking you up has been intimated to the other end." preferredStyle:UIAlertControllerStyleAlert];
+                // NSLog(@"Response success! with info: %@", response);
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your request for picking you has been sent to the rider." preferredStyle:UIAlertControllerStyleAlert];
+                 
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                     [self.navigationController popViewControllerAnimated:YES];
+                 }];
+                 [alertController addAction:okAction];
+                 [self presentViewController:alertController animated:YES completion:nil];
+             }
+             else if ([[response objectForKey:kResponseCode] intValue] == kRequestAlreadySent)
+             {
+                 //NSLog(@"Response success! with info: %@", response);
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Ride Share" message:@"Your request already sent." preferredStyle:UIAlertControllerStyleAlert];
                  
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                      [self.navigationController popViewControllerAnimated:YES];

@@ -8,6 +8,7 @@
 
 #import "RSNotificationsViewController.h"
 #import "RSRideInProgressViewController.h"
+#import "HGMovingAnnotationSampleViewController.h"
 
 #import "RSServices.h"
 #import "RSUtils.h"
@@ -18,7 +19,7 @@
 #import "User.h"
 
 @interface RSNotificationsViewController ()
-
+@property  User  *currentUser;
 @end
 
 @implementation RSNotificationsViewController
@@ -27,23 +28,72 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
-    rideInfo = [[NSArray alloc] init];
+    _currentUser= [User currentUser];
+    _rideInfo = [[NSMutableArray alloc] init];
+    
+    notifications = [[NSMutableArray alloc] init];
+    self.ridesData = [[NSMutableArray alloc] init];
+    self.pickUpsData = [[NSMutableArray alloc] init];
     
     _msgListview.allowsMultipleSelectionDuringEditing = NO;
     self.navigationItem.title = @"Notifications";
     
     [self.navigationController.navigationItem setHidesBackButton:YES animated:YES];
     
-    notifications = [[NSMutableArray alloc] init];
+    _optionsViewN.backgroundColor=[UIColor grayColor];
+    _allBtnN.selected=YES;
+    _allBtnN.backgroundColor=[UIColor whiteColor];
+    [_allBtnN setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [self roundCornerFor:_allBtnN withRadius:CGSizeMake(15.0, 15.0) roundingCorners:(  UIRectCornerTopRight)];
+    
+    
+    _ridesBtnN.selected=NO;
+    _ridesBtnN.backgroundColor=[UIColor grayColor];
+    [_ridesBtnN setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self roundCornerFor:_ridesBtnN withRadius:CGSizeMake(0.0, 0.0) roundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight | UIRectCornerBottomLeft)];
+    
+    
+    _pickUpsBtnN.selected=NO;
+    _pickUpsBtnN.backgroundColor=[UIColor grayColor];
+    [_pickUpsBtnN setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self roundCornerFor:_pickUpsBtnN withRadius:CGSizeMake(0.0, 0.0) roundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight | UIRectCornerBottomLeft)];
+    
     [self fetchMessages];
     
     // Do any additional setup after loading the view.
 }
+-(void)roundCornerFor:(UIView*)view withRadius:(CGSize)radius roundingCorners:(UIRectCorner)corners
+{
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds byRoundingCorners:corners cornerRadii:radius];
+    
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = view.bounds;
+    maskLayer.path  = maskPath.CGPath;
+    view.layer.mask = maskLayer;
+    
+}
+-(NSMutableArray*)sortArray:(NSMutableArray*)mutableArray
+{
+    
+    NSSortDescriptor *sortDescriptor;
+    sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time"
+                                                 ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    
+    NSArray *array = [NSArray arrayWithArray:mutableArray];
+    NSArray *sortedArray = [array sortedArrayUsingDescriptors:sortDescriptors];
+    
+    NSMutableArray*  myNewArray = [NSMutableArray arrayWithArray:sortedArray];
+    
+    return myNewArray;
+}
 
 - (void)fetchMessages
 {
+    
+    
     [appDelegate showLoaingWithTitle:nil];
     [RSServices processFetchNotifications:@{@"user_id" : [[User currentUser] userId]} completionHandler:^(NSDictionary * response, NSError *error)
      {
@@ -57,16 +107,66 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 NSLog(@"Login success! with info: %@", response);
-                 NSLog(@"Received response for my ride is : %@", response);
-                 [notifications removeAllObjects];
-                 [notifications addObjectsFromArray:[response objectForKey:@"response_content"]];
-                 rideInfo = [response objectForKey:@"ride_info"];
                  
-                 if (notifications.count)
+                 //NSLog(@"Received response for my ride is : %@", response);
+                 
+                 [_rideInfo removeAllObjects];
+                 [notifications removeAllObjects];
+                 [_ridesData removeAllObjects];
+                 [_pickUpsData removeAllObjects];
+                 
+                 
+                 
+                 if (response.count)
                  {
+                     [notifications addObjectsFromArray:[response objectForKey:@"response_content"]];
+                     [_rideInfo addObjectsFromArray:[response objectForKey:@"ride_info"]];
+                     
+                    // NSLog(@"Received response notifications: %@", notifications);
+                     
+                     for (NSDictionary *dic in notifications)
+                     {
+                         
+                         if ([[dic objectForKey:@"is_rider"] isEqual:@"1"])
+                         {
+                             [_ridesData addObject:dic];
+                         }
+                         else
+                         {
+                             [_pickUpsData addObject:dic];
+                         }
+                     }
+                     
+                     //Sort arrays
+                     notifications = [self sortArray:notifications];
+                     _rideInfo = [self sortArray:_rideInfo];
+                     _ridesData = [self sortArray:_ridesData];
+                     _pickUpsData = [self sortArray:_pickUpsData];
+                     
                      [_msgListview reloadData];
                  }
+                 
+                 
+                 //[notifications addObjectsFromArray:[response objectForKey:@"response_content"]];
+                 //_rideInfo = [response objectForKey:@"ride_info"];
+                 
+                 //                 if (notifications.count)
+                 //                 {
+                 //                     for (NSDictionary *dic in notifications)
+                 //                     {
+                 //                         if ([[dic objectForKey:@"ride_type"] isEqual:@"1"])
+                 //                         {
+                 //                             [_ridesData addObject:dic];
+                 //                         }
+                 //                         else
+                 //                         {
+                 //                             [_pickUpsData addObject:dic];
+                 //                         }
+                 //
+                 //
+                 //                         [_msgListview reloadData];
+                 //                     }
+                 //                 }
              }
              else
              {
@@ -88,7 +188,20 @@
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return notifications.count;
+    if (_allBtnN.selected==YES)
+    {
+        return notifications.count;
+    }
+    else if (_ridesBtnN.selected==YES)
+    {
+        return _ridesData.count;
+    }
+    else if (_pickUpsBtnN.selected==YES)
+    {
+        return _pickUpsData.count;
+    }
+    return 0;
+    
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -101,34 +214,207 @@
         notificationCell = [[NotificationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
+    
+    ///////////////////////////////
+    //////////////////////////////
     NSDictionary *message = [notifications objectAtIndex:indexPath.row];
-    
     notificationCell.nameLabel.text = [message objectForKey:@"name"];
-    notificationCell.messageLabel.text = [message objectForKey:@"message"];
-    [notificationCell.acceptButton addTarget:self action:@selector(acceptButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-
-    notificationCell.acceptButton.tag = indexPath.row;
-    notificationCell.stratRideButton.tag = indexPath.row;
-    [notificationCell.acceptButton addTarget:self action:@selector(startButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    notificationCell.messageLabel.text = [NSString stringWithFormat:@"%@",[message objectForKey:@"message"]];
     
-    if ([[message valueForKey:@"is_accepted"] intValue] == 1)
+    notificationCell.acceptButton.tag = indexPath.row;
+    [notificationCell.acceptButton addTarget:self action:@selector(acceptButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    notificationCell.stratRideButton.tag = indexPath.row;
+    [notificationCell.stratRideButton addTarget:self action:@selector(startButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    /////////////////////////////
+    ////////////////////////////
+    NSDictionary *rideInfo = [_rideInfo objectAtIndex:indexPath.row];
+    notificationCell.sourceDisplay.text = [NSString stringWithFormat:@"%@",[rideInfo valueForKey:@"oaddr"]];
+    notificationCell.destinationDisplay.text = [NSString stringWithFormat:@"%@",[rideInfo valueForKey:@"daddr"]];
+    NSString *dateString = [RSUtils getDisplayDate:[rideInfo valueForKey:@"start_time"]];
+    notificationCell.timeDisplay.text =[NSString stringWithFormat:@"%@",dateString];
+    
+    
+    //////////////////////////
+    /////////////////////////
+    if ([[message valueForKey:@"is_rider"] intValue] == 1)
     {
-        notificationCell.acceptButton.hidden = YES;
-        notificationCell.stratRideButton.hidden = NO;
+       // NSLog(@"\n RIDER");
+        //Rider
+        if ([[message valueForKey:@"type"] intValue] == 1)
+        {
+            //NSLog(@"\n RIDE TYPE::::%@",[message valueForKey:@"type"]);
+            //Ride
+            if ([[message valueForKey:@"is_accepted"] intValue] == 1)
+            {
+                
+               // NSLog(@"\n ACCEPTED");
+                notificationCell.acceptButton.hidden = YES;
+                notificationCell.stratRideButton.hidden = NO;
+                
+                if ([[message valueForKey:@"is_start"] intValue] == 1)
+                {
+                   // NSLog(@"\n STARTED");
+                    [notificationCell.stratRideButton setTitle:@"In Progress" forState:UIControlStateNormal];
+                    [notificationCell.stratRideButton setUserInteractionEnabled:YES];
+                }
+                else
+                {
+                   // NSLog(@"\n NOT STARTED");
+                    [notificationCell.stratRideButton setTitle:@"Start" forState:UIControlStateNormal];
+                    [notificationCell.stratRideButton setUserInteractionEnabled:YES];
+
+                }
+            }
+            else
+            {
+                //NSLog(@"\n NOT ACCEPTED");
+                notificationCell.acceptButton.hidden = NO;
+                notificationCell.stratRideButton.hidden = YES;
+                [notificationCell.acceptButton setTitle:@"Accept" forState:UIControlStateNormal];
+            }
+            
+        }
+        else
+        {
+            //NSLog(@"\n RIDE TYPE::::%@",[message valueForKey:@"type"]);
+            //Non Ride
+            
+        }
+        
     }
     else
     {
-        notificationCell.acceptButton.hidden = NO;
-        notificationCell.stratRideButton.hidden = YES;
+        
+       // NSLog(@"\n NOT RIDER");
+        //Non Rider
+        
+        if ([[message valueForKey:@"type"] intValue] == 1)
+        {
+            //Ride
+           // NSLog(@"\n RIDE TYPE::::%@",[message valueForKey:@"type"]);
+            if ([[message valueForKey:@"is_accepted"] intValue] == 1)
+            {
+                
+               // NSLog(@"\n ACCEPTED");
+                notificationCell.acceptButton.hidden = YES;
+                notificationCell.stratRideButton.hidden = NO;
+                
+                if ([[message valueForKey:@"is_start"] intValue] == 1)
+                {
+                    //NSLog(@"\n STARTED");
+                    [notificationCell.stratRideButton setTitle:@"In Progress" forState:UIControlStateNormal];
+                    [notificationCell.stratRideButton setUserInteractionEnabled:YES];
+                }
+                else
+                {
+                    //NSLog(@"\n NOT STARTED");
+                    [notificationCell.stratRideButton setTitle:@"Accepted" forState:UIControlStateNormal];
+                    [notificationCell.stratRideButton setUserInteractionEnabled:NO];
+                    
+                }
+            }
+            else
+            {
+                //NSLog(@"\n NOT ACCEPTED");
+                notificationCell.acceptButton.hidden = NO;
+                notificationCell.stratRideButton.hidden = YES;
+                [notificationCell.acceptButton setTitle:@"Waiting" forState:UIControlStateNormal];
+                [notificationCell.acceptButton setUserInteractionEnabled:NO];
+            }
+
+
+            
+        }
+        else
+        {
+            //Non Ride
+            //NSLog(@"\n RIDE TYPE::::%@",[message valueForKey:@"type"]);
+            if ([[message valueForKey:@"is_accepted"] intValue] == 1)
+            {
+                //NSLog(@"\n ACCEPTED");
+                notificationCell.acceptButton.hidden = YES;
+                notificationCell.stratRideButton.hidden = NO;
+                if ([[message valueForKey:@"is_start"] intValue] == 1)
+                {
+                   // NSLog(@"\n STARTED");
+                    [notificationCell.stratRideButton setTitle:@"In Progress" forState:UIControlStateNormal];
+                    [notificationCell.stratRideButton setUserInteractionEnabled:YES];
+                }
+                else
+                {
+                   // NSLog(@"\n NOT STARTED");
+                    if ( [_currentUser.userId isEqualToString:[rideInfo valueForKey:@"user_id"]])
+                    {
+                        [notificationCell.stratRideButton setTitle:@"Accepted" forState:UIControlStateNormal];
+                        [notificationCell.stratRideButton setUserInteractionEnabled:NO];
+                    }
+                    else
+                    {
+                        
+                        [notificationCell.stratRideButton setTitle:@"Start" forState:UIControlStateNormal];
+                        [notificationCell.stratRideButton setUserInteractionEnabled:YES];
+                    }
+                    
+                }
+                
+            }
+            else
+            {
+                //NSLog(@"\n NOT ACCEPTED");
+                notificationCell.acceptButton.hidden = NO;
+                notificationCell.stratRideButton.hidden = YES;
+                [notificationCell.acceptButton setTitle:@"Accept" forState:UIControlStateNormal];
+                //[notificationCell.acceptButton setUserInteractionEnabled:NO];
+                
+            }
+
+            
+            
+            
+        }
     }
+    
+    
+    if ([[message valueForKey:@"is_finish"] intValue] == 1)
+    {
+        notificationCell.acceptButton.hidden = YES;
+        notificationCell.stratRideButton.hidden = NO;
+        
+        [notificationCell.stratRideButton setTitle:@"Finished" forState:UIControlStateNormal];
+        [notificationCell.stratRideButton setUserInteractionEnabled:NO];
+    }
+    
+    
+    
+    
+    
+    //    if ([[message valueForKey:@"is_accepted"] intValue] == 1)
+    //    {
+    //
+    //               notificationCell.acceptButton.hidden = YES;
+    //        notificationCell.stratRideButton.hidden = NO;
+    //    }
+    //    else
+    //    {
+    //
+    //        notificationCell.acceptButton.hidden = NO;
+    //        notificationCell.stratRideButton.hidden = YES;
+    //    }
+    
+    
     return notificationCell;
 }
 
 - (void)acceptButtonAction:(UIButton*)acceptButton
 {
-    NSLog(@"Accept button tapped.: %@", acceptButton);
+   // NSLog(@"Accept button tapped.: %@", acceptButton);
     
-    NSDictionary *infoDict = @{@"track_id" : [[notifications objectAtIndex:acceptButton.tag] valueForKey:@"track_id"], @"ride_id" : [[notifications objectAtIndex:acceptButton.tag] valueForKey:@"ride_id"]};
+    NSDictionary *infoDict = @{@"track_id" : [[notifications objectAtIndex:acceptButton.tag] valueForKey:@"track_id"], @"ride_id" : [[notifications objectAtIndex:acceptButton.tag] valueForKey:@"ride_id"],@"to_id":[[notifications objectAtIndex:acceptButton.tag] valueForKey:@"from_id"]};
+    
+    
     [RSServices processAcceptRide:infoDict completionHandler:^(NSDictionary * response, NSError *error)
      {
          [appDelegate hideLoading];
@@ -140,21 +426,57 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 NSLog(@"Login success! with info: %@", response);
+                // NSLog(@"Login success! with info: %@", response);
                  NSLog(@"Received response for my ride is : %@", response);
+                 //                 [notifications removeAllObjects];
+                 //                 [notifications addObjectsFromArray:[response objectForKey:@"response_content"]];
+                 //                 _rideInfo = [response objectForKey:@"ride_info"];
+                 //                 if (notifications.count)
+                 //                 {
+                 //                     [_msgListview reloadData];
+                 //                 }
+                 
+                 [_rideInfo removeAllObjects];
                  [notifications removeAllObjects];
-                 [notifications addObjectsFromArray:[response objectForKey:@"response_content"]];
-                 rideInfo = [response objectForKey:@"ride_info"];
-                 if (notifications.count)
+                 [_ridesData removeAllObjects];
+                 [_pickUpsData removeAllObjects];
+                 
+                 
+                 if (response.count)
                  {
-                     [_msgListview reloadData];
+                     [notifications addObjectsFromArray:[response objectForKey:@"response_content"]];
+                     [_rideInfo addObjectsFromArray:[response objectForKey:@"ride_info"]];
+                     
+                     for (NSDictionary *dic in notifications)
+                     {
+                         //                         NSDictionary *temp=[dic objectForKey:@"ride_info"];
+                         //                         [_rideInfo addObject:temp];
+                         if ([[dic objectForKey:@"is_rider"] isEqual:@"1"])
+                         {
+                             [_ridesData addObject:dic];
+                         }
+                         else
+                         {
+                             [_pickUpsData addObject:dic];
+                         }
+                         
+                         //Sort arrays
+                         notifications = [self sortArray:notifications];
+                         _rideInfo = [self sortArray:_rideInfo];
+                         _ridesData = [self sortArray:_ridesData];
+                         _pickUpsData = [self sortArray:_pickUpsData];
+                         
+                         [_msgListview reloadData];
+                         
+                     }
                  }
+                 
              }
              else
              {
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                                             {
-//                                                [self.navigationController popViewControllerAnimated:YES];
+                                                //                                                [self.navigationController popViewControllerAnimated:YES];
                                             }];
                  [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
                  return;
@@ -163,40 +485,86 @@
      }];
 }
 
-- (void)startButtonAction
+- (void)startButtonAction:(UIButton*)startButton
 {
-    NSLog(@"Start ride button tapped: %@", rideInfo);
+   // NSLog(@"Start ride button tapped: %@", _rideInfo);
     
-    int trackId = [[[notifications objectAtIndex:0]valueForKey:@"track_id"] intValue];
+    //int trackId = [[[notifications objectAtIndex:0]valueForKey:@"track_id"] intValue];
     
-    [RSServices processStartRide:@{@"track_id" : [NSString stringWithFormat:@"%i", trackId], @"user_id": [User currentUser].userId}  completionHandler:^(NSDictionary *response, NSError *error)
-    {
-                   [appDelegate hideLoading];
-        
-                   if (error != nil)
-                   {
-                       [RSUtils showAlertForError:error inView:self];
-                   }
-                   else if (response != nil)
-                   {
-                       if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
-                       {
-                           NSLog(@"Received response for my ride is : %@", response);
-                       }
-                       else
-                       {
-                           UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                           
-                           [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
-                           return;
-                       }
-                   }
-               }];
+    NSDictionary *infoDict = @{@"track_id" : [[notifications objectAtIndex:startButton.tag] valueForKey:@"track_id"], @"ride_id" : [[notifications objectAtIndex:startButton.tag] valueForKey:@"ride_id"],@"to_id":[[notifications objectAtIndex:startButton.tag] valueForKey:@"from_id"]};
+    
+    [RSServices processStartRide:infoDict  completionHandler:^(NSDictionary *response, NSError *error)
+     {
+         [appDelegate hideLoading];
+         
+         if (error != nil)
+         {
+             [RSUtils showAlertForError:error inView:self];
+         }
+         else if (response != nil)
+         {
+             if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+             {
+                // NSLog(@"Received response for my ride is : %@", response);
+                 //                 [notifications removeAllObjects];
+                 //                 [notifications addObjectsFromArray:[response objectForKey:@"response_content"]];
+                 //                 _rideInfo = [response objectForKey:@"ride_info"];
+                 //                 if (notifications.count)
+                 //                 {
+                 //                     [_msgListview reloadData];
+                 //                 }
+                 
+                 
+                 [_rideInfo removeAllObjects];
+                 [notifications removeAllObjects];
+                 [_ridesData removeAllObjects];
+                 [_pickUpsData removeAllObjects];
+                 
+                 if (response.count)
+                 {
+                     [notifications addObjectsFromArray:[response objectForKey:@"response_content"]];
+                     [_rideInfo addObjectsFromArray:[response objectForKey:@"ride_info"]];
+                     
+                     for (NSDictionary *dic in notifications)
+                     {
+                         //                         NSDictionary *temp=[dic objectForKey:@"ride_info"];
+                         //                         [_rideInfo addObject:temp];
+                         if ([[dic objectForKey:@"is_rider"] isEqual:@"1"])
+                         {
+                             [_ridesData addObject:dic];
+                         }
+                         else
+                         {
+                             [_pickUpsData addObject:dic];
+                         }
+                         
+                         //Sort arrays
+                         notifications = [self sortArray:notifications];
+                         _rideInfo = [self sortArray:_rideInfo];
+                         _ridesData = [self sortArray:_ridesData];
+                         _pickUpsData = [self sortArray:_pickUpsData];
+                         
+                         [_msgListview reloadData];
+                         
+                     }
+                 }
+                 
+                 
+             }
+             else
+             {
+                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                 
+                 [RSUtils showAlertWithTitle:@"Falied" message:[response objectForKey:kResponseMessage] actionOne:okAction actionTwo:nil inView:self];
+                 return;
+             }
+         }
+     }];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Table View cell selected at index: %li", (long)indexPath.row);
+   // NSLog(@"Table View cell selected at index: %li", (long)indexPath.row);
 }
 
 - (BOOL)slideNavigationControllerShouldDisplayRightMenu
@@ -211,31 +579,274 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.destinationViewController isKindOfClass:[RSRideInProgressViewController class]])
+    //    if ([segue.destinationViewController isKindOfClass:[RSRideInProgressViewController class]])
+    //    {
+    //        RSRideInProgressViewController *rideViewController = segue.destinationViewController;
+    //
+    //        NSLog(@"ride info is : %@", rideInfo);
+    //        NSLog(@"Notifications: %@", notifications);
+    //
+    //
+    //          rideViewController.otherUser_id= [[notifications objectAtIndex:[sender tag]] valueForKey:@"from_id"];
+    //
+    //        rideViewController.ride_info=[rideInfo objectAtIndex:[sender tag]];
+    //        rideViewController.notification=[notifications objectAtIndex:[sender tag]];
+    //
+    //        rideViewController.pickUpLocation = CLLocationCoordinate2DMake([[[notifications objectAtIndex:[sender tag]] valueForKey:@"pick_lat"] floatValue], [[[notifications objectAtIndex:[sender tag]] valueForKey:@"pick_lang"] floatValue]);
+    //
+    //
+    //        rideViewController.startCoordinate = CLLocationCoordinate2DMake([[[rideInfo objectAtIndex:[sender tag]] valueForKey:@"olat"] floatValue], [[[rideInfo objectAtIndex:[sender tag]] valueForKey:@"olang"] floatValue]);
+    //
+    //        rideViewController.destinationCoordinate = CLLocationCoordinate2DMake([[[rideInfo objectAtIndex:[sender tag]]valueForKey:@"dlat"] floatValue], [[[rideInfo objectAtIndex:[sender tag]] valueForKey:@"dlang"] floatValue]);
+    //    }
+    
+    if ([segue.destinationViewController isKindOfClass:[HGMovingAnnotationSampleViewController class]])
     {
-        RSRideInProgressViewController *rideViewController = segue.destinationViewController;
+        HGMovingAnnotationSampleViewController *rideViewController = segue.destinationViewController;
         
-        NSLog(@"ride info is : %@", rideInfo);
-        NSLog(@"Notifications: %@", notifications);
+       // NSLog(@"ride info is : %@", _rideInfo);
+       // NSLog(@"Notifications: %@", notifications);
         
-        rideViewController.pickUpLocation = CLLocationCoordinate2DMake([[[notifications objectAtIndex:0] valueForKey:@"pick_lat"] floatValue], [[[notifications objectAtIndex:0] valueForKey:@"pick_lang"] floatValue]);
         
-        rideViewController.otherUser_id= [[notifications objectAtIndex:0] valueForKey:@"from_id"];
+        rideViewController.otherUser_id= [[notifications objectAtIndex:[sender tag]] valueForKey:@"from_id"];
         
-        rideViewController.startCoordinate = CLLocationCoordinate2DMake([[[rideInfo objectAtIndex:0] valueForKey:@"olat"] floatValue], [[[rideInfo objectAtIndex:0] valueForKey:@"olang"] floatValue]);
+        rideViewController.ride_info=[_rideInfo objectAtIndex:[sender tag]];
+        rideViewController.notification=[notifications objectAtIndex:[sender tag]];
         
-        rideViewController.destinationCoordinate = CLLocationCoordinate2DMake([[[rideInfo objectAtIndex:0]valueForKey:@"dlat"] floatValue], [[[rideInfo objectAtIndex:0] valueForKey:@"dlang"] floatValue]);
+        rideViewController.pickUpLocation = CLLocationCoordinate2DMake([[[notifications objectAtIndex:[sender tag]] valueForKey:@"pick_lat"] floatValue], [[[notifications objectAtIndex:[sender tag]] valueForKey:@"pick_lang"] floatValue]);
+        
+        
+        rideViewController.startCoordinate = CLLocationCoordinate2DMake([[[_rideInfo objectAtIndex:[sender tag]] valueForKey:@"olat"] floatValue], [[[_rideInfo objectAtIndex:[sender tag]] valueForKey:@"olang"] floatValue]);
+        
+        rideViewController.destinationCoordinate = CLLocationCoordinate2DMake([[[_rideInfo objectAtIndex:[sender tag]]valueForKey:@"dlat"] floatValue], [[[_rideInfo objectAtIndex:[sender tag]] valueForKey:@"dlang"] floatValue]);
     }
+    
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
+- (IBAction)allActionN:(id)sender
+{
+    _allBtnN.selected=YES;
+    _allBtnN.backgroundColor=[UIColor whiteColor];
+    [_allBtnN setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    
+    
+    _ridesBtnN.selected=NO;
+    _ridesBtnN.backgroundColor=[UIColor grayColor];
+    [_ridesBtnN setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    
+    _pickUpsBtnN.selected=NO;
+    _pickUpsBtnN.backgroundColor=[UIColor grayColor];
+    [_pickUpsBtnN setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    [self roundCornerFor:_allBtnN withRadius:CGSizeMake(15.0, 15.0) roundingCorners:(  UIRectCornerTopRight)];
+    [self roundCornerFor:_ridesBtnN withRadius:CGSizeMake(0.0, 0.0) roundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight | UIRectCornerBottomLeft)];
+    [self roundCornerFor:_pickUpsBtnN withRadius:CGSizeMake(0.0, 0.0) roundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight | UIRectCornerBottomLeft)];
+    
+    [_msgListview reloadData];
 }
-*/
+
+- (IBAction)ridesActionN:(id)sender {
+    
+    
+    _allBtnN.selected=NO;
+    _allBtnN.backgroundColor=[UIColor grayColor];
+    [_allBtnN setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    
+    
+    
+    _ridesBtnN.selected=YES;
+    _ridesBtnN.backgroundColor=[UIColor whiteColor];
+    [_ridesBtnN setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    
+    
+    _pickUpsBtnN.selected=NO;
+    _pickUpsBtnN.backgroundColor=[UIColor grayColor];
+    [_pickUpsBtnN setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    [self roundCornerFor:_allBtnN withRadius:CGSizeMake(0.0, 0.0) roundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight | UIRectCornerBottomLeft)];
+    [self roundCornerFor:_ridesBtnN withRadius:CGSizeMake(15.0, 15.0) roundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight )];
+    [self roundCornerFor:_pickUpsBtnN withRadius:CGSizeMake(0.0, 0.0) roundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight | UIRectCornerBottomLeft)];
+    [_msgListview reloadData];
+}
+
+- (IBAction)pickUpsActionN:(id)sender {
+    
+    
+    _allBtnN.selected=NO;
+    _allBtnN.backgroundColor=[UIColor grayColor];
+    [_allBtnN setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    
+    _ridesBtnN.selected=NO;
+    _ridesBtnN.backgroundColor=[UIColor grayColor];
+    [_ridesBtnN setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    
+    _pickUpsBtnN.selected=YES;
+    _pickUpsBtnN.backgroundColor=[UIColor whiteColor];
+    [_pickUpsBtnN setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    
+    [self roundCornerFor:_allBtnN withRadius:CGSizeMake(0.0, 0.0) roundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight | UIRectCornerBottomLeft)];
+    [self roundCornerFor:_ridesBtnN withRadius:CGSizeMake(0.0, 0.0) roundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight | UIRectCornerBottomLeft)];
+    [self roundCornerFor:_pickUpsBtnN withRadius:CGSizeMake(15.0, 15.0) roundingCorners:(UIRectCornerTopLeft )];
+    [_msgListview reloadData];
+}
 
 @end
+
+
+//    if ([[rideInfo valueForKey:@"user_id"] isEqualToString: _currentUser.userId])
+//    {
+//        if ([[rideInfo valueForKey:@"is_rider"] intValue] == 1)
+//        {
+//            /////////Rider
+//            if ([[message valueForKey:@"is_accepted"] intValue] == 1)
+//            {
+//                notificationCell.acceptButton.hidden = YES;
+//                notificationCell.stratRideButton.hidden = NO;
+//
+//                if ([[message valueForKey:@"is_start"] intValue] == 1)
+//                {
+//                    [notificationCell.stratRideButton setTitle:@"In Progress" forState:UIControlStateNormal];
+//                    [notificationCell.stratRideButton setUserInteractionEnabled:YES];
+//                }
+//                else
+//                {
+//                    [notificationCell.stratRideButton setTitle:@"Start" forState:UIControlStateNormal];
+//                    [notificationCell.stratRideButton setUserInteractionEnabled:NO];
+//                }
+//            }
+//            else
+//            {
+//                notificationCell.acceptButton.hidden = NO;
+//                notificationCell.stratRideButton.hidden = YES;
+//                [notificationCell.acceptButton setTitle:@"Accept" forState:UIControlStateNormal];
+//            }
+//        }
+//        else
+//        {
+//            /////////Non Rider
+//            if ([[message valueForKey:@"is_accepted"] intValue] == 1)
+//            {
+//
+//                notificationCell.acceptButton.hidden = YES;
+//                notificationCell.stratRideButton.hidden = NO;
+//                if ([[message valueForKey:@"is_start"] intValue] == 1)
+//                {
+//                    [notificationCell.stratRideButton setTitle:@"In Progress" forState:UIControlStateNormal];
+//                    [notificationCell.stratRideButton setUserInteractionEnabled:YES];
+//                }
+//                else
+//                {
+//                    [notificationCell.stratRideButton setTitle:@"Accepted" forState:UIControlStateNormal];
+//                    [notificationCell.stratRideButton setUserInteractionEnabled:NO];
+//                }
+//
+//            }
+//            else
+//            {
+//                notificationCell.acceptButton.hidden = NO;
+//                notificationCell.stratRideButton.hidden = YES;
+//                [notificationCell.acceptButton setTitle:@"Waiting" forState:UIControlStateNormal];
+//                [notificationCell.acceptButton setUserInteractionEnabled:NO];
+//
+//            }
+//
+//
+//
+//        }
+//
+//        if ([[message valueForKey:@"is_finish"] intValue] == 1)
+//        {
+//            notificationCell.acceptButton.hidden = YES;
+//            notificationCell.stratRideButton.hidden = NO;
+//
+//            [notificationCell.stratRideButton setTitle:@"Finished" forState:UIControlStateNormal];
+//            [notificationCell.stratRideButton setUserInteractionEnabled:NO];
+//        }
+//
+//    }
+//    else
+//    {
+//        if ([[rideInfo valueForKey:@"is_rider"] intValue] == 1)
+//        {
+//            /////////Rider
+//            if ([[message valueForKey:@"is_accepted"] intValue] == 1)
+//            {
+//                notificationCell.acceptButton.hidden = YES;
+//                notificationCell.stratRideButton.hidden = NO;
+//
+//                if ([[message valueForKey:@"is_start"] intValue] == 1)
+//                {
+//                    [notificationCell.stratRideButton setTitle:@"In Progress" forState:UIControlStateNormal];
+//                    [notificationCell.stratRideButton setUserInteractionEnabled:YES];
+//                }
+//                else
+//                {
+//                    [notificationCell.stratRideButton setTitle:@"Start" forState:UIControlStateNormal];
+//                    [notificationCell.stratRideButton setUserInteractionEnabled:NO];
+//                }
+//            }
+//            else
+//            {
+//                notificationCell.acceptButton.hidden = NO;
+//                notificationCell.stratRideButton.hidden = YES;
+//                [notificationCell.acceptButton setTitle:@"Accept" forState:UIControlStateNormal];
+//            }
+//        }
+//        else
+//        {
+//            /////////Non Rider
+//            if ([[message valueForKey:@"is_accepted"] intValue] == 1)
+//            {
+//
+//                notificationCell.acceptButton.hidden = YES;
+//                notificationCell.stratRideButton.hidden = NO;
+//                if ([[message valueForKey:@"is_start"] intValue] == 1)
+//                {
+//                    [notificationCell.stratRideButton setTitle:@"In Progress" forState:UIControlStateNormal];
+//                    [notificationCell.stratRideButton setUserInteractionEnabled:YES];
+//                }
+//                else
+//                {
+//                    [notificationCell.stratRideButton setTitle:@"Accepted" forState:UIControlStateNormal];
+//                    [notificationCell.stratRideButton setUserInteractionEnabled:NO];
+//                }
+//
+//            }
+//            else
+//            {
+//                notificationCell.acceptButton.hidden = NO;
+//                notificationCell.stratRideButton.hidden = YES;
+//                [notificationCell.acceptButton setTitle:@"Waiting" forState:UIControlStateNormal];
+//                [notificationCell.acceptButton setUserInteractionEnabled:NO];
+//
+//            }
+//
+//
+//
+//        }
+//
+//        if ([[message valueForKey:@"is_finish"] intValue] == 1)
+//        {
+//            notificationCell.acceptButton.hidden = YES;
+//            notificationCell.stratRideButton.hidden = NO;
+//
+//            [notificationCell.stratRideButton setTitle:@"Finished" forState:UIControlStateNormal];
+//            [notificationCell.stratRideButton setUserInteractionEnabled:NO];
+//        }
+//
+//
+//    }
+

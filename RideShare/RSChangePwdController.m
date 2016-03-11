@@ -89,7 +89,7 @@
                              delegate.isUserLoggedIn = NO;
                              [self.navigationController popViewControllerAnimated:YES];
                          }];
-                         NSLog(@"Password Changed with: %@", response);
+                         //NSLog(@"Password Changed with: %@", response);
                          [RSUtils showAlertWithTitle:@"Change Password" message:@"Your Password has been changed successfully. Please login." actionOne:okAction actionTwo:nil inView:self];
                      }
                      else

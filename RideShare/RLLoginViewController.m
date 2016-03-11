@@ -18,11 +18,42 @@
 {
     [super viewDidLoad];
     
-   
+    if (IS_IPHONE)
+    {
+        //NSLog(@"\n iPhone");
+        if (IS_IPHONE_4_OR_LESS)
+        {
+           // NSLog(@"\n iPhone_4");
+            _rigisterBottomConstraint.constant=10;
+            _logoBottomConstraint.constant=2;
+        }
+        else if (IS_IPHONE_5)
+        {
+           // NSLog(@"\n iPhone_5");
+            _rigisterBottomConstraint.constant=30;
+             _logoBottomConstraint.constant=30;
+        }
+        else if (IS_IPHONE_6)
+        {
+           // NSLog(@"\n iPhone_6");
+            _rigisterBottomConstraint.constant=40;
+             _logoBottomConstraint.constant=70;
+        }
+        else if (IS_IPHONE_6P)
+        {
+            //NSLog(@"\n iPhone_6 Plus");
+            _rigisterBottomConstraint.constant=50;
+             _logoBottomConstraint.constant=80;
+        }
+
+    } else {
+        //NSLog(@"\n iPad");
+    }
+    
     
     if ([RSUtils isNetworkReachable])
     {
-        NSLog(@"Reachable");
+        //NSLog(@"Reachable");
     }
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -32,17 +63,17 @@
     self.navigationController.navigationBarHidden = YES;
 
     
-    [_passwordInput setText:@"password"];
-    [_userNameImput setText:@"dasaridineshbabu27@gmail.com"];
+//    [_passwordInput setText:@"password"];
+//    [_userNameImput setText:@"dasaridineshbabu27@gmail.com"];
     
     if ([RSUtils isNetworkReachable]) {
-        NSLog(@"Reachable");
+        //NSLog(@"Reachable");
     }
 }
 
 - (void)hide
 {
-    NSLog(@"Hiding from login");
+    //NSLog(@"Hiding from login");
     [RSUtils showAlertWithTitle:@"Title" message:@"Message" actionOne:nil actionTwo:nil inView:self];
 }
 
@@ -83,10 +114,21 @@
         return;
     }
     
-    NSDictionary *infoDict  = @{@"email" : _userNameImput.text,
-                                @"password" : _passwordInput.text
-                                };
-    [appDelegate showLoaingWithTitle:@"Loading..."];
+    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"device_token"];
+    NSDictionary *infoDict;
+    if (deviceToken != nil) {
+       infoDict  = @{@"email" : _userNameImput.text,
+                                    @"password" : _passwordInput.text,
+                                    @"device_id":deviceToken
+                                    };
+
+    } else {
+       infoDict  = @{@"email" : _userNameImput.text,
+                                    @"password" : _passwordInput.text,
+                                    };
+
+    }
+       [appDelegate showLoaingWithTitle:@"Loading..."];
     [RSServices processLogin:infoDict completionHandler:^(NSDictionary *response, NSError *error)
      {
          [appDelegate hideLoading];
@@ -99,8 +141,23 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 NSLog(@"Login success! with info: %@", response);
-                 [self getProfileImageWith:[response valueForKey:@"user_id"]];
+                 //NSLog(@"Login success! with info: %@", response);
+                 
+                 
+//                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                     [self getProfileImageWith:[response valueForKey:@"user_id"]];
+//                 });
+                 
+                 
+                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                     // call the same method on a background thread
+                      [self getProfileImageWith:[response valueForKey:@"user_id"]];
+                     
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                        // update UI on the main thread
+                     });
+                     
+                 });
                  
                  User *currentUser = [User currentUser];
                  [currentUser saveUserDetails:response];
@@ -109,7 +166,7 @@
                  _passwordInput.text = @"";
                  
                 ////Socket
-                [appDelegate initiateClientSocket];
+                //[appDelegate initiateClientSocket];
                  
                 
                  [self performSegueWithIdentifier:@"ShowHomeViewSegue" sender:self];
@@ -151,7 +208,7 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 NSLog(@"\n profile image success! with info: %@", response);
+                // NSLog(@"\n profile image success! with info: %@", response);
                 
                  User *currentUser = [User currentUser];
 //                 NSData* data = [[response valueForKey:@"profile_pic"] dataUsingEncoding:NSUTF8StringEncoding];
@@ -166,13 +223,13 @@
              }
              else
              {
-                NSLog(@"\n profile image success! with info: %@", [response objectForKey:kResponseMessage] );
+               // NSLog(@"\n profile image success! with info: %@", [response objectForKey:kResponseMessage] );
              }
          }
          
          if (alertMsg.length != 0)
          {
-              NSLog(@"\n profile image Failure! with info: %@", alertMsg);
+              //NSLog(@"\n profile image Failure! with info: %@", alertMsg);
          }
      }];
 

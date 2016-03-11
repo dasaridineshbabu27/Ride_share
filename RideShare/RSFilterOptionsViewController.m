@@ -54,7 +54,7 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"FilterOptionSelectedNotification" object:@{@"item" : [NSString stringWithFormat:@"%li", (long)indexPath.row]}];
-    NSLog(@"Bla bla");
+   // NSLog(@"Bla bla");
 }
 
 -(CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath

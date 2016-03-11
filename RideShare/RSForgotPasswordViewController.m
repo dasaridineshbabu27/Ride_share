@@ -61,7 +61,7 @@
             {
                 if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
                 {
-                    NSLog(@"Login success! with info: %@", response);
+                    //NSLog(@"Login success! with info: %@", response);
                     
                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                     {

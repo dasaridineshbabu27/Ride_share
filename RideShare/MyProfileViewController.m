@@ -79,6 +79,9 @@
     }
     return YES;
 }
+
+
+
 - (IBAction)pickProfileImageAction:(id)sender
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Choose Source" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
@@ -111,7 +114,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
-    NSLog(@"%@", info);
+    //NSLog(@"%@", info);
     [_btnPickImage setBackgroundImage:[info valueForKey:@"UIImagePickerControllerOriginalImage"] forState:UIControlStateNormal];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -185,7 +188,7 @@
         
         long beforeimageSize   = beforeImgData.length;
         long afterimageSize   = afterImgData.length;
-        NSLog(@"\n \n beforeImgSize===%f KB afterImgsize===%f KB",beforeimageSize/1024.0,afterimageSize/1024.0);
+       // NSLog(@"\n \n beforeImgSize===%f KB afterImgsize===%f KB",beforeimageSize/1024.0,afterimageSize/1024.0);
         
         [self setUserInteraction:NO];
         [_editBtn setTitle:@"EDIT"];

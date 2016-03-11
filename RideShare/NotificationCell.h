@@ -17,4 +17,10 @@
 @property (nonatomic, weak) IBOutlet UILabel *messageLabel;
 @property (nonatomic, weak) IBOutlet UIButton *acceptButton;
 @property (nonatomic, weak) IBOutlet UIButton *stratRideButton;
+
+@property (weak, nonatomic) IBOutlet UILabel *sourceDisplay;
+@property (weak, nonatomic) IBOutlet UILabel *timeDisplay;
+@property (weak, nonatomic) IBOutlet UILabel *statusDisplay;
+@property (weak, nonatomic) IBOutlet UILabel *destinationDisplay;
+
 @end

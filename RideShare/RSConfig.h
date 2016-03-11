@@ -31,7 +31,7 @@
 
 #define  urlMyRideRequest [NSString stringWithFormat:@"%@%@",mainURL, @"myride.php"]
 
-#define  urlPmuRequest [NSString stringWithFormat:@"%@%@",mainURL, @"pickup.php"]
+#define  urlPickUpRequest [NSString stringWithFormat:@"%@%@",mainURL, @"pickup.php"]
 
 #define  urlFetchHistory [NSString stringWithFormat:@"%@%@",mainURL, @"myridelist.php"]
 
@@ -51,7 +51,7 @@
 
 #define urlRequestRideStart [NSString stringWithFormat:@"%@%@",mainURL, @"ridestart.php"]
 
-#define urlRequestFinishRide [NSString stringWithFormat:@"%@%@",mainURL, @"finishRide.php"]
+#define urlRequestFinishRide [NSString stringWithFormat:@"%@%@",mainURL, @"finishride.php"]
 
 
 #endif /* RSConfig_h */

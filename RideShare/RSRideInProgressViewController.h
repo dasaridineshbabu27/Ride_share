@@ -10,12 +10,9 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import "User.h"
 #import "RSUtils.h"
-//#import <SIOSocket/SIOSocket.h>
-#import "WPAnnotation.h"
 
-#import "SocketIO.h"
 
-@interface RSRideInProgressViewController : UIViewController<CLLocationManagerDelegate, GMSMapViewDelegate,SocketIODelegate>
+@interface RSRideInProgressViewController : UIViewController<CLLocationManagerDelegate, GMSMapViewDelegate>
 {
     CGPoint previousPoint;
     GMSMarker *vehicleMarker;
@@ -26,5 +23,8 @@
 @property (nonatomic, assign) CLLocationCoordinate2D destinationCoordinate;
 @property (nonatomic, strong) User *currentUser;
 @property (nonatomic, strong) NSString *otherUser_id;
+@property (nonatomic, strong) NSDictionary *ride_info;
+@property (nonatomic, strong) NSDictionary *notification;
 @property (weak, nonatomic) IBOutlet GMSMapView *rideMapView;
+
 @end

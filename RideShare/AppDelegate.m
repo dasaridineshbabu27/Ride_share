@@ -17,8 +17,6 @@
 
 @interface AppDelegate ()
 
-@property BOOL registered;
-@property NSString *scoketID;
 @end
 
 @implementation AppDelegate
@@ -50,17 +48,17 @@
     
     [[NSNotificationCenter defaultCenter] addObserverForName:SlideNavigationControllerDidClose object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSString *menu = note.userInfo[@"menu"];
-        NSLog(@"Closed %@", menu);
+       // NSLog(@"Closed %@", menu);
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:SlideNavigationControllerDidOpen object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSString *menu = note.userInfo[@"menu"];
-        NSLog(@"Opened %@", menu);
+        //NSLog(@"Opened %@", menu);
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:SlideNavigationControllerDidReveal object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSString *menu = note.userInfo[@"menu"];
-        NSLog(@"Revealed %@", menu);
+       // NSLog(@"Revealed %@", menu);
     }];
     
     UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
@@ -83,34 +81,81 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken
 {
-    NSLog(@"the generated device token string is : %@",deviceToken);
+    //NSLog(@"the generated device token string is : %@",deviceToken);
     
     self.deviceToken = [[[[deviceToken description]                                                    stringByReplacingOccurrencesOfString: @"<" withString: @""]stringByReplacingOccurrencesOfString: @">" withString: @""]                                                       stringByReplacingOccurrencesOfString: @" " withString: @""];
     
     NSLog(@"the generated device token string is : %@",self.deviceToken);
+    [[NSUserDefaults standardUserDefaults] setObject:self.deviceToken forKey:@"device_token"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
 }
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo
 {
-    NSLog(@"Push received with user info: %@", userInfo);
+    NSLog(@"\n didReceiveRemoteNotification::::: %@",userInfo);
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Title" message:@"Someone expecting ride from you." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"RideShare" message:@"Someone expecting ride from you." preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Accept Request" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"Accepting Ride");
-    }];
+    UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                   {
+                                       
+                                       NSLog(@"Accepting Ride");
+                                       //Accept Service
+                                       
+                                   }];
     
-    UIAlertAction *ignoreAction = [UIAlertAction actionWithTitle:@"Ignore" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"Ignore clicked!");
-    }];
+    UIAlertAction* ignoreAction = [UIAlertAction actionWithTitle:@"Ignore" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action)
+                                   {
+                                       
+                                       NSLog(@"Ignore clicked!");
+                                       //Dismiss Alert
+                                       [alertController dismissViewControllerAnimated:YES completion:nil];
+                                       
+                                   }];
     
     [alertController addAction:acceptAction];
     [alertController addAction:ignoreAction];
+    
+    [self.topViewController presentViewController:alertController animated:YES completion:nil];
+    
+  
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    NSLog(@"didReceiveRemoteNotification : fetchCompletionHandler");
+    //iPad Device Token::: a5846f368480ff30a7bf4ce63aed1c4d450db0af0f1b23df4400665d577c1ad2
+    
+    NSLog(@"\n didReceiveRemoteNotification userinfo:::::%@  \n aps::::%@ \n fetchCompletionHandler:::::%@",userInfo,[userInfo valueForKey:@"aps"],completionHandler);
+    
+ 
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"RideShare" message:@"Someone expecting ride from you." preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                               {
+                                   
+                                   NSLog(@"Accepting Ride");
+                                   //Accept Service
+                                   
+                               }];
+    
+    UIAlertAction* ignoreAction = [UIAlertAction actionWithTitle:@"Ignore" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action)
+                             {
+                                 
+                                 NSLog(@"Ignore clicked!");
+                                 //Dismiss Alert
+                                 [alertController dismissViewControllerAnimated:YES completion:nil];
+                                 
+                             }];
+    
+    [alertController addAction:acceptAction];
+    [alertController addAction:ignoreAction];
+    
+    [self.topViewController presentViewController:alertController animated:YES completion:nil];
+    
+    
+    
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -224,7 +269,7 @@
         [_loadingView setHidden:YES];
         [_indicator stopAnimating];
     }
-    NSLog(@"Hiding from AppDelegate");
+   // NSLog(@"Hiding from AppDelegate");
 }
 
 - (UIViewController *)topViewController
@@ -248,104 +293,6 @@
     return [self topViewController:presentedViewController];
 }
 
--(void)initiateClientSocket
-{
-    //////// Real code
-    NSURL* scoketURL = [[NSURL alloc] initWithString:@"http://192.168.0.104:3000"];
-    self.socketClient = [[SocketIOClient alloc] initWithSocketURL:scoketURL options:@{@"log": @NO, @"forcePolling": @NO}];
-    [self.socketClient connect];
-    self.socketClient.reconnects = YES;
-    [self addHandlers];
-}
-
--(void)addHandlers
-{
-    
-    ////Getting Event
-    [self.socketClient onAny:^(SocketAnyEvent *event)
-     {
-         NSLog(@"\n \n socket event:::%@ /n count:::%lu",event,event.items.count);
-         
-         if(event.items.count)
-         {
-             NSLog(@"\n \n socket event first Object :::%@",[event.items objectAtIndex:0]);
-             
-             if (!_registered)
-             {
-                 ////////Register UserID
-                 _scoketID=[[event.items objectAtIndex:0] valueForKey:@"id"];
-                 if (_scoketID !=nil)
-                 {
-                     
-                     NSLog(@"\n \n _scoketID:::%@",_scoketID);
-                     
-                     if ([User currentUser]!= nil )
-                     {
-                         ///////////Register users scoket
-                         NSArray *userArrr=[NSArray arrayWithObjects: [User currentUser].userId,_scoketID,@"1",nil];
-                         [self.socketClient emit:@"register" withItems:userArrr];
-                     }
-                     _registered = YES;
-                 }
-                 else
-                 {
-                     NSLog(@"\n \n Failed to register chat");
-                 }
-                 
-             }
-             else
-             {
-                 //////update map with received data
-                 NSLog(@"\n \n Update Map with Received data");
-                 
-             }
-             
-         }
-         else
-         {
-             NSLog(@"\n \n No Event ");
-         }
-         
-     }
-     ];
-    
-    //////Scoket Connected
-    [ self.socketClient on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack)
-     {
-         NSLog(@"\n \n socket connected:::data====%@ \n SocketAckEmitter====%@ ",data,ack.description);
-         
-         
-     }];
-    
-    /////Scoket disconnected
-    [self.socketClient on:@"disconnect" callback:^(NSArray* data, SocketAckEmitter* ack)
-     {
-         
-         NSLog(@"\n \n socket disconnect:::data====%@ \n SocketAckEmitter====%@ ",data,ack);
-         
-         
-         if( [User currentUser]!= nil)
-         {
-             if (self.socketClient.status == SocketIOClientStatusClosed && [RSUtils isNetworkReachable])
-             {
-                 [self initiateClientSocket];
-             }
-         }
-         
-     }];
-}
-
-- (void)disconnectClientSocket
-{
-    NSLog(@"\n Finish button tapped");
-    if (self.socketClient != nil && self.socketClient.status == SocketIOClientStatusConnected)
-    {
-        [self.socketClient disconnect];
-        [self.socketClient removeAllHandlers];
-        [self.socketClient close];
-    }
-    
-}
 
 
 @end

@@ -33,8 +33,11 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ridesHolderTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ridesHolderBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *rideViewHightConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *ridesListHolder;
+@property (weak, nonatomic) IBOutlet UIView *rideView;
+@property (weak, nonatomic) IBOutlet UILabel *rsLabel;
 @property (weak, nonatomic) IBOutlet UITableView *ridesListView;
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
 
@@ -56,13 +59,14 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *destinationLocationInput;
 @property (weak, nonatomic) IBOutlet UITextField *sourceLocationInput;
-@property (weak, nonatomic) IBOutlet UIButton *btnPickup;
 
+@property (weak, nonatomic) IBOutlet UIButton *btnPickup;
 @property (weak, nonatomic) IBOutlet UIButton *btnPickMeUp;
 
 - (IBAction)pickingToggleAction:(id)sender;
 - (IBAction)requestAction:(id)sender;
 - (IBAction)showTimePicker:(id)sender;
+- (IBAction)cancelAction:(id)sender;
 - (IBAction)fetchRidesAroundMe;
 @end
 

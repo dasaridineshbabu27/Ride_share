@@ -27,9 +27,5 @@
 - (UIViewController *)topViewController;
 
 
-@property (nonatomic, strong) SocketIOClient *socketClient;
--(void)initiateClientSocket;
--(void)disconnectClientSocket;
-
 @end
 

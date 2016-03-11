@@ -66,7 +66,8 @@
 }
 +(void)addCornerRadius:(UIView*)view
 {
-    view.layer.cornerRadius = view.frame.size.height;
+   // view.layer.cornerRadius = view.frame.size.height;
+     view.layer.cornerRadius = 10.0;
     view.layer.borderColor = [UIColor orangeColor].CGColor;
     view.layer.borderWidth = 1.0;
     view.layer.masksToBounds = YES;
@@ -87,12 +88,12 @@
     
     if ( status == kCFNetDiagnosticConnectionUp )
     {
-        NSLog (@"Connection is Available");
+        //NSLog (@"Connection is Available");
         return YES;
     }
     else
     {
-        NSLog (@"Connection is down");
+       // NSLog (@"Connection is down");
         return NO;
     }
 }
@@ -118,7 +119,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
     [dateFormatter setDateFormat:@"dd:MM:YYYY HH:mm"];
-    NSLog(@"%@", [dateFormatter stringFromDate:date]);
+    //NSLog(@"%@", [dateFormatter stringFromDate:date]);
     return [dateFormatter stringFromDate:date];
 }
 
@@ -127,7 +128,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
     [dateFormatter setDateFormat:@"dd:MM:YYYY HH:mm"];
-    NSLog(@"%@", [dateFormatter dateFromString:dateString]);
+   // NSLog(@"%@", [dateFormatter dateFromString:dateString]);
     return [dateFormatter dateFromString:dateString];
 }
 
@@ -143,15 +144,29 @@
 
 +(NSString*)getDisplayDate:(NSString*)dateString
 {
-    NSDateFormatter *dateFormatte = [NSDateFormatter new];
-    dateFormatte.dateStyle = NSDateFormatterMediumStyle;
-    dateFormatte.timeStyle = NSDateFormatterShortStyle;
-    [dateFormatte setDateFormat:@"dd:MM:YYYY HH:mm"];
-    NSDate *date = [dateFormatte dateFromString:@"01:02:2016 17:05"];
-    dateFormatte.dateStyle = NSDateFormatterMediumStyle;
-    dateFormatte.timeStyle = NSDateFormatterShortStyle;
-    NSLog(@"%@", [dateFormatte stringFromDate:date]);
-    return [dateFormatte stringFromDate:date];
+   // NSLog(@"\n Date string:::::%@",dateString);
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+    [dateFormatter setDateFormat:@"dd:MM:yyyy HH:mm"];
+     NSDate *date = [dateFormatter dateFromString:dateString];
+    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    
+   // NSLog(@"\n Date::::%@", [dateFormatter stringFromDate:date]);
+    return [dateFormatter stringFromDate:date];
+    
+//    NSDateFormatter *dateFormatte = [NSDateFormatter new];
+//    dateFormatte.dateStyle = NSDateFormatterMediumStyle;
+//    dateFormatte.timeStyle = NSDateFormatterShortStyle;
+//    
+//    [dateFormatte setDateFormat:@"dd:MM:YYYY HH:mm"];
+//    
+//    NSDate *date = [dateFormatte dateFromString:dateString];
+//    
+//    dateFormatte.dateStyle = NSDateFormatterMediumStyle;
+//    dateFormatte.timeStyle = NSDateFormatterShortStyle;
+//    NSLog(@"%@", [dateFormatte stringFromDate:date]);
+//    return [dateFormatte stringFromDate:date];
 }
 
 @end

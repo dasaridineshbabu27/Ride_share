@@ -84,10 +84,16 @@
     self.pickTimeButton.layer.borderWidth = 1.0;
     self.pickTimeButton.layer.cornerRadius = 4.0;
     
-    self.btnRequest.layer.borderColor = [UIColor blackColor].CGColor;
-    self.btnRequest.layer.borderWidth = 1.0;
-    self.btnRequest.layer.cornerRadius = 4.0;
-    _btnPickup.selected = YES;
+    self.rideCoseInput.layer.borderColor = [UIColor blackColor].CGColor;
+    self.rideCoseInput.layer.borderWidth = 1.0;
+    self.rideCoseInput.layer.cornerRadius = 4.0;
+    
+//    self.btnRequest.layer.borderColor = [UIColor blackColor].CGColor;
+   // self.btnRequest.layer.borderWidth = 1.0;
+   // self.btnRequest.layer.cornerRadius = 5.0;
+    
+   // _btnPickup.selected = YES;
+     _rideViewHightConstraint.constant=0;
 }
 
 - (IBAction)refreshClicked:(id)sender
@@ -110,7 +116,7 @@
 -(void)filterOptionSelected:(NSNotification*)notification
 {
     //
-    NSLog(@"Notification Obj is : %@", notification.object);
+    //NSLog(@"Notification Obj is : %@", notification.object);
     
     int choice = [[[notification object] valueForKey:@"item"] intValue];
     [self filterRides:choice];
@@ -118,15 +124,16 @@
     
     return;
     
-    switch (choice) {
+    switch (choice)
+    {
         case 0:
-            NSLog(@"All Option Selected");
+           // NSLog(@"All Option Selected");
             [_dataSource removeAllObjects];
             
             [_dataSource addObjectsFromArray:_currentRides];
             break;
         case 1:
-            NSLog(@"Pick Ups Option Selected");
+            //NSLog(@"Pick Ups Option Selected");
             
             for (id ride in _currentRides)
             {
@@ -138,7 +145,7 @@
             }
             break;
         case 2:
-            NSLog(@"Pick Me Ups Option Selected");
+            //NSLog(@"Pick Me Ups Option Selected");
             for (id ride in _currentRides)
             {
                 [_dataSource removeAllObjects];
@@ -216,9 +223,9 @@
 
 - (IBAction)listClicked:(UIBarButtonItem*)button
 {
-    if ([button.title isEqualToString:@"List"])
+    if ([button.title isEqualToString:@"LIST"])
     {
-        [button setTitle:@"Map"];
+        [button setTitle:@"MAP"];
         _ridesHolderTopConstraint.constant = 0;
         _ridesHolderBottomConstraint.constant = 0;
         [self.view setNeedsUpdateConstraints];
@@ -227,7 +234,7 @@
     }
     else
     {
-        [button setTitle:@"List"];
+        [button setTitle:@"LIST"];
         _ridesHolderTopConstraint.constant = self.view.frame.size.height;
         _ridesHolderBottomConstraint.constant = 0;
         [self.view setNeedsUpdateConstraints];
@@ -235,7 +242,7 @@
         [self.view layoutIfNeeded];
     }
     
-    NSLog(@"%@", button.title);
+    //NSLog(@"%@", button.title);
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -301,11 +308,11 @@
              {
                  if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
                  {
-                     NSLog(@"Login success! with info: %@", response);
-                     NSLog(@"Received response for my ride is : %@", response);
+                     ///NSLog(@"Login success! with info: %@", response);
+                     //NSLog(@"Received response for my ride is : %@", response);
                      [_currentRides removeAllObjects];
                      [_currentRides addObjectsFromArray:[response objectForKey:@"response_content"]];
-                     NSLog(@"Current rides are: %@", _currentRides);
+                    // NSLog(@"Current rides are: %@", _currentRides);
                      [self filterRides:0];
                      //TODO: Refresh maps.
                  }
@@ -377,7 +384,7 @@
 
 - (UIView*)annotationViewForRide: (GMSMarker*)marker
 {
-    NSLog(@"marker user data is : %@", marker.userData);
+    //NSLog(@"marker user data is : %@", marker.userData);
     NSDictionary *ride = marker.userData;
     UIView *annotationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 160)];
     annotationView.translatesAutoresizingMaskIntoConstraints = YES;
@@ -415,6 +422,7 @@
     riderCost.textColor = riderNameDisplay.textColor;
     riderCost.alpha = 0.65;
     riderCost.translatesAutoresizingMaskIntoConstraints = YES;
+    
     if ([[ride valueForKey:@"ride_cost"] length] == 0)
     {
         riderCost.text = @"Ride Share: NA";
@@ -449,23 +457,32 @@
 
 - (void)showOptionsViewForRideInfo:(NSDictionary*)rideInfo
 {
-    NSLog(@"Marker: %@", rideInfo);
+    //NSLog(@"Marker: %@", rideInfo);
     
-    NSString *title = ([[rideInfo objectForKey:@"ride_type"] intValue] == 1)?@"My Ride" : @"Pick Me Up";
+    NSString *title = ([[rideInfo objectForKey:@"ride_type"] intValue] == 1)?@"Ride" : @"Pick Up";
     
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:[NSString stringWithFormat:@"Starts at: %@",[RSUtils getDisplayDate:[rideInfo objectForKey:@"start_time"]]] preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *callAction = [UIAlertAction actionWithTitle:@"Call" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"call button tapped");
+    
+    ////Call button
+    UIAlertAction *callAction = [UIAlertAction actionWithTitle:@"Call" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+    {
+        ////Call button Action method
+        //NSLog(@"call button tapped");
         [self callToRider:[rideInfo valueForKey:@"mobile_no"]];
     }];
     
+    ////Cancel alert button
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
+    
+    ///// Cancel Request button
     if ([currentUser.userId isEqualToString:[rideInfo objectForKey:@"user_id"] ])
     {
-        UIAlertAction *cancelRequest = [UIAlertAction actionWithTitle:@"Cancel Ride" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSLog(@"Cancel Ride Clicked button tapped");
+         NSString *cancelTitle = ([[rideInfo objectForKey:@"ride_type"] intValue] == 1)?@"Cancel Ride" : @"Cancel Pick Up";
+        UIAlertAction *cancelRequest = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+        {
+            //NSLog(@"Cancel Ride button tapped");
             
             if ([[rideInfo valueForKey:@"ride_type"] intValue] == 1)
             {
@@ -476,6 +493,8 @@
                 [self cancelPickMeUp:rideInfo];
             }
         }];
+        
+        
         
         if ([[rideInfo valueForKey:@"ride_type"] intValue] == PickUp)
         {
@@ -490,12 +509,29 @@
     }
     else
     {
+//        NSString *isRider, *rideType;
+//        
+//        if ([[rideInfo valueForKey:@"ride_type"]   isEqual: @"1"])
+//        {
+//           isRider=[NSString stringWithFormat:@"%i",PickUp];
+//           rideType=[NSString stringWithFormat:@"%i",PickUp];
+//                
+//        }
+//        else
+//        {
+//            isRider=[NSString stringWithFormat:@"%i",PickMeUp];
+//            rideType=[NSString stringWithFormat:@"%i",PickMeUp];
+//        }
+        
         if ([[rideInfo valueForKey:@"ride_type"] intValue] == PickUp)
         {
-            UIAlertAction *raiseRequest = [UIAlertAction actionWithTitle:@"Pick Me Up" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+
+            UIAlertAction *raiseRequest = [UIAlertAction actionWithTitle:@"Request to PickUp You!!!" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
             {
+                
                 self.tempRideInfo = [rideInfo mutableCopy];
                 [self performSegueWithIdentifier:@"PickUpLocationView" sender:self];
+                
             }];
             
             [controller addAction:raiseRequest];
@@ -504,11 +540,17 @@
         }
         else
         {
-            UIAlertAction *raiseRequest = [UIAlertAction actionWithTitle:@"Pick Him Up" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+            
+           
+            
+            UIAlertAction *raiseRequest = [UIAlertAction actionWithTitle:@"Request to PickUp Client!!!" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
             {
                 NSDictionary *infoDict = @{@"from_id" : currentUser.userId,
+                                           
+                                           @"is_rider":[NSString stringWithFormat:@"%i",PickMeUp],
+                                           @"type" : [NSString stringWithFormat:@"%i",PickMeUp],
+                                           
                                            @"to_id" : [rideInfo valueForKey : @"user_id"],
-                                           @"type" : [NSString stringWithFormat:@"%i", PickUp],
                                            @"ride_id" : [rideInfo objectForKey:@"ride_id"],
                                            @"pick_lat" : [NSString stringWithFormat:@"%@",[rideInfo valueForKey:@"olat"]],
                                            @"pick_lang" : [NSString stringWithFormat:@"%@",[rideInfo valueForKey:@"olang"]],
@@ -527,14 +569,26 @@
                          if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
                          {
                              NSLog(@"Response success! with info: %@", response);
-                             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your request for Pick up has been intimated to the other end." preferredStyle:UIAlertControllerStyleAlert];
+                             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your request for picking client has been sent to the client." preferredStyle:UIAlertControllerStyleAlert];
                              
                              UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                             
                              [alertController addAction:okAction];
                              [self presentViewController:alertController animated:YES completion:nil];
-                             
                              [self refreshClicked:nil];
                          }
+                         else if ([[response objectForKey:kResponseCode] intValue] == kRequestAlreadySent)
+                         {
+                             //NSLog(@"Response success! with info: %@", response);
+                             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Ride Share" message:@"Your request already sent." preferredStyle:UIAlertControllerStyleAlert];
+                             
+                              UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                             
+                             [alertController addAction:okAction];
+                             [self presentViewController:alertController animated:YES completion:nil];
+                             [self refreshClicked:nil];
+                         }
+
                          else
                          {
                              UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -573,7 +627,7 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 NSLog(@"Delete Request success! with info: %@", response);
+                 //NSLog(@"Delete Request success! with info: %@", response);
                  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride request has been cancelled successfully." preferredStyle:UIAlertControllerStyleAlert];
                  
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -616,7 +670,7 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 NSLog(@"Delete Request success! with info: %@", response);
+                // NSLog(@"Delete Request success! with info: %@", response);
                  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride request has been cancelled successfully." preferredStyle:UIAlertControllerStyleAlert];
                  
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -647,7 +701,7 @@
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"Title" message:@"Information" preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction *callAction = [UIAlertAction actionWithTitle:@"Call" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"call button tapped");
+        //NSLog(@"call button tapped");
         [self callToRider:[rideInfo valueForKey:@"mobile_no"]];
     }];
     
@@ -684,7 +738,7 @@
 //    dispatch_once_t onceToken;
 //    dispatch_once(&onceToken, ^{
         [self fetchRidesAroundMe];
-        NSLog(@"111111-111111111-1111111-1111111");
+        //NSLog(@"111111-111111111-1111111-1111111");
 //    });
 }
 
@@ -747,7 +801,7 @@
                     strAdd = placemark.postalCode;
             }
             
-            NSLog(@"Address is : %@", strAdd);
+            //NSLog(@"Address is : %@", strAdd);
             _sourceLocationInput.text = strAdd;
         }
     }];
@@ -794,25 +848,44 @@
 {
     if (sender == _btnPickup)
     {
+        [_btnRequest setTitle:@"CREATE RIDE" forState:UIControlStateNormal];
+
         _rideCoseInput.text = @"";
         _btnPickup.selected = YES;
         _btnPickMeUp.selected = NO;
         _rideCoseInput.hidden = NO;
+        _rsLabel.hidden=NO;
+        
     }
     else
     {
+         [_btnRequest setTitle:@"REQUEST PICK UP" forState:UIControlStateNormal];
         _rideCoseInput.text = @"";
         _btnPickup.selected = NO;
         _btnPickMeUp.selected = YES;
         _rideCoseInput.hidden = YES;
+         _rsLabel.hidden=YES;
+       
     }
+   
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5];
+    
+    _rideViewHightConstraint.constant=127;
+    [self.view setNeedsUpdateConstraints];
+    [self.view updateConstraintsIfNeeded];
+    [self.view layoutIfNeeded];
+    
+    
+    [UIView commitAnimations];
+    
 }
 
 - (IBAction)pickTimeAction:(id)sender
 {
     self.navigationController.navigationBarHidden = NO;
-    NSLog(@"Date picker time is : %@", _timePicker.date);
-    NSLog(@"Actual time is : %@", [RSUtils toLocalTime:_timePicker.date]);
+   // NSLog(@"Date picker time is : %@", _timePicker.date);
+   // NSLog(@"Actual time is : %@", [RSUtils toLocalTime:_timePicker.date]);
     [RSUtils getDateStringFormDate:_timePicker.date withFormat:nil];
     pickerHolderTopConstraint.constant = self.view.frame.size.height;
     pickerHolderBottomConstraint.constant = -self.view.frame.size.height;
@@ -824,19 +897,45 @@
 
 - (IBAction)showTimePicker:(id)sender
 {
-    NSLog(@"%@", _timePickerHolderView);
+    //NSLog(@"%@", _timePickerHolderView);
     pickerHolderTopConstraint.constant = -self.view.frame.size.height;
     pickerHolderBottomConstraint.constant = 0;
-    NSLog(@"%@", _timePickerHolderView);
+   // NSLog(@"%@", _timePickerHolderView);
     self.navigationController.navigationBarHidden = YES;
     [self.view setNeedsUpdateConstraints];
     [self.view updateConstraintsIfNeeded];
     [self.view layoutIfNeeded];
 }
-
+- (IBAction)cancelAction:(id)sender
+{
+    [self reset];
+}
+-(void)reset
+{
+    _rideViewHightConstraint.constant=0;
+    _btnPickup.selected=NO;
+    _btnPickMeUp.selected=NO;
+    _sourceLocationInput.text=@"";
+    _destinationLocationInput.text=@"";
+    _rideCoseInput.text=@"";
+    _timePicker.minimumDate = [NSDate date];
+    [_pickTimeButton setTitle:[RSUtils getDateStringFormDate:_timePicker.date withFormat:nil] forState:UIControlStateNormal];
+}
 - (IBAction)requestAction:(id)sender
 {
     [_rideCoseInput resignFirstResponder];
+  
+    NSString *rideType = (_btnPickup.selected) ? @"1" : @"2";
+    NSString *is_rider;
+    if ([rideType  isEqual: @"1"])
+    {
+        is_rider=[NSString stringWithFormat:@"%i",PickUp];
+    }
+    else
+    {
+        is_rider =[NSString stringWithFormat:@"%i",PickMeUp];
+    }
+
     
     NSString *alertMsg = nil;
     
@@ -850,15 +949,23 @@
     {
         alertMsg = @"Please choose your Destination Location.";
     }
+    else if ([rideType  isEqual: @"1"] && _rideCoseInput.text.length==0)
+    {
+        alertMsg = @"Please enter Ride Cost.";
+    }
     if(alertMsg.length)
     {
         [RSUtils showAlertWithTitle:@"Error" message:alertMsg actionOne:nil actionTwo:nil inView:self];
         return;
     }
     
-    NSString *rideType = (_btnPickup.selected) ? @"1" : @"2";
+   
+  //    _rideViewHightConstraint.constant=0;
+//    _btnPickup.selected=NO;
+//    _btnPickMeUp.selected=NO;
     
     NSDictionary *infoDict = @{@"ride_type" : rideType,
+                               @"is_rider":is_rider,
                                @"user_id" : currentUser.userId,
                                @"ride_cost" : _rideCoseInput.text,
                                @"start_time" : startTime,
@@ -870,7 +977,7 @@
                                @"dlang" : [NSString stringWithFormat:@"%f", destinationCoordinate.longitude]
                                };
     
-    NSLog(@"Post data is : %@", infoDict);
+    //NSLog(@"Post data is : %@", infoDict);
     [appDelegate showLoaingWithTitle:@"Loading..."];
     [RSServices processMyRideRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
      {
@@ -884,6 +991,9 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
+                  NSLog(@"Received response for my ride is : %@", response);
+                 [self reset];
+                 
                  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride request has been submitted successfully." preferredStyle:UIAlertControllerStyleAlert];
                  _rideCoseInput.text = @"";
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -894,10 +1004,10 @@
                  _destinationLocationInput.text = @"";
                  sourceCoordinate = CLLocationCoordinate2DMake(0, 0);
                  destinationCoordinate = CLLocationCoordinate2DMake(0, 0);
-                 NSLog(@"Received response for my ride is : %@", response);
+                
                  [_currentRides removeAllObjects];
                  [_currentRides addObjectsFromArray:[response objectForKey:@"response_content"]];
-                 NSLog(@"Current rides are: %@", _currentRides);
+                 //NSLog(@"Current rides are: %@", _currentRides);
                  //                     [self filterRides:0];
                  [self refreshClicked:nil];
                  //TODO: Refresh maps.
@@ -915,19 +1025,19 @@
          
          if (alertMsg.length != 0)
          {
-             [RSUtils showAlertWithTitle:@"Regisrtation" message:alertMsg actionOne:nil actionTwo:nil inView:self];
+             [RSUtils showAlertWithTitle:@"RideShare" message:alertMsg actionOne:nil actionTwo:nil inView:self];
          }
      }];
 }
 
 - (IBAction)returnedFromLocationPicker:(UIStoryboardSegue*)segue
 {
-    NSLog(@"%@", segue.sourceViewController);
+    //NSLog(@"%@", segue.sourceViewController);
     
     if ([segue.sourceViewController isKindOfClass: [RSLocationPickerController class]])
     {
         RSLocationPickerController *locationPicker = (RSLocationPickerController*)[segue sourceViewController];
-        NSLog(@"Selected Address is : %@, %@",locationPicker.selectedAddress, locationPicker.selectedAddress.administrativeArea);
+       // NSLog(@"Selected Address is : %@, %@",locationPicker.selectedAddress, locationPicker.selectedAddress.administrativeArea);
         if (_bntPickStartLocation.selected ==  YES)
         {
             _sourceLocationInput.text = [NSString stringWithFormat:@"%@, %@, %@", locationPicker.selectedAddress.thoroughfare, locationPicker.selectedAddress.locality, locationPicker.selectedAddress.administrativeArea];

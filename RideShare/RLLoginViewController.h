@@ -17,5 +17,7 @@
 - (IBAction)rememberMeAction:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *userNameImput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *rigisterBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *logoBottomConstraint;
 - (IBAction)genderToggleAction:(UIButton*)sender;
 @end

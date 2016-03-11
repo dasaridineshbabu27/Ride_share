@@ -24,6 +24,7 @@
 //    _btnPickImage.layer.masksToBounds = YES;
     
     //////New
+    [_btnPickImage setBackgroundImage:[UIImage imageNamed:@"ProfilePic"] forState:UIControlStateNormal];
     [RSUtils addCornerRadius:self.btnPickImage];
   
     
@@ -80,7 +81,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
-    NSLog(@"%@", info);
+    //NSLog(@"%@", info);
     [_btnPickImage setBackgroundImage:[info valueForKey:@"UIImagePickerControllerOriginalImage"] forState:UIControlStateNormal];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -131,7 +132,7 @@
     
     long beforeimageSize   = beforeImgData.length;
     long afterimageSize   = afterImgData.length;
-    NSLog(@"\n \n beforeImgSize===%f KB afterImgsize===%f KB",beforeimageSize/1024.0,afterimageSize/1024.0);
+    //NSLog(@"\n \n beforeImgSize===%f KB afterImgsize===%f KB",beforeimageSize/1024.0,afterimageSize/1024.0);
 
     
     
@@ -160,8 +161,20 @@
             if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
             {
                 
-               NSDictionary *parameters = @{@"user_id": [response objectForKey:@"user_id"]};
-                [self updateProfileImageWith:parameters imageData:afterImgData];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    // call the same method on a background thread
+                    NSDictionary *parameters = @{@"user_id": [response objectForKey:@"user_id"]};
+                    [self updateProfileImageWith:parameters imageData:afterImgData];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // update UI on the main thread
+                    });
+                    
+                });
+
+                
+//               NSDictionary *parameters = @{@"user_id": [response objectForKey:@"user_id"]};
+//                [self updateProfileImageWith:parameters imageData:afterImgData];
                 
 //                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:@"Registered successfully, verification mail has been sent to your email, please verify to confinue services." preferredStyle:UIAlertControllerStyleAlert];
 //                
@@ -266,12 +279,17 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    [_passwordInput resignFirstResponder];
-    [_emailInput resignFirstResponder];
     [_firstNameInput resignFirstResponder];
     [_lastNameInput resignFirstResponder];
+   
+    [_emailInput resignFirstResponder];
     [_confirmEmailInput resignFirstResponder];
+    
+     [_passwordInput resignFirstResponder];
     [_confirmPasswordInput resignFirstResponder];
+    
+    [_mobileNoInput resignFirstResponder];
+    [_regNoInput resignFirstResponder];
 }
 
 

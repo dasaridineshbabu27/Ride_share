@@ -26,6 +26,7 @@
     self.navigationItem.leftBarButtonItem = leftButton;
     self.automaticallyAdjustsScrollViewInsets = NO;
     _contentLoader.delegate = self;
+     [appDelegate showLoaingWithTitle:nil];
     [_contentLoader loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlFAQs]]];
     // Do any additional setup after loading the view.
 }
@@ -52,7 +53,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    [appDelegate showLoaingWithTitle:nil];
+    //[appDelegate showLoaingWithTitle:nil];
     return YES;
 }
 
