@@ -29,6 +29,10 @@
 
 #define  urlForgotPassword [NSString stringWithFormat:@"%@%@",mainURL, @"forgetpassword.php"]
 
+#define  urlVerifyOTP [NSString stringWithFormat:@"%@%@",mainURL, @"verifyotp.php"]
+
+#define  urlResendOTP [NSString stringWithFormat:@"%@%@",mainURL, @"resendotp.php"]
+
 #define  urlMyRideRequest [NSString stringWithFormat:@"%@%@",mainURL, @"myride.php"]
 
 #define  urlPickUpRequest [NSString stringWithFormat:@"%@%@",mainURL, @"pickup.php"]

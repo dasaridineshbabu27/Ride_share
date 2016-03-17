@@ -63,8 +63,8 @@
     self.navigationController.navigationBarHidden = YES;
 
     
-//    [_passwordInput setText:@"password"];
-//    [_userNameImput setText:@"dasaridineshbabu27@gmail.com"];
+    [_passwordInput setText:@"password"];
+    [_userNameImput setText:@"dasaridineshbabu27@gmail.com"];
     
     if ([RSUtils isNetworkReachable]) {
         //NSLog(@"Reachable");

@@ -487,9 +487,16 @@
 
 - (void)startButtonAction:(UIButton*)startButton
 {
-   // NSLog(@"Start ride button tapped: %@", _rideInfo);
+   NSLog(@"Start ride button tapped: %@", _rideInfo);
     
     //int trackId = [[[notifications objectAtIndex:0]valueForKey:@"track_id"] intValue];
+    
+    
+    if ([startButton.titleLabel.text isEqualToString:@"In Progress"])
+    {
+         [self performSegueWithIdentifier:@"rideProgressSegue" sender:startButton];
+        return;
+    }
     
     NSDictionary *infoDict = @{@"track_id" : [[notifications objectAtIndex:startButton.tag] valueForKey:@"track_id"], @"ride_id" : [[notifications objectAtIndex:startButton.tag] valueForKey:@"ride_id"],@"to_id":[[notifications objectAtIndex:startButton.tag] valueForKey:@"from_id"]};
     
@@ -600,7 +607,10 @@
     //        rideViewController.destinationCoordinate = CLLocationCoordinate2DMake([[[rideInfo objectAtIndex:[sender tag]]valueForKey:@"dlat"] floatValue], [[[rideInfo objectAtIndex:[sender tag]] valueForKey:@"dlang"] floatValue]);
     //    }
     
-    if ([segue.destinationViewController isKindOfClass:[HGMovingAnnotationSampleViewController class]])
+    
+    //if ([segue.destinationViewController isKindOfClass:[HGMovingAnnotationSampleViewController class]])
+        
+    if ([[segue identifier] isEqualToString:@"rideProgressSegue"])
     {
         HGMovingAnnotationSampleViewController *rideViewController = segue.destinationViewController;
         

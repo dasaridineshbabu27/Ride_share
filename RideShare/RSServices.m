@@ -266,6 +266,34 @@
     }];
 }
 
++(void)processVerifyOTP:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
+{
+    //NSLog(@"processResendOTP url: %@", urlVerifyOTP);
+    // NSLog(@"post data is:%@", infoDict);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager POST:urlVerifyOTP  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        // NSLog(@"JSON: %@", responseObject);
+        callback(responseObject, nil);
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        //  NSLog(@"Error: %@", error);
+        callback(nil, error);
+    }];
+}
++(void)processResendOTPforUserID:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
+{
+    //NSLog(@"processVerifyOTP url: %@", urlVerifyOTP);
+    // NSLog(@"post data is:%@", infoDict);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager POST:urlResendOTP  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        // NSLog(@"JSON: %@", responseObject);
+        callback(responseObject, nil);
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        //  NSLog(@"Error: %@", error);
+        callback(nil, error);
+    }];
+}
 + (void)processForgotPassword:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
 {
     //NSLog(@"processForgotPassword url: %@", urlForgotPassword);
@@ -343,7 +371,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     //    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     [manager POST:urlRequestNotifications  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-      //  NSLog(@"JSON: %@", responseObject);
+        //NSLog(@"JSON: %@", responseObject);
         callback(responseObject, nil);
         
     } failure:^(NSURLSessionTask *operation, NSError *error)
@@ -355,13 +383,13 @@
 
 + (void)processAcceptRide:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
 {
-   // NSLog(@"processFetchDefaultRides url: %@", urlRequestAcceptRide);
-   // NSLog(@"post data is:%@", infoDict);
+//    NSLog(@"processFetchDefaultRides url: %@", urlRequestAcceptRide);
+//    NSLog(@"post data is:%@", infoDict);
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     //    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     [manager POST:urlRequestAcceptRide  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-       // NSLog(@"JSON: %@", responseObject);
+        //NSLog(@"JSON: %@", responseObject);
         callback(responseObject, nil);
         
     } failure:^(NSURLSessionTask *operation, NSError *error)
@@ -373,8 +401,8 @@
 
 + (void)processStartRide:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
 {
-    //NSLog(@"processFetchDefaultRides url: %@", urlRequestRideStart);
-    //NSLog(@"post data is:%@", infoDict);
+//    NSLog(@"processFetchDefaultRides url: %@", urlRequestRideStart);
+//    NSLog(@"post data is:%@", infoDict);
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager POST:urlRequestRideStart  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject)
@@ -391,13 +419,13 @@
 
 + (void)processFinishride:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback
 {
-//NSLog(@"processFetchDefaultRides url: %@", urlRequestFinishRide);
-   // NSLog(@"post data is:%@", infoDict);
+//    NSLog(@"processFetchDefaultRides url: %@", urlRequestFinishRide);
+//    NSLog(@"post data is:%@", infoDict);
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager POST:urlRequestFinishRide  parameters:infoDict progress:nil success:^(NSURLSessionTask *task, id responseObject)
      {
-        // NSLog(@"JSON: %@", responseObject);
+         //NSLog(@"JSON: %@", responseObject);
          callback(responseObject, nil);
          
      } failure:^(NSURLSessionTask *operation, NSError *error)

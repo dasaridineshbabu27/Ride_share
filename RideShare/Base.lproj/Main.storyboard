@@ -36,7 +36,7 @@
                                     <action selector="pickingToggleAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YdE-pD-MCy"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Naf-zE-hlL">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Naf-zE-hlL">
                                 <rect key="frame" x="173" y="73" width="141" height="22"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
                                 <state key="normal" title=" Request Pick Up" image="Radio-off">
@@ -376,11 +376,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="TvS-pD-jN9">
                         <rightBarButtonItems>
-                            <barButtonItem title="LIST" style="done" id="ig0-4x-EjZ">
-                                <connections>
-                                    <action selector="listClicked:" destination="BYZ-38-t0r" id="UnW-I1-GjF"/>
-                                </connections>
-                            </barButtonItem>
                             <barButtonItem image="Funnel" style="plain" id="fA4-lY-lde">
                                 <connections>
                                     <action selector="filterClicked:" destination="BYZ-38-t0r" id="2mt-SF-yjY"/>
@@ -1093,6 +1088,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.95754523030000005" green="0.95741536579999997" blue="0.95796881639999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="0AY-eS-pag" firstAttribute="top" secondItem="gsQ-vC-Xav" secondAttribute="bottom" constant="100" id="Hp4-VO-LhL"/>
                             <constraint firstItem="CHx-qn-ett" firstAttribute="top" secondItem="qPP-rR-lAe" secondAttribute="bottom" constant="8" symbolic="YES" id="KBF-0R-SZR"/>
                             <constraint firstItem="qPP-rR-lAe" firstAttribute="centerY" secondItem="0AY-eS-pag" secondAttribute="centerY" id="LUm-ly-mWT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="CHx-qn-ett" secondAttribute="trailing" id="RJn-A5-bDq"/>
@@ -1100,7 +1096,6 @@
                             <constraint firstItem="0AY-eS-pag" firstAttribute="leading" secondItem="OQ4-Xg-iIz" secondAttribute="leadingMargin" id="Zg5-ze-j25"/>
                             <constraint firstItem="qPP-rR-lAe" firstAttribute="baseline" secondItem="0AY-eS-pag" secondAttribute="firstBaseline" id="ahQ-Ok-bOW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="qPP-rR-lAe" secondAttribute="trailing" id="b7Z-L5-Uuv"/>
-                            <constraint firstItem="0AY-eS-pag" firstAttribute="top" secondItem="gsQ-vC-Xav" secondAttribute="bottom" constant="100" id="eXu-BG-2n6"/>
                             <constraint firstItem="M4F-0D-bdB" firstAttribute="centerX" secondItem="OQ4-Xg-iIz" secondAttribute="centerX" id="nLa-4J-Bdm"/>
                             <constraint firstItem="CHx-qn-ett" firstAttribute="leading" secondItem="OQ4-Xg-iIz" secondAttribute="leadingMargin" id="ovm-JQ-WiS"/>
                             <constraint firstItem="qPP-rR-lAe" firstAttribute="leading" secondItem="0AY-eS-pag" secondAttribute="trailing" constant="13" id="t2i-0I-O7l"/>
@@ -1403,6 +1398,111 @@
             </objects>
             <point key="canvasLocation" x="-289.60000000000002" y="-1930.49"/>
         </scene>
+        <!--Verification View Controller-->
+        <scene sceneID="tnR-Zb-6Ag">
+            <objects>
+                <viewController id="xnr-Sd-IgB" customClass="OTPVerificationViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0Jf-vh-hFa"/>
+                        <viewControllerLayoutGuide type="bottom" id="QZF-sh-jjh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="z3l-AT-zir">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Number" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DLm-vO-iGe">
+                                <rect key="frame" x="94" y="165" width="133" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="7pa-5V-hIp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please wait for 2 minutes if OTP is not received" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNo-1C-yGt">
+                                <rect key="frame" x="43" y="237" width="234" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="mVc-QF-Hll"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="12"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter OTP here!" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j1q-El-EZu">
+                                <rect key="frame" x="103" y="199" width="113" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="o62-US-SEu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pPE-zV-3vC">
+                                <rect key="frame" x="100" y="271" width="120" height="31"/>
+                                <color key="backgroundColor" red="1" green="0.47843137250000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="tn2-sg-nda"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                                <state key="normal" title="Verify">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="verifyOTPAction:" destination="xnr-Sd-IgB" eventType="touchUpInside" id="UPj-At-bE6"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Mp-ve-xfn">
+                                <rect key="frame" x="100" y="315" width="120" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="b7R-8T-LfI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
+                                <state key="normal" title="Resend OTP">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resendOTPAction:" destination="xnr-Sd-IgB" eventType="touchUpInside" id="ZYD-pX-24E"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verify your mobile number by sending OPT in below field " textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iVH-Kf-Npm">
+                                <rect key="frame" x="16" y="94" width="288" height="58"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="DLm-vO-iGe" firstAttribute="centerX" secondItem="aNo-1C-yGt" secondAttribute="centerX" id="7W6-kb-oBm"/>
+                            <constraint firstItem="j1q-El-EZu" firstAttribute="top" secondItem="DLm-vO-iGe" secondAttribute="bottom" constant="14" id="CKq-g6-IuL"/>
+                            <constraint firstItem="3Mp-ve-xfn" firstAttribute="top" secondItem="pPE-zV-3vC" secondAttribute="bottom" constant="13" id="Fqe-l8-zhe"/>
+                            <constraint firstItem="iVH-Kf-Npm" firstAttribute="top" secondItem="0Jf-vh-hFa" secondAttribute="bottom" constant="74" id="Lu6-eS-nYf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iVH-Kf-Npm" secondAttribute="trailing" id="QdO-wo-Shu"/>
+                            <constraint firstItem="DLm-vO-iGe" firstAttribute="leading" secondItem="z3l-AT-zir" secondAttribute="leadingMargin" constant="78" id="RHP-Eo-uV8"/>
+                            <constraint firstItem="DLm-vO-iGe" firstAttribute="top" secondItem="iVH-Kf-Npm" secondAttribute="bottom" constant="13" id="S6R-RL-gAU"/>
+                            <constraint firstItem="aNo-1C-yGt" firstAttribute="top" secondItem="j1q-El-EZu" secondAttribute="bottom" constant="8" symbolic="YES" id="UfA-Sk-ZJX"/>
+                            <constraint firstItem="pPE-zV-3vC" firstAttribute="top" secondItem="aNo-1C-yGt" secondAttribute="bottom" constant="6" id="UwW-aS-fEk"/>
+                            <constraint firstItem="QZF-sh-jjh" firstAttribute="top" secondItem="3Mp-ve-xfn" secondAttribute="bottom" constant="228" id="Vst-Xq-kvf"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="iVH-Kf-Npm" secondAttribute="leading" id="Xgv-Cg-gBW"/>
+                            <constraint firstItem="3Mp-ve-xfn" firstAttribute="trailing" secondItem="pPE-zV-3vC" secondAttribute="trailing" id="a7r-W9-Evd"/>
+                            <constraint firstItem="aNo-1C-yGt" firstAttribute="centerX" secondItem="j1q-El-EZu" secondAttribute="centerX" id="cvM-zz-tf4"/>
+                            <constraint firstItem="iVH-Kf-Npm" firstAttribute="centerX" secondItem="z3l-AT-zir" secondAttribute="centerX" id="hSz-xS-Q5K"/>
+                            <constraint firstItem="pPE-zV-3vC" firstAttribute="leading" secondItem="z3l-AT-zir" secondAttribute="leadingMargin" constant="84" id="iyh-hE-xZr"/>
+                            <constraint firstItem="pPE-zV-3vC" firstAttribute="leading" secondItem="3Mp-ve-xfn" secondAttribute="leading" id="nAm-hA-apQ"/>
+                            <constraint firstItem="pPE-zV-3vC" firstAttribute="centerX" secondItem="aNo-1C-yGt" secondAttribute="centerX" id="opT-F5-Vaz"/>
+                            <constraint firstItem="pPE-zV-3vC" firstAttribute="centerX" secondItem="z3l-AT-zir" secondAttribute="centerX" id="ruy-ed-Vxm"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="OTPField" destination="j1q-El-EZu" id="Pgy-4k-LNe"/>
+                        <outlet property="mobileNo" destination="DLm-vO-iGe" id="fuH-uK-hgz"/>
+                        <outlet property="resendOTPBtn" destination="3Mp-ve-xfn" id="49T-Jv-AsF"/>
+                        <outlet property="verifyBtn" destination="pPE-zV-3vC" id="h7D-9F-VVH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JNa-5t-cSb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="115" y="-1931"/>
+        </scene>
         <!--Slide Navigation Controller-->
         <scene sceneID="fFS-FC-F7C">
             <objects>
@@ -1687,6 +1787,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="zl9-3c-v17" firstAttribute="top" secondItem="6qk-nB-UXX" secondAttribute="bottom" constant="40" id="22R-bi-gVx"/>
                             <constraint firstItem="MvX-Uq-tg6" firstAttribute="top" secondItem="zl9-3c-v17" secondAttribute="bottom" constant="7" id="3TL-EG-fWz"/>
@@ -1988,7 +2089,7 @@
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                                                     <state key="normal" title="Start"/>
                                                     <connections>
-                                                        <segue destination="Vfz-rh-wyY" kind="push" id="sQE-wd-bVB"/>
+                                                        <segue destination="Vfz-rh-wyY" kind="push" identifier="rideProgressSegue" id="sQE-wd-bVB"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FROM:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pcd-Ea-bBh">
@@ -2262,7 +2363,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Funnel" width="40" height="40"/>
+        <image name="Funnel" width="17" height="17"/>
         <image name="Green" width="15" height="25"/>
         <image name="Hamburger_menu" width="24" height="18"/>
         <image name="Logo" width="150" height="100"/>

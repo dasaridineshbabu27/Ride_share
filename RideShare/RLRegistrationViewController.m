@@ -135,17 +135,50 @@
     //NSLog(@"\n \n beforeImgSize===%f KB afterImgsize===%f KB",beforeimageSize/1024.0,afterimageSize/1024.0);
 
     
-    
+     NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"device_token"];
     NSString *gender = (_btnMale.selected)?@"1" : @"2";
-    NSDictionary *infoDict = @{@"fname" : _firstNameInput.text,
-                               @"lname" : _lastNameInput.text,
-                               @"password" : _passwordInput.text,
-                               @"gender" : gender,
-                               @"email" : _emailInput.text,
-                               @"vehicle_type" : @"",
-                               @"reg_num" : _regNoInput.text,
-                               @"mobile" : _mobileNoInput.text
-                               };
+    
+    NSDictionary *infoDict;
+    if (deviceToken != nil)
+    {
+        infoDict  =@{@"fname" : _firstNameInput.text,
+                     @"lname" : _lastNameInput.text,
+                     @"password" : _passwordInput.text,
+                     @"gender" : gender,
+                     @"email" : _emailInput.text,
+                     @"vehicle_type" : @"",
+                     @"reg_num" : _regNoInput.text,
+                     @"mobile" : _mobileNoInput.text,
+                     @"device_id":deviceToken
+                     };
+
+        
+    }
+    else
+    {
+        infoDict  = @{@"fname" : _firstNameInput.text,
+                      @"lname" : _lastNameInput.text,
+                      @"password" : _passwordInput.text,
+                      @"gender" : gender,
+                      @"email" : _emailInput.text,
+                      @"vehicle_type" : @"",
+                      @"reg_num" : _regNoInput.text,
+                      @"mobile" : _mobileNoInput.text
+                      };
+
+        
+    }
+
+//    NSDictionary *infoDict = @{@"fname" : _firstNameInput.text,
+//                               @"lname" : _lastNameInput.text,
+//                               @"password" : _passwordInput.text,
+//                               @"gender" : gender,
+//                               @"email" : _emailInput.text,
+//                               @"vehicle_type" : @"",
+//                               @"reg_num" : _regNoInput.text,
+//                               @"mobile" : _mobileNoInput.text
+//
+//                               };
     [appDelegate showLoaingWithTitle:nil];
     
     [RSServices processRegistration:infoDict completionHandler:^(NSDictionary* response, NSError * error)

@@ -64,7 +64,7 @@
     UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
     UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
-    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     return YES;
 }
 
@@ -95,61 +95,38 @@
 {
     NSLog(@"\n didReceiveRemoteNotification::::: %@",userInfo);
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"RideShare" message:@"Someone expecting ride from you." preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-                                   {
-                                       
-                                       NSLog(@"Accepting Ride");
-                                       //Accept Service
-                                       
-                                   }];
-    
-    UIAlertAction* ignoreAction = [UIAlertAction actionWithTitle:@"Ignore" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action)
-                                   {
-                                       
-                                       NSLog(@"Ignore clicked!");
-                                       //Dismiss Alert
-                                       [alertController dismissViewControllerAnimated:YES completion:nil];
-                                       
-                                   }];
-    
-    [alertController addAction:acceptAction];
-    [alertController addAction:ignoreAction];
-    
-    [self.topViewController presentViewController:alertController animated:YES completion:nil];
-    
-  
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     //iPad Device Token::: a5846f368480ff30a7bf4ce63aed1c4d450db0af0f1b23df4400665d577c1ad2
     
-    NSLog(@"\n didReceiveRemoteNotification userinfo:::::%@  \n aps::::%@ \n fetchCompletionHandler:::::%@",userInfo,[userInfo valueForKey:@"aps"],completionHandler);
+    NSLog(@"\n didReceiveRemoteNotification userinfo:::::%@ \n fetchCompletionHandler:::::%@",userInfo,completionHandler);
     
- 
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"RideShare" message:@"Someone expecting ride from you." preferredStyle:UIAlertControllerStyleAlert];
+    NSLog(@"\n aps::::%@ \n type::::%@",[userInfo valueForKey:@"aps"],[userInfo valueForKey:@"type"]);
     
-    UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"RideShare" message:[[userInfo valueForKey:@"aps"] valueForKey:@"alert"] preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                                {
                                    
-                                   NSLog(@"Accepting Ride");
-                                   //Accept Service
+                                   NSLog(@"Preferred Action");
+                                   //Preferred Service
                                    
                                }];
     
-    UIAlertAction* ignoreAction = [UIAlertAction actionWithTitle:@"Ignore" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action)
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action)
                              {
                                  
-                                 NSLog(@"Ignore clicked!");
+                                 NSLog(@"OK clicked!");
                                  //Dismiss Alert
                                  [alertController dismissViewControllerAnimated:YES completion:nil];
                                  
                              }];
     
-    [alertController addAction:acceptAction];
-    [alertController addAction:ignoreAction];
+    //[alertController addAction:action];
+    [alertController addAction:ok];
     
     [self.topViewController presentViewController:alertController animated:YES completion:nil];
     

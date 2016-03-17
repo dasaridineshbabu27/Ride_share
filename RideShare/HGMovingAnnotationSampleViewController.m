@@ -120,10 +120,10 @@
     }
     
     
-    NSLog(@"\n \n currentUserId=== %@",_currentUser.userId);
-    NSLog(@"\n \n otherUser_id=== %@",_otherUser_id);
-    NSLog(@"\n \n _ride_info=== %@",_ride_info);
-    NSLog(@"\n \n _notification=== %@",_notification);
+//    NSLog(@"\n \n currentUserId=== %@",_currentUser.userId);
+//    NSLog(@"\n \n otherUser_id=== %@",_otherUser_id);
+//    NSLog(@"\n \n _ride_info=== %@",_ride_info);
+//    NSLog(@"\n \n _notification=== %@",_notification);
     //    NSLog(@"\n \n pickUpLocation===%f, %f",_pickUpLocation.latitude,_pickUpLocation.longitude);
     //    NSLog(@"\n \n startCoordinate===%f, %f",_startCoordinate.latitude,_startCoordinate.longitude);
     //    NSLog(@"\n \n destinationCoordinate===%f, %f",_destinationCoordinate.latitude,_destinationCoordinate.longitude);
@@ -147,18 +147,7 @@
     _created=NO;
     [self addAllPins];
     
-    
-    
-    
     [self initiateClientSocket];
-    //    if ([RSUtils isNetworkReachable])
-    //    {
-    //        [self initiateClientSocket];
-    //    }
-    //    else
-    //    {
-    //        NSLog(@"\n Network problem");
-    //    }
     
     
 }
@@ -170,7 +159,7 @@
     [self addPinWithTitle:@"Destination" andCoordinate:_destinationCoordinate];
     [self addPinWithTitle:@"Pick Up Location" andCoordinate:_pickUpLocation];
     
-    [self showAllAnnotations];
+   
     
 }
 -(void)addPinWithTitle:(NSString *)title andCoordinate:(CLLocationCoordinate2D)coordinate
@@ -179,7 +168,7 @@
     mapPin.title = title;
     mapPin.coordinate = coordinate;
     [_mapView addAnnotation:mapPin];
-    
+     [self showAllAnnotations];
     
 }
 -(void)showAllAnnotations
@@ -192,7 +181,7 @@
         zoomRect = MKMapRectUnion(zoomRect, pointRect);
     }
     [_mapView setVisibleMapRect:zoomRect animated:YES];
-    _mapView.camera.altitude *= 1.5;
+    _mapView.camera.altitude *= 2.0;
 }
 -(void)moveVehicle
 {
@@ -413,10 +402,7 @@
 
 -(void)finishRide
 {
-    
-    [self.locationManager stopUpdatingLocation];
-    [self disconnectClientSocket];
-    [self disconnectClientSocketRoom];
+  
     
     NSDictionary *infoDict = @{@"track_id" : [ _notification valueForKey:@"track_id"], @"ride_id" : [_notification valueForKey:@"ride_id"], @"to_id":[_notification valueForKey:@"from_id"]};
     
@@ -433,8 +419,13 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 NSLog(@"success! with info: %@", response);
-                 NSLog(@"Received response  : %@", response);
+//                 NSLog(@"success! with info: %@", response);
+//                 NSLog(@"Received response  : %@", response);
+                 
+                 //_created=NO;
+                 [self.locationManager stopUpdatingLocation];
+                 [self disconnectClientSocket];
+                 [self disconnectClientSocketRoom];
                  
                  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"RideShare" message:@"Your ride finished successfully" preferredStyle:UIAlertControllerStyleAlert];
                  
@@ -564,28 +555,22 @@
                            
                            NSString *info=[NSString stringWithFormat:@"latitude=%@\nlongitude=%@\nreceiver_id=%@\nsender_id=%@",[_receivedlocationInfo objectForKey:@"latitude"],[_receivedlocationInfo objectForKey:@"longitude"],[_receivedlocationInfo objectForKey:@"receiver_id"],[_receivedlocationInfo objectForKey:@"sender_id"]];
                            NSLog(@"\n \n SUCCESS:::%@",info);
-                           //[RSUtils showAlertWithTitle:@"Success" message:info actionOne:nil actionTwo:nil inView:self];
-                           
-                           
+                         
                            //creating latitude and longitude for location
                            _myLatitude = [[_receivedlocationInfo objectForKey:@"latitude"] doubleValue];
                            _myLongitude = [[_receivedlocationInfo objectForKey:@"longitude"] doubleValue];
                            _newCoordinate = CLLocationCoordinate2DMake(_myLatitude, _myLongitude);
                            
-                           ////Testing
+                
                            if (!_created)
                            {
                                [self addPinWithTitle:@"Vehicle" andCoordinate:_newCoordinate];
+                               //[self showAllAnnotations];
                            }
                            
-                           //_lastReportedLocation = _movingObject.currentLocation;
+                
                            _lastReportedLocation=MKMapPointForCoordinate(_newCoordinate);
                            [_annotationViewVehicle performSelectorOnMainThread:@selector(setPosition:) withObject:[NSValue valueWithPointer:&_lastReportedLocation] waitUntilDone:YES];
-                           
-                           /////Do work here
-                           //                           _pathString=[NSString stringWithFormat:@"%@,N,%@,E",[_receivedlocationInfo objectForKey:@"latitude"],[_receivedlocationInfo objectForKey:@"longitude"]];
-                           //                           [_path processPath:_pathString];
-                           
                            
                            
                        }
@@ -593,7 +578,7 @@
                        {
                            NSString *info=[NSString stringWithFormat:@"latitude=%@\nlongitude=%@\nreceiver_id=%@\nsender_id=%@",[_receivedlocationInfo objectForKey:@"latitude"],[_receivedlocationInfo objectForKey:@"longitude"],[_receivedlocationInfo objectForKey:@"receiver_id"],[_receivedlocationInfo objectForKey:@"sender_id"]];
                            NSLog(@"\n \n FAILURE:::%@",info);
-                           //[RSUtils showAlertWithTitle:@"Falure" message:info actionOne:nil actionTwo:nil inView:self];
+                         
                        }
                        
                    }
@@ -670,7 +655,7 @@
         //[self.layer removeAllAnimations];
         [_annotationViewVehicle.layer addAnimation:animation forKey:POSITIONKEY];
         
-        //NSLog(@"setPosition ANIMATED %x from (%f, %f) to (%f, %f)", self, self.center.x, self.center.y, toPos.x, toPos.y);
+//        NSLog(@"setPosition ANIMATED %x from (%f, %f) to (%f, %f)", self, self.center.x, self.center.y, toPos.x, toPos.y);
     }
     
     _annotationViewVehicle.center = toPos;

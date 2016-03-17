@@ -49,5 +49,8 @@
 
 + (void)processFinishride:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
++(void)processVerifyOTP:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
+
++(void)processResendOTPforUserID:(NSDictionary*)infoDict completionHandler:(void(^)(NSDictionary* , NSError*)) callback;
 
 @end
