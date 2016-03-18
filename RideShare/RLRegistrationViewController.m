@@ -17,20 +17,13 @@
     [super viewDidLoad];
     _btnMale.selected = YES;
     
-    /////////Old Code
-//    _btnPickImage.layer.cornerRadius = self.btnPickImage.frame.size.height;
-//    _btnPickImage.layer.borderColor = [UIColor blackColor].CGColor;
-//    _btnPickImage.layer.borderWidth = 1.0;
-//    _btnPickImage.layer.masksToBounds = YES;
-    
-    //////New
     [_btnPickImage setBackgroundImage:[UIImage imageNamed:@"ProfilePic"] forState:UIControlStateNormal];
     [RSUtils addCornerRadius:self.btnPickImage];
-  
+    
     
     NSLog(@"%@", [RSUtils trimWhiteSpaces:@"  abc   123  "]);
     self.navigationController.navigationBarHidden = NO;
-    // Do any additional setup after loading the view.
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,8 +51,8 @@
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
         UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"Camera" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        [self presentViewController:imagePicker animated:YES completion:nil];
+            imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            [self presentViewController:imagePicker animated:YES completion:nil];
         }];
         [alertController addAction:cameraAction];
     }
@@ -74,7 +67,7 @@
         
     }];
     [alertController addAction:cancelAction];
-
+    
     
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -104,9 +97,7 @@
 }
 - (IBAction)registerAction:(id)sender
 {
-
-
-    /////////////
+    [self removeKeyBoard];
     
     if ([RSUtils trimWhiteSpaces:_firstNameInput.text].length == 0 ||
         [RSUtils trimWhiteSpaces:_lastNameInput.text].length == 0 ||
@@ -120,10 +111,6 @@
     }
     
     
-    //////Old Code
-    //NSData *imageData = UIImagePNGRepresentation([_btnPickImage backgroundImageForState:UIControlStateNormal]);
-    
-    //////New Code
     UIImage * beforeImg=[_btnPickImage backgroundImageForState:UIControlStateNormal];
     UIImage * afterImg =[self imageWithImage:beforeImg scaledToSize:CGSizeMake(100, 100)];
     
@@ -132,10 +119,10 @@
     
     long beforeimageSize   = beforeImgData.length;
     long afterimageSize   = afterImgData.length;
-    //NSLog(@"\n \n beforeImgSize===%f KB afterImgsize===%f KB",beforeimageSize/1024.0,afterimageSize/1024.0);
-
+    NSLog(@"\n \n beforeImgSize===%f KB afterImgsize===%f KB",beforeimageSize/1024.0,afterimageSize/1024.0);
     
-     NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"device_token"];
+    
+    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"device_token"];
     NSString *gender = (_btnMale.selected)?@"1" : @"2";
     
     NSDictionary *infoDict;
@@ -151,7 +138,7 @@
                      @"mobile" : _mobileNoInput.text,
                      @"device_id":deviceToken
                      };
-
+        
         
     }
     else
@@ -165,84 +152,62 @@
                       @"reg_num" : _regNoInput.text,
                       @"mobile" : _mobileNoInput.text
                       };
-
+        
         
     }
-
-//    NSDictionary *infoDict = @{@"fname" : _firstNameInput.text,
-//                               @"lname" : _lastNameInput.text,
-//                               @"password" : _passwordInput.text,
-//                               @"gender" : gender,
-//                               @"email" : _emailInput.text,
-//                               @"vehicle_type" : @"",
-//                               @"reg_num" : _regNoInput.text,
-//                               @"mobile" : _mobileNoInput.text
-//
-//                               };
+    
+    
     [appDelegate showLoaingWithTitle:nil];
     
     [RSServices processRegistration:infoDict completionHandler:^(NSDictionary* response, NSError * error)
-    {
-        [appDelegate hideLoading];
-        NSString *alertMsg = nil;
-        if (error != nil)
-        {
-            alertMsg = error.description;
-        }
-        else if (response != nil)
-        {
-            if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
-            {
-                
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    // call the same method on a background thread
-                    NSDictionary *parameters = @{@"user_id": [response objectForKey:@"user_id"]};
-                    [self updateProfileImageWith:parameters imageData:afterImgData];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        // update UI on the main thread
-                    });
-                    
-                });
-
-                
-//               NSDictionary *parameters = @{@"user_id": [response objectForKey:@"user_id"]};
-//                [self updateProfileImageWith:parameters imageData:afterImgData];
-                
-//                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:@"Registered successfully, verification mail has been sent to your email, please verify to confinue services." preferredStyle:UIAlertControllerStyleAlert];
-//                
-//                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-//                {
-//                    [self.navigationController popViewControllerAnimated:YES];
-//                }];
-//                
-//                [alertController addAction:okAction];
-//                [self presentViewController:alertController animated:YES completion:nil];
-//                return ;
-            }
-            else
-            {
-                [RSUtils showAlertWithTitle:@"Registration" message:[response objectForKey:kResponseMessage] actionOne:nil actionTwo:nil inView:self];
-                return;
-            }
-        }
-        if (alertMsg.length != 0)
-        {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:alertMsg preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-            [alertController addAction:okAction];
-            [self presentViewController:alertController animated:YES completion:nil];
-        }
-    }];
+     {
+         [appDelegate hideLoading];
+         NSString *alertMsg = nil;
+         if (error != nil)
+         {
+             alertMsg = error.description;
+         }
+         else if (response != nil)
+         {
+             if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
+             {
+                 
+                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                     // call the same method on a background thread
+                     NSDictionary *parameters = @{@"user_id": [response objectForKey:@"user_id"]};
+                     [self updateProfileImageWith:parameters imageData:afterImgData];
+                     
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         // update UI on the main thread
+                     });
+                     
+                 });
+                 
+                 
+             }
+             else
+             {
+                 [RSUtils showAlertWithTitle:@"Registration" message:[response objectForKey:kResponseMessage] actionOne:nil actionTwo:nil inView:self];
+                 return;
+             }
+         }
+         if (alertMsg.length != 0)
+         {
+             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:alertMsg preferredStyle:UIAlertControllerStyleAlert];
+             
+             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+             [alertController addAction:okAction];
+             [self presentViewController:alertController animated:YES completion:nil];
+         }
+     }];
 }
 
 
 -(void)updateProfileImageWith:(NSDictionary*)info imageData:(NSData*)imgData
 {
-    ///////////////////////////////////////////////////////////////////////////////////
-    /////Upload Profile image/////////////////////////////////////////////////////////
-     [appDelegate showLoaingWithTitle:nil];
+    ////////////////////////////////
+    /////Upload Profile image///////
+    [appDelegate showLoaingWithTitle:nil];
     [RSServices uploadProfileImageWithUserID:info imageData:imgData completionHandler:^(NSDictionary* responseImage, NSError * errorImage)
      {
          [appDelegate hideLoading];
@@ -256,9 +221,6 @@
              if ([[responseImage objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
                  
-//                 UIAlertController *alertControllerImage = [UIAlertController alertControllerWithTitle:@"Profile Image" message:@"Profile Image updated successfully" preferredStyle:UIAlertControllerStyleAlert];
-//                 [self presentViewController:alertControllerImage animated:YES completion:nil];
-                 
                  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Registration" message:@"Registered successfully, verification mail has been sent to your email, please verify to confinue services." preferredStyle:UIAlertControllerStyleAlert];
                  
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
@@ -269,13 +231,13 @@
                  [alertController addAction:okAction];
                  [self presentViewController:alertController animated:YES completion:nil];
                  return ;
-
-                
+                 
+                 
              }
              else
              {
                  [RSUtils showAlertWithTitle:@"Profile Image" message:[responseImage objectForKey:kResponseMessage] actionOne:nil actionTwo:nil inView:self];
-                 //return;
+                 
              }
              
          }
@@ -287,9 +249,6 @@
          
      }];
     
-    ////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////
-
 }
 - (IBAction)genderToggleAction:(UIButton*)sender
 {
@@ -309,20 +268,23 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+-(void)removeKeyBoard
 {
     [_firstNameInput resignFirstResponder];
     [_lastNameInput resignFirstResponder];
-   
+    
     [_emailInput resignFirstResponder];
     [_confirmEmailInput resignFirstResponder];
     
-     [_passwordInput resignFirstResponder];
+    [_passwordInput resignFirstResponder];
     [_confirmPasswordInput resignFirstResponder];
     
     [_mobileNoInput resignFirstResponder];
     [_regNoInput resignFirstResponder];
+}
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self removeKeyBoard];
 }
 
 

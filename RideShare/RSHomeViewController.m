@@ -308,8 +308,8 @@
              {
                  if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
                  {
-                     ///NSLog(@"Login success! with info: %@", response);
-                     //NSLog(@"Received response for my ride is : %@", response);
+                     NSLog(@"All rides with info: %@", response);
+                    
                      [_currentRides removeAllObjects];
                      [_currentRides addObjectsFromArray:[response objectForKey:@"response_content"]];
                     // NSLog(@"Current rides are: %@", _currentRides);
@@ -329,7 +329,7 @@
              
              if (alertMsg.length != 0)
              {
-                 [RSUtils showAlertWithTitle:@"Regisrtation" message:alertMsg actionOne:nil actionTwo:nil inView:self];
+                 [RSUtils showAlertWithTitle:@"RideShare" message:alertMsg actionOne:nil actionTwo:nil inView:self];
              }
          }];
     }
@@ -612,6 +612,12 @@
 
 - (void)cancelMyRide:(NSDictionary*)rideInfo
 {
+    NSLog(@"\n cancelMyRide rideInfo===%@",rideInfo);
+    if ([[rideInfo valueForKey:@"is_accepted"] isEqual:@"1"] && [[rideInfo valueForKey:@"is_finished"] isEqual:@"0"])
+    {
+         [RSUtils showAlertWithTitle:@"RideShare" message:@"Sorry unable to cancel as you accepted pick up request" actionOne:nil actionTwo:nil inView:self];
+        return;
+    }
     [appDelegate showLoaingWithTitle:@"Loading..."];
     NSDictionary *infoDict = @{@"user_id" : currentUser.userId, @"ride_id" : [rideInfo valueForKey:@"ride_id"]};
     
@@ -627,8 +633,8 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 //NSLog(@"Delete Request success! with info: %@", response);
-                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride request has been cancelled successfully." preferredStyle:UIAlertControllerStyleAlert];
+                 NSLog(@"Delete Request success! with info: %@", response);
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride has been cancelled successfully." preferredStyle:UIAlertControllerStyleAlert];
                  
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
                  [alertController addAction:okAction];
@@ -648,17 +654,26 @@
          }
          if (alertMsg.length != 0)
          {
-             [RSUtils showAlertWithTitle:@"Cencel Ride" message:alertMsg actionOne:nil actionTwo:nil inView:self];
+             [RSUtils showAlertWithTitle:@"Cancel Ride" message:alertMsg actionOne:nil actionTwo:nil inView:self];
          }
      }];    
 }
 
 - (void)cancelPickMeUp:(NSDictionary*)rideInfo
 {
+    
+    NSLog(@"\n cancelPickMeUp rideInfo===%@",rideInfo);
+    if ([[rideInfo valueForKey:@"is_accepted"] isEqual:@"1"] && [[rideInfo valueForKey:@"is_finished"] isEqual:@"0"] )
+    {
+        [RSUtils showAlertWithTitle:@"RideShare" message:@"Sorry unable to cancel as you accepted ride request" actionOne:nil actionTwo:nil inView:self];
+        return;
+    }
+
+    
     [appDelegate showLoaingWithTitle:@"Loading..."];
     NSDictionary *infoDict = @{@"user_id" : currentUser.userId, @"ride_id" : [rideInfo valueForKey:@"ride_id"]};
     
-    [RSServices processDeleteMyRideRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
+    [RSServices processPickMeUpDeleteRequest:infoDict completionHandler:^(NSDictionary *response, NSError *error)
      {
          [appDelegate hideLoading];
          NSString *alertMsg = nil;
@@ -671,7 +686,7 @@
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
                 // NSLog(@"Delete Request success! with info: %@", response);
-                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride request has been cancelled successfully." preferredStyle:UIAlertControllerStyleAlert];
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your PickUp has been cancelled successfully." preferredStyle:UIAlertControllerStyleAlert];
                  
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
                  [alertController addAction:okAction];
@@ -691,7 +706,7 @@
          }
          if (alertMsg.length != 0)
          {
-             [RSUtils showAlertWithTitle:@"Cencel Ride" message:alertMsg actionOne:nil actionTwo:nil inView:self];
+             [RSUtils showAlertWithTitle:@"Cancel PickUp" message:alertMsg actionOne:nil actionTwo:nil inView:self];
          }
      }];
 }

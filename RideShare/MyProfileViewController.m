@@ -24,10 +24,6 @@
 {
     [super viewDidLoad];
     self.title = @"Account";
-//    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(menuClicked)];
-//    leftButton.image = [UIImage imageNamed:@"Hamburger_menu"];
-//    self.navigationItem.leftBarButtonItem = leftButton;
-    // Do any additional setup after loading the view.
     [RSUtils addCornerRadius:self.btnPickImage];
     [self populateUI];
 }
@@ -134,15 +130,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 ////Resize image
 - (UIImage*)imageWithImage:(UIImage*)image
@@ -176,9 +164,6 @@
                 return;
             }
         
-        //////Old Code
-        //NSData *imageData = UIImagePNGRepresentation([_btnPickImage backgroundImageForState:UIControlStateNormal]);
-        
         //////New Code
         UIImage * beforeImg=[_btnPickImage backgroundImageForState:UIControlStateNormal];
         UIImage * afterImg =[self imageWithImage:beforeImg scaledToSize:CGSizeMake(100, 100)];
@@ -188,7 +173,7 @@
         
         long beforeimageSize   = beforeImgData.length;
         long afterimageSize   = afterImgData.length;
-       // NSLog(@"\n \n beforeImgSize===%f KB afterImgsize===%f KB",beforeimageSize/1024.0,afterimageSize/1024.0);
+        NSLog(@"\n \n beforeImgSize===%f KB afterImgsize===%f KB",beforeimageSize/1024.0,afterimageSize/1024.0);
         
         [self setUserInteraction:NO];
         [_editBtn setTitle:@"EDIT"];
@@ -224,8 +209,7 @@
                          User *currentUser = [User currentUser];
                          [currentUser saveUserDetails:response];
                          
-//                         [self.navigationController popViewControllerAnimated:YES];
-//                         [RSUtils showAlertWithTitle:@"My Profile" message:@"Your profile has been updated." actionOne:nil actionTwo:nil inView:self];
+
                          [_editBtn setTitle:@"EDIT"];
                          return ;
                      }
@@ -245,8 +229,8 @@
 
 -(void)updateProfileImageWith:(NSDictionary*)info imageData:(NSData*)imgData
 {
-    ///////////////////////////////////////////////////////////////////////////////////
-    /////Upload Profile image/////////////////////////////////////////////////////////
+     //////////////////////////////
+    /////Upload Profile image/////
     [appDelegate showLoaingWithTitle:nil];
     [RSServices uploadProfileImageWithUserID:info imageData:imgData completionHandler:^(NSDictionary* responseImage, NSError * errorImage)
      {
@@ -279,9 +263,6 @@
          }
          
      }];
-    
-    ////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////
     
 }
 

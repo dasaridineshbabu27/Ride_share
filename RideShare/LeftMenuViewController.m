@@ -65,25 +65,25 @@
 	switch (indexPath.row)
 	{
 		case 0:
-			cell.textLabel.text = @"Home";
+			cell.textLabel.text = @"HOME";
 			break;
 			
         case 1:
-			cell.textLabel.text = @"My Profile";
+			cell.textLabel.text = @"MY ACCOUNT";
             break;
             
 		case 2:
-			cell.textLabel.text = @"History";
+			cell.textLabel.text = @"HISTORY";
             break;
         case 3:
-            cell.textLabel.text = @"Notifications";
+            cell.textLabel.text = @"REQUEST's";
             break;
 		case 4:
 			cell.textLabel.text = @"FAQs";
 			break;
             
 		case 5:
-			cell.textLabel.text = @"Logout";
+			cell.textLabel.text = @"LOGOUT";
 			break;
 	}
     

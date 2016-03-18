@@ -73,27 +73,6 @@
 @implementation HGMovingAnnotationSampleViewController
 
 
-
-/*
- // The designated initializer. Override to perform setup that is required before the view is loaded.
- - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
- self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
- if (self) {
- // Custom initialization
- }
- return self;
- }
- */
-
-/*
- // Implement loadView to create a view hierarchy programmatically, without using a nib.
- - (void)loadView {
- }
- */
-
-
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -106,7 +85,16 @@
     
     UIBarButtonItem *testSend = [[UIBarButtonItem alloc] initWithTitle:@"test" style:UIBarButtonItemStylePlain target:self action:@selector(testSending)];
     
-    if ([[_notification valueForKey:@"is_rider"] isEqual:@"1"])
+    if ([[_notification valueForKey:@"is_rider"] isEqualToString:@"0"] && [[_notification valueForKey:@"type"] isEqualToString:@"2"]  )
+    {
+        NSLog(@"\n RIDERRRRRRRRRRR");
+        
+        self.navigationItem.hidesBackButton = YES;
+        self.navigationItem.rightBarButtonItem = finishButton;
+        //self.navigationItem.rightBarButtonItems = @[finishButton,testSend];
+   
+    }
+    else if ([[_notification valueForKey:@"is_rider"] isEqual:@"1"])
     {
         self.navigationItem.hidesBackButton = YES;
         self.navigationItem.rightBarButtonItem = finishButton;
@@ -120,10 +108,10 @@
     }
     
     
-//    NSLog(@"\n \n currentUserId=== %@",_currentUser.userId);
-//    NSLog(@"\n \n otherUser_id=== %@",_otherUser_id);
-//    NSLog(@"\n \n _ride_info=== %@",_ride_info);
-//    NSLog(@"\n \n _notification=== %@",_notification);
+    NSLog(@"\n \n currentUserId=== %@",_currentUser.userId);
+    NSLog(@"\n \n otherUser_id=== %@",_otherUser_id);
+    NSLog(@"\n \n _ride_info=== %@",_ride_info);
+    NSLog(@"\n \n _notification=== %@",_notification);
     //    NSLog(@"\n \n pickUpLocation===%f, %f",_pickUpLocation.latitude,_pickUpLocation.longitude);
     //    NSLog(@"\n \n startCoordinate===%f, %f",_startCoordinate.latitude,_startCoordinate.longitude);
     //    NSLog(@"\n \n destinationCoordinate===%f, %f",_destinationCoordinate.latitude,_destinationCoordinate.longitude);
@@ -134,16 +122,6 @@
     [self.locationManager requestAlwaysAuthorization];
     
     
-    //    _path = [[HGMapPath alloc] init];
-    ////    _pathString=[NSString stringWithFormat:@"%@,N,%@,E", [NSString stringWithFormat:@"%f", _startCoordinate.latitude],[NSString stringWithFormat:@"%f",_startCoordinate.longitude]];
-    ////    [_path processPath:_pathString];
-    //
-    //     NSLog(@"\n_path=%@",_path);
-    //
-    //    _movingObject = [[HGMovingAnnotation alloc] initWithMapPath:_path];
-    //   // _movingObject = [[HGMovingAnnotation alloc] initWithMapPoint:MKMapPointForCoordinate(_startCoordinate)];
-    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoadPath:) name:kPathLoadedNotification object:_path];
-    
     _created=NO;
     [self addAllPins];
     
@@ -151,7 +129,14 @@
     
     
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    
+}
 
 -(void)addAllPins
 {
@@ -159,7 +144,7 @@
     [self addPinWithTitle:@"Destination" andCoordinate:_destinationCoordinate];
     [self addPinWithTitle:@"Pick Up Location" andCoordinate:_pickUpLocation];
     
-   
+    
     
 }
 -(void)addPinWithTitle:(NSString *)title andCoordinate:(CLLocationCoordinate2D)coordinate
@@ -168,7 +153,9 @@
     mapPin.title = title;
     mapPin.coordinate = coordinate;
     [_mapView addAnnotation:mapPin];
-     [self showAllAnnotations];
+    
+    [self showAllAnnotations];
+    
     
 }
 -(void)showAllAnnotations
@@ -183,6 +170,16 @@
     [_mapView setVisibleMapRect:zoomRect animated:YES];
     _mapView.camera.altitude *= 2.0;
 }
+- (void)testSending
+{
+    //Testing Scoket
+    double your_latitiude_value = 8.391916;
+    double your_longitude_value = 77.094315;
+    CLLocation *myLocation = [[CLLocation alloc] initWithLatitude:your_latitiude_value longitude:your_longitude_value];
+    [self updateLocationData:_currentLocation];
+    
+    [self moveVehicle];
+}
 -(void)moveVehicle
 {
     // create the path for the moving object
@@ -192,37 +189,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoadPathh:) name:kPathLoadedNotification object:path];
 }
--(void)viewWillAppear:(BOOL)animated
-{
-    
-}
--(void)viewWillDisappear:(BOOL)animated
-{
-    
-}
-
-
-//// Override to allow orientations other than the default portrait orientation.
-//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-//
-//	return YES;
-//}
-//
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-
-
 - (void) didLoadPathh : (NSNotification*) notification
 {
     // initialize our moving object
@@ -244,30 +210,21 @@
 }
 
 
-- (void) didLoadPath : (NSNotification*) notification
-{
-    // initialize our moving object
-    HGMapPath *path = (HGMapPath*)[notification object];
-    //    if (_movingObject == Nil) {
-    //        _movingObject = [[HGMovingAnnotation alloc] initWithMapPath:path] ; //the annotation retains its path
-    //    } else {
-    //        _movingObject.path=path;
-    //    }
+
+
+
+- (void)didReceiveMemoryWarning {
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
     
-    
-    _movingObject.path=path;
-    // add the annotation to the map
-    [_mapView addAnnotation:_movingObject];
-    
-    // zoom the map around the moving object
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.01, 0.01);
-    
-    MKCoordinateRegion region = MKCoordinateRegionMake(MKCoordinateForMapPoint(_movingObject.currentLocation), span);
-    [_mapView setRegion:region animated:YES];
-    
-    // start moving the object
-    [_movingObject start];
+    // Release any cached data, images, etc that aren't in use.
 }
+
+- (void)viewDidUnload {
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
 
 
 
@@ -290,7 +247,20 @@
      _mapView.showsUserLocation = YES;
     
     ///////Updating Location////////
-    if ([[_notification valueForKey:@"is_rider"] isEqual:@"1"])
+    
+    if ([[_notification valueForKey:@"is_rider"] isEqualToString:@"0"] && [[_notification valueForKey:@"type"] isEqualToString:@"2"]  )
+    {
+        NSLog(@"\n RIDERRRRRRRRRRR");
+        
+        [self updateLocationData:_currentLocation];
+        
+        //////////////
+        _lastReportedLocation=MKMapPointForCoordinate(_currentLocation.coordinate);
+        [_annotationViewVehicle performSelectorOnMainThread:@selector(setPosition:) withObject:[NSValue valueWithPointer:&_lastReportedLocation] waitUntilDone:YES];
+
+
+    }
+    else if ([[_notification valueForKey:@"is_rider"] isEqual:@"1"])
     {
         [self updateLocationData:_currentLocation];
         
@@ -321,16 +291,6 @@
     {
         
         annotationView.image = [UIImage imageNamed:@"Green"];
-        
-//        if ([[_notification valueForKey:@"is_rider"] isEqual:@"1"])
-//        {
-//            annotationView.image = [UIImage imageNamed:@"Green"];
-//        }
-//        else
-//        {
-//           annotationView.image = [UIImage imageNamed:@"Car_Black"];
-//             _annotationViewVehicle =annotationView;
-//        }
 
        
     }
@@ -345,7 +305,15 @@
     }
     else if ([kMovingAnnotationViewId isEqual: @"Current Location"])
     {
-        if ([[_notification valueForKey:@"is_rider"] isEqual:@"1"])
+        
+        if ([[_notification valueForKey:@"is_rider"] isEqualToString:@"0"] && [[_notification valueForKey:@"type"] isEqualToString:@"2"]  )
+        {
+            NSLog(@"\n RIDERRRRRRRRRRR");
+            annotationView.image = [UIImage imageNamed:@"Car_Black"];
+            _annotationViewVehicle =annotationView;
+
+        }
+         else if ([[_notification valueForKey:@"is_rider"] isEqual:@"1"])
         {
             annotationView.image = [UIImage imageNamed:@"Car_Black"];
             _annotationViewVehicle =annotationView;
@@ -365,12 +333,7 @@
         _created=YES;
  
     }
-//    else
-//    {
-//        annotationView.image = [UIImage imageNamed:@"Car_Black"];
-//        annotationView.bounds = CGRectMake(0, 0, 10, 22.5); //initial bounds (default)
-//    }
-//    
+  
     annotationView.mapView = mapView;
     return annotationView;
     
@@ -419,8 +382,8 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-//                 NSLog(@"success! with info: %@", response);
-//                 NSLog(@"Received response  : %@", response);
+
+                 NSLog(@"Received response  : %@", response);
                  
                  //_created=NO;
                  [self.locationManager stopUpdatingLocation];
@@ -432,15 +395,14 @@
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                                             {
                                                 
-                                                
+                                                /////////////////
                                                 
                                                 UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
                                                                                                          bundle: nil];
                                                 UIViewController *vc = [mainStoryboard instantiateViewControllerWithIdentifier:@"RSHomeViewController"];
                                                 
                                                 [self.navigationController pushViewController:vc  animated:YES];
-                                                //[self presentViewController:vc animated:YES completion:nil];
-                                                //[self.navigationController popViewControllerAnimated:YES];
+                                             
                                             }];
                  
                  
@@ -468,7 +430,7 @@
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"RideShare" message:@"Do you want to close your ride?" preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Finish" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                                {
                                    
                                    [self finishRide];
@@ -681,16 +643,7 @@
 }
 
 
-- (void)testSending
-{
-    //Testing Scoket
-    double your_latitiude_value = 8.391916;
-    double your_longitude_value = 77.094315;
-    CLLocation *myLocation = [[CLLocation alloc] initWithLatitude:your_latitiude_value longitude:your_longitude_value];
-    [self updateLocationData:_currentLocation];
-    
-    [self moveVehicle];
-}
+
 
 -(void)updateLocationData:(CLLocation*)currentLocation
 {
