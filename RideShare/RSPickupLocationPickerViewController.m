@@ -9,7 +9,6 @@
 #import "RSPickupLocationPickerViewController.h"
 #import "RSUtils.h"
 #import "RSServices.h"
-#import "AppDelegate.h"
 #import "RSConstants.h"
 #import "User.h"
 
@@ -21,6 +20,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //self.canDisplayBannerAds = YES;
    // NSLog(@"Ride info is : %@", _rideData);
     addressHolder.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:0.4];
     self.title = @"Pick Location";

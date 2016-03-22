@@ -10,7 +10,6 @@
 #import "RSUtils.h"
 #import "User.h"
 #import "RSConstants.h"
-#import "AppDelegate.h"
 
 @interface RSChangePwdController ()
 
@@ -20,6 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+   // self.canDisplayBannerAds = YES;
     // Do any additional setup after loading the view.
 }
 

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		06E69D1A662D5B5BF95F95FA /* Pods_RideShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57921139F7B3B1DADA80FB45 /* Pods_RideShare.framework */; };
+		1B4A1CC71CA126D900CC2A7E /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B4A1CC61CA126D900CC2A7E /* iAd.framework */; };
 		1B5CB0881C848D450045226A /* HGMovingAnnotationSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5CB0811C848D450045226A /* HGMovingAnnotationSampleViewController.m */; };
 		1B5CB0891C848D450045226A /* HGMovingAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5CB0831C848D450045226A /* HGMovingAnnotation.m */; };
 		1B5CB08A1C848D450045226A /* HGMovingAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5CB0851C848D450045226A /* HGMovingAnnotationView.m */; };
@@ -75,6 +76,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B4A1CC61CA126D900CC2A7E /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		1B5CB0801C848D450045226A /* HGMovingAnnotationSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGMovingAnnotationSampleViewController.h; sourceTree = "<group>"; };
 		1B5CB0811C848D450045226A /* HGMovingAnnotationSampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGMovingAnnotationSampleViewController.m; sourceTree = "<group>"; };
 		1B5CB0821C848D450045226A /* HGMovingAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGMovingAnnotation.h; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B4A1CC71CA126D900CC2A7E /* iAd.framework in Frameworks */,
 				9D9349891C510BF2007E3330 /* SystemConfiguration.framework in Frameworks */,
 				9D52CAF61C3B9A6400262291 /* CoreLocation.framework in Frameworks */,
 				9D52CAF41C3B9A2000262291 /* MapKit.framework in Frameworks */,
@@ -225,6 +228,7 @@
 		1A8BA193E0C59A1D6D9B20CE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1B4A1CC61CA126D900CC2A7E /* iAd.framework */,
 				9D52CAF51C3B9A6400262291 /* CoreLocation.framework */,
 				9D52CAF31C3B9A2000262291 /* MapKit.framework */,
 				9D9349881C510BF2007E3330 /* SystemConfiguration.framework */,

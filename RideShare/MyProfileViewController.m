@@ -11,7 +11,6 @@
 #import "User.h"
 #import "RSUtils.h"
 #import "RSConstants.h"
-#import "AppDelegate.h"
 #import "RSServices.h"
 
 @interface MyProfileViewController ()
@@ -23,6 +22,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //self.canDisplayBannerAds = YES;
     self.title = @"Account";
     [RSUtils addCornerRadius:self.btnPickImage];
     [self populateUI];

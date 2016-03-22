@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RSUtils.h"
 #import "RSConstants.h"
+#import "AppDelegate.h"
 
 @interface RLRegistrationViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnFemale;

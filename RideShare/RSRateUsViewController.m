@@ -8,6 +8,7 @@
 
 #import "RSRateUsViewController.h"
 #import "UIViewController+AMSlideMenu.h"
+
 @interface RSRateUsViewController ()
 
 @end
@@ -16,6 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //self.canDisplayBannerAds = YES;
     self.title = @"Rate Us";
         UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(menuClicked)];
         leftButton.image = [UIImage imageNamed:@"Hamburger_menu"];

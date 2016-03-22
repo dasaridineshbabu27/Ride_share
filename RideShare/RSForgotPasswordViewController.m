@@ -10,7 +10,7 @@
 #import "RSConstants.h"
 #import "RSUtils.h"
 #import "RSServices.h"
-#import "AppDelegate.h"
+
 
 @interface RSForgotPasswordViewController ()
 
@@ -20,6 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //self.canDisplayBannerAds = YES;
     self.navigationController.navigationBarHidden = NO;
     // Do any additional setup after loading the view.
 }

@@ -33,7 +33,6 @@
 #import "HGMovingAnnotationSampleViewController.h"
 #import "HGMovingAnnotation.h"
 #import "HGMovingAnnotationView.h"
-#import "AppDelegate.h"
 #import <SocketIOClientSwift/SocketIOClientSwift-Swift.h>
 @interface HGMovingAnnotationSampleViewController ()
 
@@ -76,7 +75,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
+   // self.canDisplayBannerAds = YES;
     self.currentUser = [User currentUser];
     _mapView.delegate=self;
     self.navigationItem.title = @"Ride";

@@ -9,7 +9,6 @@
 #import "RSFAQsViewController.h"
 #import "UIViewController+AMSlideMenu.h"
 #import "RSConfig.h"
-#import "AppDelegate.h"
 #import "RSUtils.h"
 
 @interface RSFAQsViewController ()
@@ -20,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    //self.canDisplayBannerAds = YES;
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(menuClicked)];
     leftButton.image = [UIImage imageNamed:@"Hamburger_menu"];
     self.navigationItem.leftBarButtonItem = leftButton;

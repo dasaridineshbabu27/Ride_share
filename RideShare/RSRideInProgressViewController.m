@@ -11,7 +11,6 @@
 #define degreesToRadians(x) (M_PI * x / 180.0)
 #define radiandsToDegrees(x) (x * 180.0 / M_PI)
 #define POSITIONKEY @"positionAnimation"
-#import "AppDelegate.h"
 #import <SocketIOClientSwift/SocketIOClientSwift-Swift.h>
 #import "HGMovingAnnotationSampleViewController.h"
 
@@ -49,7 +48,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+   // self.canDisplayBannerAds = YES;
     self.currentUser = [User currentUser];
     
     self.navigationItem.title = @"Ride";

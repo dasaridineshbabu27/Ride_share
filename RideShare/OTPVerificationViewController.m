@@ -17,6 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //self.canDisplayBannerAds = YES;
     // Do any additional setup after loading the view.
     
       _currentUser = [User currentUser];

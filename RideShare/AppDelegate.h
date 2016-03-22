@@ -10,10 +10,15 @@
 #import "RSConstants.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import <SocketIOClientSwift/SocketIOClientSwift-Swift.h>
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+#import <iAd/iAd.h>
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, ADBannerViewDelegate>
 {
     
 }
+@property (nonatomic, strong) ADBannerView *adBanner;
+@property (nonatomic) BOOL bannerIsVisible;
+
 @property (nonatomic, strong) NSString *deviceToken;
 @property (nonatomic) CLLocationCoordinate2D currentLocCoord;
 @property (nonatomic, strong) UILabel *titleLable;

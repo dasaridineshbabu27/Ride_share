@@ -30,6 +30,7 @@
 #import "User.h"
 #import "RSUtils.h"
 #import "RSServices.h"
+#import "AppDelegate.h"
 
 @interface HGMovingAnnotationSampleViewController : UIViewController <MKMapViewDelegate,CLLocationManagerDelegate> {
 

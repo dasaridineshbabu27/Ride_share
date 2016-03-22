@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface RLLoginViewController : UIViewController
+@interface RLLoginViewController : UIViewController//<ADBannerViewDelegate>
 {
-
+//ADBannerView *bannerView;
 }
 - (IBAction)loginAction:(id)sender;
 - (IBAction)rememberMeAction:(id)sender;
@@ -20,4 +20,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rigisterBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *logoBottomConstraint;
 - (IBAction)genderToggleAction:(UIButton*)sender;
+
+
 @end

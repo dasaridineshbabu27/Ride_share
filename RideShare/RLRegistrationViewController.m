@@ -8,13 +8,14 @@
 
 #import "RLRegistrationViewController.h"
 #import "RSServices.h"
-#import "AppDelegate.h"
+
 
 @implementation RLRegistrationViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //self.canDisplayBannerAds = YES;
     _btnMale.selected = YES;
     
     [_btnPickImage setBackgroundImage:[UIImage imageNamed:@"ProfilePic"] forState:UIControlStateNormal];

@@ -10,7 +10,6 @@
 #import "RSConstants.h"
 #import "RSLocationPickerController.h"
 #import "UIViewController+AMSlideMenu.h"
-#import "AppDelegate.h"
 #import "RSUtils.h"
 #import "User.h"
 #import "RSServices.h"
@@ -27,7 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+   // self.canDisplayBannerAds = YES;
     self.tempRideInfo = [[NSMutableDictionary alloc] init];
     
     currentUser = [User currentUser];

@@ -16,7 +16,7 @@
 #import "RSUtils.h"
 
 @interface AppDelegate ()
-
+@property float yOrigin;
 @end
 
 @implementation AppDelegate
@@ -65,6 +65,47 @@
     UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
+   
+    if (IS_IPHONE)
+    {
+        //NSLog(@"\n iPhone");
+        if (IS_IPHONE_4_OR_LESS)
+        {
+            // NSLog(@"\n iPhone_4");
+            _yOrigin=480.0;
+           
+        }
+        else if (IS_IPHONE_5)
+        {
+            // NSLog(@"\n iPhone_5");
+            _yOrigin=568.0;
+           
+        }
+        else if (IS_IPHONE_6)
+        {
+            // NSLog(@"\n iPhone_6");
+            _yOrigin=667.0;
+           
+        }
+        else if (IS_IPHONE_6P)
+        {
+            //NSLog(@"\n iPhone_6 Plus");
+            _yOrigin= 736.0;
+           
+        }
+        
+    } else {
+        //NSLog(@"\n iPad");
+    }
+
+    
+    /////iAD
+    _adBanner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, _yOrigin, 320, 50)];
+    _adBanner.delegate = self;
+    
+    NSLog(@"\n ADHeight::::%f,  yOrigin::::%f",self.topViewController.view.frame.size.height, _yOrigin);
+    
     return YES;
 }
 
@@ -247,6 +288,65 @@
    // NSLog(@"Hiding from AppDelegate");
 }
 
+
+#pragma mark - AdViewDelegates
+
+-(void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
+{
+    NSLog(@"Error loading::::%@",error);
+    
+    if (_bannerIsVisible)
+    {
+        [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+        
+        // Assumes the banner view is placed at the bottom of the screen.
+        banner.frame = CGRectOffset(banner.frame, 0, banner.frame.size.height);
+        
+        [UIView commitAnimations];
+        
+        _bannerIsVisible = NO;
+    }
+}
+
+-(void)bannerViewDidLoadAd:(ADBannerView *)banner
+{
+    NSLog(@"Ad loaded");
+     // NSLog(@"\n ADHeight::::%f,  yOrigin::::%f",self.topViewController.view.frame.size.height, _yOrigin);
+    if (!_bannerIsVisible)
+    {
+        // If banner isn't part of view hierarchy, add it
+        if (_adBanner.superview == nil)
+        {
+            [self.topViewController.view addSubview:_adBanner];
+        }
+        
+        [UIView beginAnimations:@"animateAdBannerOn" context:NULL];
+        
+        // Assumes the banner view is just off the bottom of the screen.
+        banner.frame = CGRectOffset(banner.frame, 0, -banner.frame.size.height);
+        
+        [UIView commitAnimations];
+        
+        _bannerIsVisible = YES;
+    }
+}
+-(void)bannerViewWillLoadAd:(ADBannerView *)banner
+{
+    NSLog(@"Ad will load");
+    
+    //self.topViewController.canDisplayBannerAds = YES;
+}
+-(void)bannerViewActionDidFinish:(ADBannerView *)banner
+{
+    NSLog(@"Ad did finish");
+    
+}
+
+-(BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave{
+    NSLog(@"Ad Banner action is about to begin.");
+    
+    return YES;
+}
 - (UIViewController *)topViewController
 {
     return [self topViewController:[UIApplication sharedApplication].keyWindow.rootViewController];

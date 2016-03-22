@@ -18,6 +18,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   // self.canDisplayBannerAds = YES;
+    
     addressHolder.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:0.4];
     self.title = @"Pick Location";    
     locationManager = [[CLLocationManager alloc] init];

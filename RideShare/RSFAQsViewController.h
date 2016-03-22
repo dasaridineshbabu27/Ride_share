@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SlideNavigationController.h"
-
+#import "AppDelegate.h"
 @interface RSFAQsViewController : UIViewController <UIWebViewDelegate, SlideNavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *contentLoader;

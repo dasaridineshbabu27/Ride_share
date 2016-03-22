@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <GoogleMaps/GoogleMaps.h>
-
+#import "AppDelegate.h"
 @interface RSLocationPickerController : UIViewController <CLLocationManagerDelegate, GMSMapViewDelegate>
 {
     CLLocationManager *locationManager;

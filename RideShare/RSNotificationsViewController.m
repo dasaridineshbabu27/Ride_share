@@ -9,11 +9,9 @@
 #import "RSNotificationsViewController.h"
 #import "RSRideInProgressViewController.h"
 #import "HGMovingAnnotationSampleViewController.h"
-
 #import "RSServices.h"
 #import "RSUtils.h"
 #import "RSConfig.h"
-#import "AppDelegate.h"
 #import "User.h"
 #import "NotificationCell.h"
 #import "User.h"
@@ -28,7 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    //self.canDisplayBannerAds = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
     _currentUser= [User currentUser];
     _rideInfo = [[NSMutableArray alloc] init];

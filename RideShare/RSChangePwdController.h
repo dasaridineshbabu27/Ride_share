@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RSServices.h"
-
+#import "AppDelegate.h"
 @interface RSChangePwdController : UIViewController
 {
     RSServices *Services;    

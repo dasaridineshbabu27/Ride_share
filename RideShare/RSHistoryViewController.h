@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SlideNavigationController.h"
-
+#import "AppDelegate.h"
 @interface RSHistoryViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, SlideNavigationControllerDelegate>
 @property (nonatomic, strong) NSMutableArray *myRides;
 @property (nonatomic, strong) NSMutableArray *ridesData;

@@ -12,6 +12,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import "SlideNavigationController.h"
 #import "User.h"
+#import "AppDelegate.h"
 
 @interface RSHomeViewController : UIViewController <CLLocationManagerDelegate, GMSMapViewDelegate, SlideNavigationControllerDelegate>
 {

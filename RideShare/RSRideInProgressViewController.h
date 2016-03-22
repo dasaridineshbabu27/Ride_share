@@ -10,7 +10,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import "User.h"
 #import "RSUtils.h"
-
+#import "AppDelegate.h"
 
 @interface RSRideInProgressViewController : UIViewController<CLLocationManagerDelegate, GMSMapViewDelegate>
 {

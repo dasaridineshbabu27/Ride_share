@@ -8,7 +8,6 @@
 
 #import "RSHistoryViewController.h"
 #import "UIViewController+AMSlideMenu.h"
-#import "AppDelegate.h"
 #import "RSConstants.h"
 #import "RSUtils.h"
 #import "RSServices.h"
@@ -24,7 +23,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    //self.canDisplayBannerAds = YES;
     _historyListview.allowsMultipleSelectionDuringEditing = NO;
     
     self.myRides = [[NSMutableArray alloc] init];
