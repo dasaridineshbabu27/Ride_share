@@ -64,6 +64,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnPickup;
 @property (weak, nonatomic) IBOutlet UIButton *btnPickMeUp;
 
+//////
+@property (strong, nonatomic) IBOutlet GADBannerView *googleAdBanner;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleAdbottomConstraint;
+
+
 - (IBAction)pickingToggleAction:(id)sender;
 - (IBAction)requestAction:(id)sender;
 - (IBAction)showTimePicker:(id)sender;

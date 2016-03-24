@@ -2,12 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:MyOffice.gpx">
-   </FileRef>
-   <FileRef
-      location = "group:Hyderabad.gpx">
-   </FileRef>
-   <FileRef
       location = "group:RideShare.xcodeproj">
    </FileRef>
    <FileRef

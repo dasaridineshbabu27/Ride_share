@@ -27,5 +27,8 @@
 @property (nonatomic, retain) GMSAddress *selectedAddress;
 
 - (IBAction)sendPickupRequest:(NSDictionary*)rideInfo;
+//////
+@property (strong, nonatomic) IBOutlet GADBannerView *googleAdBanner;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleAdbottomConstraint;
 
 @end

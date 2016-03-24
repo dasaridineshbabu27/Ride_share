@@ -21,13 +21,53 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //self.canDisplayBannerAds = YES;
-    self.navigationController.navigationBarHidden = NO;
     // Do any additional setup after loading the view.
+    ////Ads
+    (appDelegate).googleAdIsVisible=NO;
+    [self updateUserInterface:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateUserInterface:)
+                                                 name:@"updateUserInterface" object:nil];
+}
+-(void)integrateAds
+{
+    //iAds Implementation
+    //[appDelegate iAdIntegration];
+    //[appDelegate iAdIntegrationwith:<#(ADBannerView *)#> andviewController:self];
+    
+    
+    //Google Ads Implementation
+    //[appDelegate googleAdsIntegration];
+    [appDelegate googleAdsIntegrationWith:self.googleAdBanner andviewController:self];
+    
+    //LARSAd Implementation
+    //[[LARSAdController sharedManager] addAdContainerToView:self.view withParentViewController:self];
+    //[[LARSAdController sharedManager] addAdContainerToViewInViewController:self];
+    
+}
+-(void)updateUserInterface:(NSNotification *)notification
+{
+    if ((appDelegate).googleAdIsVisible)
+    {
+        _googleAdBanner.hidden=NO;
+        _googleAdbottomConstraint.constant=0;
+    }
+    else
+    {
+        _googleAdBanner.hidden=YES;
+        _googleAdbottomConstraint.constant=-50;
+    }
+    [self.view layoutIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
-    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.navigationBarHidden = NO;
+    [self integrateAds];
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateUserInterface" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {

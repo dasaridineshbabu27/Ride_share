@@ -54,11 +54,50 @@
     [_pickUpsBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
      [self roundCornerFor:_pickUpsBtn withRadius:CGSizeMake(0.0, 0.0) roundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight | UIRectCornerBottomLeft)];
 
+    ////Ads
+    (appDelegate).googleAdIsVisible=NO;
+    [self updateUserInterface:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateUserInterface:)
+                                                 name:@"updateUserInterface" object:nil];
     
     [self fetchMyHistory];
     
     
+    
 }
+
+-(void)integrateAds
+{
+    //iAds Implementation
+    //[appDelegate iAdIntegration];
+    //[appDelegate iAdIntegrationwith:<#(ADBannerView *)#> andviewController:self];
+    
+    
+    //Google Ads Implementation
+    //[appDelegate googleAdsIntegration];
+    [appDelegate googleAdsIntegrationWith:self.googleAdBanner andviewController:self];
+    
+    //LARSAd Implementation
+    //[[LARSAdController sharedManager] addAdContainerToView:self.view withParentViewController:self];
+    //[[LARSAdController sharedManager] addAdContainerToViewInViewController:self];
+    
+}
+-(void)updateUserInterface:(NSNotification *)notification
+{
+    if ((appDelegate).googleAdIsVisible)
+    {
+        _googleAdBanner.hidden=NO;
+        _googleAdbottomConstraint.constant=0;
+    }
+    else
+    {
+        _googleAdBanner.hidden=YES;
+        _googleAdbottomConstraint.constant=-50;
+    }
+    [self.view layoutIfNeeded];
+}
+
 -(void)roundCornerFor:(UIView*)view withRadius:(CGSize)radius roundingCorners:(UIRectCorner)corners
 {
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds byRoundingCorners:corners cornerRadii:radius];
@@ -81,7 +120,12 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [self integrateAds];
     [_historyListview reloadData];
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateUserInterface" object:nil];
 }
 
 -(void)fetchMyHistory

@@ -41,6 +41,14 @@ THE SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>Copyright 2011 Google Inc. All Rights Reserved.</string>
+			<key>Title</key>
+			<string>Google-Mobile-Ads-SDK</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>If you use the Google Maps SDK for iOS in your application, you must
 include the attribution text as part of a legal notices section in your
 application. Including legal notices as an independent menu item, or as

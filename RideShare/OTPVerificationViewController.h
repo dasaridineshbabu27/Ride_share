@@ -19,4 +19,9 @@
 - (IBAction)verifyOTPAction:(id)sender;
 - (IBAction)resendOTPAction:(id)sender;
 
+
+//////
+@property (strong, nonatomic) IBOutlet GADBannerView *googleAdBanner;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleAdbottomConstraint;
+
 @end

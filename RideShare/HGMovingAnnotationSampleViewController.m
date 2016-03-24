@@ -98,13 +98,20 @@
         self.navigationItem.hidesBackButton = YES;
         self.navigationItem.rightBarButtonItem = finishButton;
         //self.navigationItem.rightBarButtonItems = @[finishButton,testSend];
-        
     }
     else
     {
         self.navigationItem.hidesBackButton = NO;
         [finishButton setEnabled:NO];
     }
+    
+    
+    ////Ads
+    (appDelegate).googleAdIsVisible=NO;
+    [self updateUserInterface:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateUserInterface:)
+                                                 name:@"updateUserInterface" object:nil];
     
     
     NSLog(@"\n \n currentUserId=== %@",_currentUser.userId);
@@ -128,13 +135,43 @@
     
     
 }
+-(void)integrateAds
+{
+    //iAds Implementation
+    //[appDelegate iAdIntegration];
+    //[appDelegate iAdIntegrationwith:<#(ADBannerView *)#> andviewController:self];
+    
+    
+    //Google Ads Implementation
+    //[appDelegate googleAdsIntegration];
+    [appDelegate googleAdsIntegrationWith:self.googleAdBanner andviewController:self];
+    
+    //LARSAd Implementation
+    //[[LARSAdController sharedManager] addAdContainerToView:self.view withParentViewController:self];
+    //[[LARSAdController sharedManager] addAdContainerToViewInViewController:self];
+    
+}
+-(void)updateUserInterface:(NSNotification *)notification
+{
+    if ((appDelegate).googleAdIsVisible)
+    {
+        _googleAdBanner.hidden=NO;
+        _googleAdbottomConstraint.constant=0;
+    }
+    else
+    {
+        _googleAdBanner.hidden=YES;
+        _googleAdbottomConstraint.constant=-50;
+    }
+    [self.view layoutIfNeeded];
+}
 -(void)viewWillAppear:(BOOL)animated
 {
-    
+    [self integrateAds];
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateUserInterface" object:nil];
 }
 
 -(void)addAllPins

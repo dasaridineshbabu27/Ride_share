@@ -27,6 +27,11 @@
 - (IBAction)pickProfileImageAction:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnPickImage;
 
+
+//////
+@property (strong, nonatomic) IBOutlet GADBannerView *googleAdBanner;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleAdbottomConstraint;
+
 - (IBAction)registerAction:(id)sender;
 - (IBAction)cancelRegistration:(id)sender;
 

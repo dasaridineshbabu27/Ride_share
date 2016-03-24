@@ -31,4 +31,9 @@
 - (IBAction)ridesActionN:(id)sender;
 - (IBAction)pickUpsActionN:(id)sender;
 
+
+//////
+@property (strong, nonatomic) IBOutlet GADBannerView *googleAdBanner;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleAdbottomConstraint;
+
 @end

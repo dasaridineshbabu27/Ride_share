@@ -9,16 +9,26 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface RLLoginViewController : UIViewController//<ADBannerViewDelegate>
+#import "LARSAdController.h"
+#import "TOLAdAdapter.h"
+#import "TOLAdAdapterGoogleAds.h"
+#import "TOLAdAdapteriAds.h"
+#import "TOLAdViewController.h"
+
+@interface RLLoginViewController : UIViewController
 {
-//ADBannerView *bannerView;
+
 }
 - (IBAction)loginAction:(id)sender;
 - (IBAction)rememberMeAction:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *userNameImput;
+
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rigisterBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *logoBottomConstraint;
+
+
+
 - (IBAction)genderToggleAction:(UIButton*)sender;
 
 

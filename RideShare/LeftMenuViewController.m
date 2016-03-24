@@ -122,7 +122,14 @@
             
 		case 5:
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-			[[SlideNavigationController sharedInstance] popToRootViewControllerAnimated:YES];
+            [[SlideNavigationController sharedInstance] popToRootViewControllerAnimated:YES];
+            
+            ////
+            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"isLoggedIn"];
+            [[NSUserDefaults standardUserDefaults]synchronize];
+//            vc = [mainStoryboard instantiateViewControllerWithIdentifier: @"RLLoginViewController"];
+//            [[SlideNavigationController sharedInstance] popAllAndSwitchToViewController:vc withCompletion:nil];
+			
 			return;
 			break;
 	}

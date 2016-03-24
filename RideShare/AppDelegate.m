@@ -14,6 +14,8 @@
 #import "RSServices.h"
 #import "User.h"
 #import "RSUtils.h"
+#import "RLLoginViewController.h"
+#import "RSHomeViewController.h"
 
 @interface AppDelegate ()
 @property float yOrigin;
@@ -23,50 +25,94 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     // Override point for customization after application launch.
+    
+    
+    //Google Maps
     [GMSServices provideAPIKey:GoogleMapsAPIKey];
+    
+    //Keyboards
     [IQKeyboardManager sharedManager].enable = YES;
     
-   	UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                             bundle: nil];
+    [self ADLocation];
     
-    LeftMenuViewController *leftMenu = (LeftMenuViewController*)[mainStoryboard
-                                                                 instantiateViewControllerWithIdentifier: @"LeftMenuViewController"];
+    //iOS iADs
+    //[self iAdIntegration];
     
-    RightMenuViewController *rightMenu = (RightMenuViewController*)[mainStoryboard
-                                                                    instantiateViewControllerWithIdentifier: @"RightMenuViewController"];
+    //iOS Google Ads
+    //[self googleAdsIntegration];
     
-    [SlideNavigationController sharedInstance].rightMenu = rightMenu;
-    [SlideNavigationController sharedInstance].leftMenu = leftMenu;
-    [SlideNavigationController sharedInstance].menuRevealAnimationDuration = .18;
+    //LARSAd (iADs + GoogleAds,Third Party library)
+    //[self LARSAdsIntegration];
     
-    // Creating a custom bar button for right menu
-    UIButton *button  = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [button setImage:[UIImage imageNamed:@"gear"] forState:UIControlStateNormal];
-    [button addTarget:[SlideNavigationController sharedInstance] action:@selector(toggleRightMenu) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-    [SlideNavigationController sharedInstance].rightBarButtonItem = rightBarButtonItem;
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:SlideNavigationControllerDidClose object:nil queue:nil usingBlock:^(NSNotification *note) {
-        NSString *menu = note.userInfo[@"menu"];
-       // NSLog(@"Closed %@", menu);
-    }];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:SlideNavigationControllerDidOpen object:nil queue:nil usingBlock:^(NSNotification *note) {
-        NSString *menu = note.userInfo[@"menu"];
-        //NSLog(@"Opened %@", menu);
-    }];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:SlideNavigationControllerDidReveal object:nil queue:nil usingBlock:^(NSNotification *note) {
-        NSString *menu = note.userInfo[@"menu"];
-       // NSLog(@"Revealed %@", menu);
-    }];
-    
+    //Notifications Registration
     UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
     UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
-   
+    
+   	UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    LeftMenuViewController *leftMenu = (LeftMenuViewController*)[mainStoryboard instantiateViewControllerWithIdentifier: @"LeftMenuViewController"];
+    [SlideNavigationController sharedInstance].leftMenu = leftMenu;
+    
+    //    RightMenuViewController *rightMenu = (RightMenuViewController*)[mainStoryboard instantiateViewControllerWithIdentifier: @"RightMenuViewController"];
+    //    [SlideNavigationController sharedInstance].rightMenu = rightMenu;
+    
+    [SlideNavigationController sharedInstance].menuRevealAnimationDuration = .18;
+    
+    // Creating a custom bar button for right menu
+    //    UIButton *button  = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    //    [button setImage:[UIImage imageNamed:@"gear"] forState:UIControlStateNormal];
+    //    [button addTarget:[SlideNavigationController sharedInstance] action:@selector(toggleRightMenu) forControlEvents:UIControlEventTouchUpInside];
+    //    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    //    [SlideNavigationController sharedInstance].rightBarButtonItem = rightBarButtonItem;
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:SlideNavigationControllerDidClose object:nil queue:nil usingBlock:^(NSNotification *note)
+     {
+         NSString *menu = note.userInfo[@"menu"];
+         // NSLog(@"Closed %@", menu);
+     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:SlideNavigationControllerDidOpen object:nil queue:nil usingBlock:^(NSNotification *note)
+     {
+         NSString *menu = note.userInfo[@"menu"];
+         //NSLog(@"Opened %@", menu);
+     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:SlideNavigationControllerDidReveal object:nil queue:nil usingBlock:^(NSNotification *note)
+     {
+         NSString *menu = note.userInfo[@"menu"];
+         // NSLog(@"Revealed %@", menu);
+     }];
+    
+    
+    
+    //    if([[NSUserDefaults standardUserDefaults]boolForKey:@"isLoggedIn"])
+    //    {
+    //        //show home page here
+    //        RSHomeViewController *homeController = [mainStoryboard instantiateViewControllerWithIdentifier:@"RSHomeViewController"];
+    ////        UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:homeController];
+    ////        self.window.rootViewController = navController;
+    //
+    //        [[SlideNavigationController sharedInstance] popAllAndSwitchToViewController:homeController withCompletion:nil];
+    //
+    //    }else{
+    //        // show login view
+    //
+    //        RLLoginViewController *loginController = [mainStoryboard instantiateViewControllerWithIdentifier:@"RLLoginViewController"];
+    ////        UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:loginController];
+    ////        self.window.rootViewController = navController;
+    //
+    //         [[SlideNavigationController sharedInstance] popAllAndSwitchToViewController:loginController withCompletion:nil];
+    //    }
+    
+    
+    return YES;
+}
+
+-(void)ADLocation
+{
     if (IS_IPHONE)
     {
         //NSLog(@"\n iPhone");
@@ -74,41 +120,28 @@
         {
             // NSLog(@"\n iPhone_4");
             _yOrigin=480.0;
-           
         }
         else if (IS_IPHONE_5)
         {
             // NSLog(@"\n iPhone_5");
             _yOrigin=568.0;
-           
         }
         else if (IS_IPHONE_6)
         {
             // NSLog(@"\n iPhone_6");
             _yOrigin=667.0;
-           
         }
         else if (IS_IPHONE_6P)
         {
             //NSLog(@"\n iPhone_6 Plus");
             _yOrigin= 736.0;
-           
         }
         
     } else {
         //NSLog(@"\n iPad");
     }
-
-    
-    /////iAD
-    _adBanner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, _yOrigin, 320, 50)];
-    _adBanner.delegate = self;
-    
     NSLog(@"\n ADHeight::::%f,  yOrigin::::%f",self.topViewController.view.frame.size.height, _yOrigin);
-    
-    return YES;
 }
-
 - (void)application:(UIApplication*)application didRegisterUserNotificationSettings:(nonnull UIUserNotificationSettings *)notificationSettings
 {
     [application registerForRemoteNotifications];
@@ -148,21 +181,21 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"RideShare" message:[[userInfo valueForKey:@"aps"] valueForKey:@"alert"] preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *action = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-                               {
-                                   
-                                   NSLog(@"Preferred Action");
-                                   //Preferred Service
-                                   
-                               }];
-    
-    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action)
                              {
                                  
-                                 NSLog(@"OK clicked!");
-                                 //Dismiss Alert
-                                 [alertController dismissViewControllerAnimated:YES completion:nil];
+                                 NSLog(@"Preferred Action");
+                                 //Preferred Service
                                  
                              }];
+    
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action)
+                         {
+                             
+                             NSLog(@"OK clicked!");
+                             //Dismiss Alert
+                             [alertController dismissViewControllerAnimated:YES completion:nil];
+                             
+                         }];
     
     //[alertController addAction:action];
     [alertController addAction:ok];
@@ -196,6 +229,55 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+-(UIView*)AdView
+{
+    if (!_aDView)
+    {
+        _aDView = [[UIView alloc] init];
+        _aDView.translatesAutoresizingMaskIntoConstraints = NO;
+        _aDView.backgroundColor = [UIColor redColor];
+        [self.topViewController.view addSubview:_aDView];
+        
+        NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:_aDView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_window attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
+        
+        NSLayoutConstraint *hightConstraint = [NSLayoutConstraint constraintWithItem:_aDView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:50];
+        
+        NSLayoutConstraint *centerX = [NSLayoutConstraint constraintWithItem:_aDView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_window attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
+        NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:_aDView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_window attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-15];
+        [_window addConstraints:@[widthConstraint, hightConstraint, centerX,bottom]];
+        
+    }
+    return _aDView;
+    
+}
+
+- (void)showAdView
+{
+    [self performSelectorOnMainThread:@selector(showAd) withObject:nil waitUntilDone:YES];
+}
+
+- (void)showAd
+{
+    self.AdView.tag = self.AdView.tag + 1;
+    _aDView.hidden = NO;
+    //[_window bringSubviewToFront:_aDView];
+    
+}
+- (void)hideAdView
+{
+    [self performSelectorOnMainThread:@selector(hideAd) withObject:nil waitUntilDone:YES];
+}
+
+- (void)hideAd
+{
+    self.AdView.tag = self.AdView.tag - 1;
+    if (self.AdView.tag <= 0)
+    {
+        [_aDView setHidden:YES];
+    }
+    
+}
+
 - (UIView*)loadingView
 {
     if (!_loadingView)
@@ -206,22 +288,22 @@
         [_loadingView addSubview:self.titleLable];
         [_loadingView addSubview:self.indicator];
         [_window addSubview:_loadingView];
-       
+        
         NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:_loadingView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_window attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
         
         NSLayoutConstraint *hightConstraint = [NSLayoutConstraint constraintWithItem:_loadingView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_window attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0];
         
         NSLayoutConstraint *centerX = [NSLayoutConstraint constraintWithItem:_loadingView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_window attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
-
+        
         NSLayoutConstraint *centerY = [NSLayoutConstraint constraintWithItem:_loadingView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_window attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0];
         
         [_window addConstraints:@[widthConstraint, hightConstraint, centerX, centerY]];
         
-
+        
         centerX = [NSLayoutConstraint constraintWithItem:_indicator attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_loadingView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
         
-         centerY = [NSLayoutConstraint constraintWithItem:_indicator attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_loadingView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0];
-
+        centerY = [NSLayoutConstraint constraintWithItem:_indicator attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_loadingView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0];
+        
         [_loadingView addConstraints:@[centerY, centerX]];
         
         centerX = [NSLayoutConstraint constraintWithItem:_titleLable attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_loadingView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
@@ -285,32 +367,46 @@
         [_loadingView setHidden:YES];
         [_indicator stopAnimating];
     }
-   // NSLog(@"Hiding from AppDelegate");
+    // NSLog(@"Hiding from AppDelegate");
 }
 
-
-#pragma mark - AdViewDelegates
-
--(void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
+#pragma mark - LARSAds methods
+-(void)LARSAdsIntegration
 {
-    NSLog(@"Error loading::::%@",error);
+    //LARSAd (iADs + GoogleAds,Third Party library)
+    [[LARSAdController sharedManager] registerAdClass:[TOLAdAdapterGoogleAds class] withPublisherId:AdUnitId];
+    [[LARSAdController sharedManager] registerAdClass:[TOLAdAdapteriAds class]];
     
-    if (_bannerIsVisible)
-    {
-        [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-        
-        // Assumes the banner view is placed at the bottom of the screen.
-        banner.frame = CGRectOffset(banner.frame, 0, banner.frame.size.height);
-        
-        [UIView commitAnimations];
-        
-        _bannerIsVisible = NO;
-    }
+    
+}
+#pragma mark - iAds methods
+-(void)iAdIntegration
+{
+    //iOS iADs
+    _adBanner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, _yOrigin, 320, 50)];
+    _adBanner.delegate = self;
+    
+}
+
+-(void)iAdIntegrationwith:(ADBannerView*)iAdBanner andviewController:(UIViewController*)viewController
+{
+    //iOS iADs
+    //_adBanner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, _yOrigin, 320, 50)];
+    iAdBanner.delegate = self;
+}
+
+#pragma mark - iAds Delegate methods
+
+-(void)bannerViewWillLoadAd:(ADBannerView *)banner
+{
+    NSLog(@" Ad will load");
+
+    //self.topViewController.canDisplayBannerAds = YES;
 }
 
 -(void)bannerViewDidLoadAd:(ADBannerView *)banner
 {
-    NSLog(@"Ad loaded");
+    NSLog(@" Ad did load");
      // NSLog(@"\n ADHeight::::%f,  yOrigin::::%f",self.topViewController.view.frame.size.height, _yOrigin);
     if (!_bannerIsVisible)
     {
@@ -319,33 +415,177 @@
         {
             [self.topViewController.view addSubview:_adBanner];
         }
-        
+
         [UIView beginAnimations:@"animateAdBannerOn" context:NULL];
-        
+
         // Assumes the banner view is just off the bottom of the screen.
-        banner.frame = CGRectOffset(banner.frame, 0, -banner.frame.size.height);
-        
+        banner.frame = CGRectOffset(banner.frame, 0, -banner.frame.size.height-15);
+
         [UIView commitAnimations];
-        
+
         _bannerIsVisible = YES;
     }
 }
--(void)bannerViewWillLoadAd:(ADBannerView *)banner
+
+-(BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave
 {
-    NSLog(@"Ad will load");
-    
-    //self.topViewController.canDisplayBannerAds = YES;
+    NSLog(@" Ad Should Begin");
+
+    return YES;
 }
+
 -(void)bannerViewActionDidFinish:(ADBannerView *)banner
 {
-    NSLog(@"Ad did finish");
+    NSLog(@" Ad did finish");
+
+    [banner cancelBannerViewAction];
+
+}
+-(void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
+{
+    NSLog(@" Ad fail Error::::%@",error);
+
+    if (_bannerIsVisible)
+    {
+        [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+
+        // Assumes the banner view is placed at the bottom of the screen.
+        banner.frame = CGRectOffset(banner.frame, 0, banner.frame.size.height+15);
+
+        [UIView commitAnimations];
+
+        _bannerIsVisible = NO;
+    }
+}
+
+#pragma mark - Google Ads methods
+-(void)googleAdsIntegration
+{
+    //iOS Google Ads
+    NSLog(@"Google Mobile Ads SDK version: %@", [GADRequest sdkVersion]);
+    GADBannerView *bannerView=[[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+    //[bannerView setAdSize:kGADAdSizeBanner];
+    bannerView.delegate=self;
+    bannerView.adUnitID = AdUnitId;
+    bannerView.rootViewController = self.topViewController;
+    GADRequest *request = [GADRequest request];
+
+//    NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+//    udid = [udid stringByReplacingOccurrencesOfString:@"-" withString:@""];
+//    NSLog(@"simulator UUID: %@", udid);
+//    //46E55A9D-4398-5762-BD22-F8D351422AC2(mac)
+//    //647C0579-04AA-4280-85D8-377544AEE7B6(simulator)
+//    request.testDevices = @[udid,@"46E55A9D43985762BD22F8D351422AC2"];
+
+    [bannerView loadRequest:request];
+    
+}
+-(void)googleAdsIntegrationWith:(GADBannerView*)googleBannerView andviewController:(UIViewController*)viewController
+{
+   // _googleAdIsVisible=NO;
+    //iOS Google Ads
+    NSLog(@"Google Mobile Ads SDK version: %@", [GADRequest sdkVersion]);
+    //    googleBannerView=[[GADBannerView alloc]initWithFrame:CGRectMake(0, _yOrigin, 320, 50)];
+    [googleBannerView setAdSize:kGADAdSizeBanner];
+    googleBannerView.delegate=self;
+    googleBannerView.adUnitID = AdUnitId;
+    googleBannerView.rootViewController = viewController;
+    GADRequest *request = [GADRequest request];
+    
+    
+    NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    udid = [udid stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    NSLog(@"simulator UUID: %@", udid);
+    //46E55A9D-4398-5762-BD22-F8D351422AC2(mac)
+    //647C0579-04AA-4280-85D8-377544AEE7B6(simulator)
+    request.testDevices = @[udid,@"46E55A9D43985762BD22F8D351422AC2"];
+    
+    [googleBannerView loadRequest:request];
     
 }
 
--(BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave{
-    NSLog(@"Ad Banner action is about to begin.");
+#pragma mark - Google Ads Delegate methods
+
+/// Tells the delegate an ad request loaded an ad.
+- (void)adViewDidReceiveAd:(GADBannerView *)adView
+{
+    NSLog(@"adViewDidReceiveAd:::%@",adView);
     
-    return YES;
+    //adView.hidden=NO;
+    
+    adView.alpha = 0;
+    [UIView animateWithDuration:1.0 animations:^{
+        adView.alpha = 1;
+    }];
+    _googleAdIsVisible=YES;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserInterface" object:nil];
+    
+//    if (!_googleBannerIsVisible)
+//    {
+//        // If banner isn't part of view hierarchy, add it
+//        if (_adBanner.superview == nil)
+//        {
+//            [self.topViewController.view addSubview:_adBanner];
+//        }
+//        
+//        [UIView beginAnimations:@"animateAdBannerOn" context:NULL];
+//        
+//        // Assumes the banner view is just off the bottom of the screen.
+//        adView.frame = CGRectOffset(adView.frame, 0, -adView.frame.size.height-15);
+//        
+//        [UIView commitAnimations];
+//        
+//        _googleBannerIsVisible = YES;
+//    }
+    
+}
+
+/// Tells the delegate an ad request failed.
+- (void)adView:(GADBannerView *)adView
+didFailToReceiveAdWithError:(GADRequestError *)error
+{
+    NSLog(@"adView:didFailToReceiveAdWithError: %@", [error localizedDescription]);
+    //adView.hidden=YES;
+    _googleAdIsVisible=NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserInterface" object:nil];
+//    if (_googleBannerIsVisible)
+//    {
+//        [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+//        
+//        // Assumes the banner view is placed at the bottom of the screen.
+//        adView.frame = CGRectOffset(adView.frame, 0, adView.frame.size.height+15);
+//        
+//        [UIView commitAnimations];
+//        
+//        _googleBannerIsVisible = NO;
+//    }
+    
+}
+
+/// Tells the delegate that a full screen view will be presented in response
+/// to the user clicking on an ad.
+- (void)adViewWillPresentScreen:(GADBannerView *)adView
+{
+    NSLog(@"adViewWillPresentScreen");
+}
+
+/// Tells the delegate that the full screen view will be dismissed.
+- (void)adViewWillDismissScreen:(GADBannerView *)adView
+{
+    NSLog(@"adViewWillDismissScreen");
+}
+
+/// Tells the delegate that the full screen view has been dismissed.
+- (void)adViewDidDismissScreen:(GADBannerView *)adView
+{
+    NSLog(@"adViewDidDismissScreen");
+}
+
+/// Tells the delegate that a user click will open another app (such as
+/// the App Store), backgrounding the current app.
+- (void)adViewWillLeaveApplication:(GADBannerView *)adView
+{
+    NSLog(@"adViewWillLeaveApplication");
 }
 - (UIViewController *)topViewController
 {

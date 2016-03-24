@@ -27,4 +27,9 @@
 @property (nonatomic, strong) NSDictionary *notification;
 @property (weak, nonatomic) IBOutlet GMSMapView *rideMapView;
 
+
+//////
+@property (strong, nonatomic) IBOutlet GADBannerView *googleAdBanner;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleAdbottomConstraint;
+
 @end

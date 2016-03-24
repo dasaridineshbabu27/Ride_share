@@ -12,25 +12,49 @@
 #import <SocketIOClientSwift/SocketIOClientSwift-Swift.h>
 #import <iAd/iAd.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, ADBannerViewDelegate>
+
+#import "LARSAdController.h"
+#import"TOLAdAdapterGoogleAds.h"
+#import "TOLAdAdapteriAds.h"
+#import "TOLAdAdapter.h"
+#import "TOLAdViewController.h"
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate,ADBannerViewDelegate,GADBannerViewDelegate>//
 {
     
 }
 @property (nonatomic, strong) ADBannerView *adBanner;
 @property (nonatomic) BOOL bannerIsVisible;
 
+@property (strong, nonatomic) GADBannerView  *googleAdbanner;
+@property (nonatomic) BOOL googleBannerIsVisible;
+@property (nonatomic) BOOL googleAdIsVisible;
+
 @property (nonatomic, strong) NSString *deviceToken;
 @property (nonatomic) CLLocationCoordinate2D currentLocCoord;
+
 @property (nonatomic, strong) UILabel *titleLable;
 @property (nonatomic, strong) UIActivityIndicatorView *indicator;
-
 @property (nonatomic, strong) UIView *loadingView;
+
+@property (nonatomic, strong) UIView *aDView;
+
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic) BOOL isUserLoggedIn;
+
 - (void)showLoaingWithTitle:(NSString*)title;
 - (void)hideLoading;
+
+-(UIView*)AdView;
+- (void)showAdView;
+- (void)hideAdView;
+
 - (UIViewController *)topViewController;
 
+-(void)iAdIntegration;
+-(void)iAdIntegrationwith:(ADBannerView*)iAdBanner andviewController:(UIViewController*)viewController;
 
+-(void)googleAdsIntegration;
+-(void)googleAdsIntegrationWith:(GADBannerView*)googleBannerView andviewController:(UIViewController*)viewController;
 @end
 

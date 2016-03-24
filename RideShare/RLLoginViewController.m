@@ -16,14 +16,7 @@
 @implementation RLLoginViewController
 - (void)viewDidLoad
 {
-    /////
-//    bannerView = [[ADBannerView alloc]initWithFrame:
-//                  CGRectMake(0, 200, 320, 50)];
-//    [bannerView setBackgroundColor:[UIColor clearColor]];
-//    bannerView.delegate=self;
-//    [self.view addSubview: bannerView];
-    /////////
-    
+
     [super viewDidLoad];
      //self.canDisplayBannerAds = YES;
     if (IS_IPHONE)
@@ -58,41 +51,16 @@
         //NSLog(@"\n iPad");
     }
     
-    
-    if ([RSUtils isNetworkReachable])
-    {
-        //NSLog(@"Reachable");
-    }
-    // Do any additional setup after loading the view, typically from a nib.
 }
-//#pragma mark - AdViewDelegates
-//
-//-(void)bannerView:(ADBannerView *)banner
-//didFailToReceiveAdWithError:(NSError *)error{
-//    NSLog(@"Error loadingggggggggggggggg::::::::%@",error);
-//}
-//
-//-(void)bannerViewDidLoadAd:(ADBannerView *)banner{
-//    NSLog(@"Ad loaded");
-//}
-//-(void)bannerViewWillLoadAd:(ADBannerView *)banner{
-//    NSLog(@"Ad will load");
-//}
-//-(void)bannerViewActionDidFinish:(ADBannerView *)banner{
-//    NSLog(@"Ad did finish");
-//    
-//}
 -(void)viewWillAppear:(BOOL)animated
 {
     self.navigationController.navigationBarHidden = YES;
-
     
-    [_passwordInput setText:@"password"];
-    [_userNameImput setText:@"dasaridineshbabu27@gmail.com"];
     
-    if ([RSUtils isNetworkReachable]) {
-        //NSLog(@"Reachable");
-    }
+       //Comment on Producation
+//    [_passwordInput setText:@"password"];
+//    [_userNameImput setText:@"dasaridineshbabu27@gmail.com"];
+    
 }
 
 - (void)hide
@@ -192,7 +160,9 @@
                 ////Socket
                 //[appDelegate initiateClientSocket];
                  
-                
+                 [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"isLoggedIn"];
+                 [[NSUserDefaults standardUserDefaults]synchronize];
+                 
                  [self performSegueWithIdentifier:@"ShowHomeViewSegue" sender:self];
              }
              else

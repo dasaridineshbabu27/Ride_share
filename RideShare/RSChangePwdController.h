@@ -21,4 +21,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *confirmNewPwdInput;
 - (IBAction)changePwdAction:(id)sender;
 
+//////
+@property (strong, nonatomic) IBOutlet GADBannerView *googleAdBanner;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleAdbottomConstraint;
+
 @end

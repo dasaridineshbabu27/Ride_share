@@ -15,4 +15,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *emailInput;
 - (IBAction)submitAction:(id)sender;
 
+
+//////
+@property (strong, nonatomic) IBOutlet GADBannerView *googleAdBanner;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleAdbottomConstraint;
+
 @end

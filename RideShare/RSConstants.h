@@ -7,6 +7,8 @@
 //
 
 #define GoogleMapsAPIKey @"AIzaSyCf3EGm2PxKWUfiFlz2uFHlM7M3b9Pj7fE"
+#define publisherIdd @"pub-9958110825614857"
+#define AdUnitId @"ca-app-pub-9958110825614857/8896670921"
 
 #define GoogleMapsServerKey @"AIzaSyCpqdTrZ6n2_YyPDVFG1SSiem4Ji7tOtAw"
 

@@ -28,7 +28,6 @@
     [super viewDidLoad];
    // self.canDisplayBannerAds = YES;
     self.tempRideInfo = [[NSMutableDictionary alloc] init];
-    
     currentUser = [User currentUser];
     self.dataSource = [[NSMutableArray alloc] init];
     
@@ -93,7 +92,57 @@
     
    // _btnPickup.selected = YES;
      _rideViewHightConstraint.constant=0;
+    
+    ////Ads
+    (appDelegate).googleAdIsVisible=NO;
+    [self updateUserInterface:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateUserInterface:)
+                                                 name:@"updateUserInterface" object:nil];
 }
+-(void)integrateAds
+{
+    //iAds Implementation
+    //[appDelegate iAdIntegration];
+    //[appDelegate iAdIntegrationwith:<#(ADBannerView *)#> andviewController:self];
+    
+    
+    //Google Ads Implementation
+    //[appDelegate googleAdsIntegration];
+    [appDelegate googleAdsIntegrationWith:self.googleAdBanner andviewController:self];
+    
+    //LARSAd Implementation
+    //[[LARSAdController sharedManager] addAdContainerToView:self.view withParentViewController:self];
+    //[[LARSAdController sharedManager] addAdContainerToViewInViewController:self];
+
+}
+-(void)updateUserInterface:(NSNotification *)notification
+{
+    if ((appDelegate).googleAdIsVisible)
+    {
+        _googleAdBanner.hidden=NO;
+        _googleAdbottomConstraint.constant=0;
+    }
+    else
+    {
+        _googleAdBanner.hidden=YES;
+        _googleAdbottomConstraint.constant=-50;
+    }
+    [self.view layoutIfNeeded];
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
+    
+    [self integrateAds];
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateUserInterface" object:nil];
+}
+///////////
+
 
 - (IBAction)refreshClicked:(id)sender
 {
@@ -244,36 +293,6 @@
     //NSLog(@"%@", button.title);
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = NO;
-//    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
-//    
-//    User *currentUser = [User currentUser];
-//    if (canExecuteWillAppear)
-//    {
-////        [self fetchRidesAroundMe];
-//    }
-//    else
-//    {
-//        canExecuteWillAppear = YES;
-//    }
-    
-//    NSUserDefaults *appDefaults = [NSUserDefaults standardUserDefaults];
-//    BOOL isUserLoggedIn = [appDefaults boolForKey:keyIsUserLoggedIn];
-//    if (!isUserLoggedIn)
-//    {
-//        [self performSegueWithIdentifier:@"MoveToLoginSegue" sender:self];
-//        return;
-//    }
-//    _mapView.delegate = self;
-    
-//    _mapView.showsUserLocation = YES;
-//    [_mapView setMapType:MKMapTypeStandard];
-//    [_mapView setZoomEnabled:YES];
-//    [_mapView setScrollEnabled:YES];
-}
 
 #pragma mark - SlideNavigationController Methods -
 

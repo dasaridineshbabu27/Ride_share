@@ -13,4 +13,9 @@
 
 @property (weak, nonatomic) IBOutlet UIWebView *contentLoader;
 
+
+//////
+@property (strong, nonatomic) IBOutlet GADBannerView *googleAdBanner;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleAdbottomConstraint;
+
 @end

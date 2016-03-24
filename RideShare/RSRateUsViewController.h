@@ -10,4 +10,7 @@
 #import "AppDelegate.h"
 @interface RSRateUsViewController : UIViewController
 
+//////
+@property (strong, nonatomic) IBOutlet GADBannerView *googleAdBanner;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleAdbottomConstraint;
 @end
