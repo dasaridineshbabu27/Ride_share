@@ -53,13 +53,14 @@
 @property (weak, nonatomic) IBOutlet UIButton *bntPickStartLocation;
 
 @property (weak, nonatomic) IBOutlet UITextField *rideCoseInput;
+@property (weak, nonatomic) IBOutlet UITextField *destinationLocationInput;
+@property (weak, nonatomic) IBOutlet UITextField *sourceLocationInput;
 
 @property (weak, nonatomic) IBOutlet GMSMapView *mapViewHolder;
 @property (weak, nonatomic) IBOutlet UIButton *btnRequest;
 @property (weak, nonatomic) IBOutlet UIButton *pickTimeButton;
 
-@property (weak, nonatomic) IBOutlet UITextField *destinationLocationInput;
-@property (weak, nonatomic) IBOutlet UITextField *sourceLocationInput;
+
 
 @property (weak, nonatomic) IBOutlet UIButton *btnPickup;
 @property (weak, nonatomic) IBOutlet UIButton *btnPickMeUp;

@@ -152,7 +152,7 @@
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
                  
-                  NSLog(@"\n Received response for Notifications is : %@", response);
+                //  NSLog(@"\n Received response for Notifications is : %@", response);
                  
                  [_rideInfo removeAllObjects];
                  [notifications removeAllObjects];
@@ -437,7 +437,7 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 NSLog(@"\n Received response for AcceptRide is : %@", response);
+                 //NSLog(@"\n Received response for AcceptRide is : %@", response);
          
                  
                  [_rideInfo removeAllObjects];
@@ -496,7 +496,7 @@
 
 - (void)startButtonAction:(UIButton*)startButton
 {
-   NSLog(@"Start ride button tapped: %@", _rideInfo);
+   //NSLog(@"Start ride button tapped: %@", _rideInfo);
     
     //int trackId = [[[notifications objectAtIndex:0]valueForKey:@"track_id"] intValue];
     
@@ -521,7 +521,7 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                  NSLog(@"\n Received response for StartRide is : %@", response);
+                  //NSLog(@"\n Received response for StartRide is : %@", response);
                  
                  [_rideInfo removeAllObjects];
                  [notifications removeAllObjects];

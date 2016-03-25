@@ -26,6 +26,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
    // self.canDisplayBannerAds = YES;
     self.tempRideInfo = [[NSMutableDictionary alloc] init];
     currentUser = [User currentUser];
@@ -41,7 +43,8 @@
     _timePicker.minimumDate = [NSDate date];
     _currentRides = [[NSMutableArray alloc] init];
     [_pickTimeButton setTitle:[RSUtils getDateStringFormDate:_timePicker.date withFormat:nil] forState:UIControlStateNormal];
-    _timePickerHolderView.backgroundColor = [UIColor whiteColor];
+    _timePickerHolderView.backgroundColor = [UIColor clearColor];
+    _timePicker.backgroundColor = [UIColor whiteColor];
     [[_mapViewHolder settings] setMyLocationButton:YES];    
     self.markers = [[NSMutableArray alloc] init];
     locationManager = [[CLLocationManager alloc] init];
@@ -326,7 +329,7 @@
              {
                  if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
                  {
-                     NSLog(@"All rides with info: %@", response);
+                     //NSLog(@"All rides with info: %@", response);
                     
                      [_currentRides removeAllObjects];
                      [_currentRides addObjectsFromArray:[response objectForKey:@"response_content"]];
@@ -586,7 +589,7 @@
                      {
                          if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
                          {
-                             NSLog(@"Response success! with info: %@", response);
+                             //NSLog(@"Response success! with info: %@", response);
                              UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your request for picking client has been sent to the client." preferredStyle:UIAlertControllerStyleAlert];
                              
                              UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -630,7 +633,7 @@
 
 - (void)cancelMyRide:(NSDictionary*)rideInfo
 {
-    NSLog(@"\n cancelMyRide rideInfo===%@",rideInfo);
+   //NSLog(@"\n cancelMyRide rideInfo===%@",rideInfo);
     if ([[rideInfo valueForKey:@"is_accepted"] isEqual:@"1"] && [[rideInfo valueForKey:@"is_finished"] isEqual:@"0"])
     {
          [RSUtils showAlertWithTitle:@"RideShare" message:@"Sorry unable to cancel as you accepted pick up request" actionOne:nil actionTwo:nil inView:self];
@@ -651,7 +654,7 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                 NSLog(@"Delete Request success! with info: %@", response);
+                 //NSLog(@"Delete Request success! with info: %@", response);
                  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride has been cancelled successfully." preferredStyle:UIAlertControllerStyleAlert];
                  
                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -680,7 +683,7 @@
 - (void)cancelPickMeUp:(NSDictionary*)rideInfo
 {
     
-    NSLog(@"\n cancelPickMeUp rideInfo===%@",rideInfo);
+   // NSLog(@"\n cancelPickMeUp rideInfo===%@",rideInfo);
     if ([[rideInfo valueForKey:@"is_accepted"] isEqual:@"1"] && [[rideInfo valueForKey:@"is_finished"] isEqual:@"0"] )
     {
         [RSUtils showAlertWithTitle:@"RideShare" message:@"Sorry unable to cancel as you accepted ride request" actionOne:nil actionTwo:nil inView:self];
@@ -931,10 +934,12 @@
 - (IBAction)showTimePicker:(id)sender
 {
     //NSLog(@"%@", _timePickerHolderView);
+    [_rideCoseInput resignFirstResponder];
+    [self .view bringSubviewToFront:_timePickerHolderView];
     pickerHolderTopConstraint.constant = -self.view.frame.size.height;
     pickerHolderBottomConstraint.constant = 0;
    // NSLog(@"%@", _timePickerHolderView);
-    self.navigationController.navigationBarHidden = YES;
+    //self.navigationController.navigationBarHidden = YES;
     [self.view setNeedsUpdateConstraints];
     [self.view updateConstraintsIfNeeded];
     [self.view layoutIfNeeded];
@@ -943,6 +948,7 @@
 {
     [self reset];
 }
+
 -(void)reset
 {
     _rideViewHightConstraint.constant=0;
@@ -1024,7 +1030,7 @@
          {
              if ([[response objectForKey:kResponseCode] intValue] == kRequestSuccess)
              {
-                  NSLog(@"Received response for my ride is : %@", response);
+                  //NSLog(@"Received response for my ride is : %@", response);
                  [self reset];
                  
                  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Success" message:@"Your ride request has been submitted successfully." preferredStyle:UIAlertControllerStyleAlert];
@@ -1145,12 +1151,7 @@
     [self.view layoutIfNeeded];
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [_rideCoseInput resignFirstResponder];
-    [_sourceLocationInput resignFirstResponder];
-    [_destinationLocationInput resignFirstResponder];
-}
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

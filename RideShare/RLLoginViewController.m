@@ -58,8 +58,8 @@
     
     
        //Comment on Producation
-//    [_passwordInput setText:@"password"];
-//    [_userNameImput setText:@"dasaridineshbabu27@gmail.com"];
+    [_passwordInput setText:@"password"];
+    [_userNameImput setText:@"dasaridineshbabu27@gmail.com"];
     
 }
 
